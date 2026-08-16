@@ -19,8 +19,8 @@ Public GitHub repo created and pushed (code + docs only; **not deployed**). Scie
 | Visibility | **public** |
 | Branch | `main` |
 | Initial commit SHA | `8fa44bc5ffe96757fad024ec571688142c63e9bd` |
-| Latest commit SHA | `f745041f4e30133aa2d43992ddd9708238a142e8` |
-| Follow-up commit | docs/figures/paper/report refresh on `main` |
+| Latest commit SHA (HEAD) | `0ad48188a2fa105dc5a6a80eab3f814fb465aa7a` |
+| Docs refresh commit | `f745041f4e30133aa2d43992ddd9708238a142e8` |
 | Excluded from git | `/data/`, `/outputs/`, `.tmp*`, secrets, checkpoints, `__pycache__` |
 | Secret scan | No real secrets; Base64 PNG “AKIA…” substring = false positive |
 
