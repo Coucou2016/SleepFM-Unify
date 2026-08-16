@@ -19,7 +19,7 @@ Public GitHub repo updated with matured paper/report, SciencePlots redraw, five 
 | Visibility | **public** |
 | Branch | `main` |
 | Prior tip (before this pass) | `06eed44` |
-| Latest commit SHA (HEAD) | *(filled after push)* |
+| Latest commit SHA (HEAD) | `4cd72de8bc51ffa11ed256f2f79c9d081aa961c1` |
 | Excluded from git | `/data/`, `/outputs/`, `.tmp*`, secrets, checkpoints, `__pycache__` |
 | Secret scan | No real secrets committed |
 
