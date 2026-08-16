@@ -67,7 +67,8 @@ def fig01_architecture(cjk: str) -> None:
         ax.set_ylim(0, 7)
         ax.axis("off")
         ax.set_title(
-            "SleepFM-Unify: Shared–Private Factorization (架构示意)",
+            "SleepFM-Unify: Shared–Private Factorization (架构示意)\n"
+            "schematic only — no CinC/SHHS metrics",
             pad=10,
         )
 

@@ -63,7 +63,7 @@ def inspect_dir(path: Path, dataset: str | None = None) -> Dict:
     raw_ready:
         Raw PSG files present (EDF or WFDB mat+hea). Enough to *start* export.
     exported_ready / pretrain_ready:
-        ``index.json`` present — schema-ready for validate / pretrain (not a
+        ``index.json`` present - schema-ready for validate / pretrain (not a
         guarantee that CinC/SHHS labels are clinically complete).
     ready:
         Alias of ``raw_ready`` when no ``index.json``, else ``pretrain_ready``.
@@ -101,7 +101,7 @@ def inspect_dir(path: Path, dataset: str | None = None) -> Dict:
 
     if index_json:
         result["messages"].append(
-            "Found index.json — exported SleepFM dataset (pretrain_ready=True). "
+            "Found index.json - exported SleepFM dataset (pretrain_ready=True). "
             "This is NOT the same as raw_ready; run validate before claiming metrics."
         )
         result["exported_ready"] = True
@@ -166,7 +166,7 @@ def inspect_dir(path: Path, dataset: str | None = None) -> Dict:
             "Staging/apnea labels may be missing until XML is present."
         )
     if guess == "cinc2018" and mat_n and not hea_n:
-        result["messages"].append("WARNING: .mat without .hea — WFDB headers usually required.")
+        result["messages"].append("WARNING: .mat without .hea - WFDB headers usually required.")
 
     export_cmd = hint["export"].format(raw=path)
     result["next_commands"].append(

@@ -10,54 +10,39 @@ import torch
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def _run_check(*args: str) -> subprocess.CompletedProcess:
+    # Force UTF-8 so Windows GBK consoles do not drop stdout on ASCII dashes.
+    return subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "check_data_ready.py"), *args],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+
+
 def test_check_data_ready_empty(tmp_path):
     empty = tmp_path / "raw"
     empty.mkdir()
-    r = subprocess.run(
-        [sys.executable, str(ROOT / "scripts" / "check_data_ready.py"), "--data-dir", str(empty)],
-        cwd=str(ROOT),
-        capture_output=True,
-        text=True,
-    )
+    r = _run_check("--data-dir", str(empty))
     assert r.returncode != 0
-    assert "no EDF" in r.stdout.lower() or "ERROR" in r.stdout
+    assert "no EDF" in (r.stdout or "").lower() or "ERROR" in (r.stdout or "")
 
 
 def test_check_data_ready_exported(tiny_data_dir):
-    r = subprocess.run(
-        [
-            sys.executable,
-            str(ROOT / "scripts" / "check_data_ready.py"),
-            "--data-dir",
-            str(tiny_data_dir),
-        ],
-        cwd=str(ROOT),
-        capture_output=True,
-        text=True,
-    )
+    r = _run_check("--data-dir", str(tiny_data_dir))
     assert r.returncode == 0
-    assert "index.json" in r.stdout
+    assert "index.json" in (r.stdout or "")
 
 
 def test_check_data_ready_edf_guess(tmp_path):
     raw = tmp_path / "cinc2018"
     raw.mkdir()
     (raw / "tr01.edf").write_bytes(b"\x00" * 16)
-    r = subprocess.run(
-        [
-            sys.executable,
-            str(ROOT / "scripts" / "check_data_ready.py"),
-            "--data-dir",
-            str(raw),
-            "--dataset",
-            "cinc2018",
-        ],
-        cwd=str(ROOT),
-        capture_output=True,
-        text=True,
-    )
+    r = _run_check("--data-dir", str(raw), "--dataset", "cinc2018")
     assert r.returncode == 0
-    assert "export_edf" in r.stdout
+    assert "export_edf" in (r.stdout or "")
 
 
 def test_seq_staging_baseline_shapes():

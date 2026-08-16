@@ -169,7 +169,7 @@ Supervised baselines: `python scripts/train_supervised.py --demo --model effnet`
 
 ### Real PSG data
 
-Authors' clinic cohort is not public. Use [PhysioNet CinC 2018](https://physionet.org/content/challenge-2018/1.0.0/) (PhysioNet account), or [SHHS](https://sleepdata.org/datasets/shhs) / [MESA](https://sleepdata.org/datasets/mesa) via NSRR DUA. Export with `scripts/export_edf.py` / `scripts/export_nsrr.py` to 30 s `.npy` epochs + `index.json` (`pretrain` / `valid` / `train` / `test`, participant-level). Details: [`docs/UNIFY.md`](docs/UNIFY.md), [`docs/DATA_SCHEMA.md`](docs/DATA_SCHEMA.md), [`docs/MATERIALS.md`](docs/MATERIALS.md).
+Authors' clinic cohort is not public. Use [PhysioNet CinC 2018](https://physionet.org/content/challenge-2018/1.0.0/) (PhysioNet account), or [SHHS](https://sleepdata.org/datasets/shhs) / [MESA](https://sleepdata.org/datasets/mesa) via NSRR DUA. Export with `scripts/export_edf.py` / `scripts/export_nsrr.py` to 30 s `.npy` epochs + `index.json` (`pretrain` / `valid` / `train` / `test`, participant-level). Details: [`docs/DATA_ACCESS.md`](docs/DATA_ACCESS.md), [`docs/UNIFY.md`](docs/UNIFY.md), [`docs/DATA_SCHEMA.md`](docs/DATA_SCHEMA.md), [`docs/MATERIALS.md`](docs/MATERIALS.md). Local inventory: `python scripts/protocol_checklist.py`.
 
 ### Citation
 
