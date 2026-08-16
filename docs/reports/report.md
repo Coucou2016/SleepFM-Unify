@@ -5,9 +5,10 @@
 本报告对应仓库 `E:\Projects\20260522-SleepFM` 中的 **SleepFM-Unify** 工作：在 SleepFM 多模态睡眠基础模型编码器之上，加入 **共享–私有（Shared–Private）因子分解**、混合对比损失、模态丢弃与可选整夜时序头，并配套导出校验、标签门控与论文实验套件。
 
 - **报告性质：** 工程实现 + 论文框架 + 合成演示验证；**不是**已完成真实 CinC/SHHS 数值的终稿论文。
+- **公开仓库：** [https://github.com/Coucou2016/SleepFM-Unify](https://github.com/Coucou2016/SleepFM-Unify)（`main`；不含大体积 `data/` / `outputs/`）。
 - **图表风格：** SciencePlots + Times New Roman；中文用 SimHei 渲染。
 - **诚实约束：** 合成 AUROC≈0.5 仅标为 demo；缺失真实指标一律写 **待补充**；不编造 CinC/SHHS 结果。
-- **ChatGPT：** 浏览器 MCP 无法导航，无会话 URL；文献架构由 WebSearch + nature-skills 补齐（见 `docs/reports/chatgpt-consultation-2026-08-16.md`）。
+- **ChatGPT：** 本轮浏览器 MCP 仍无法稳定 navigate（`tabs new` 后 `viewId` 失效 / `navigate` 报无 tab）；请人工粘贴 `docs/reports/chatgpt-paste-brief-2026-08-16.md`。文献架构由 WebSearch 独立核验 + nature-skills。
 
 <!--FIGURES-->
 
@@ -29,11 +30,11 @@
 
 ### 睡眠多模态基础模型
 
-睡眠分期（Wake / N1 / N2 / N3 / REM）与睡眠呼吸障碍（SDB）评估依赖多导睡眠图（PSG）。SleepFM（ICML 2024）在 BAS、ECG、呼吸三路上做对比预训练，显示 LOO 优于简单 pairwise。后续 Nature Medicine 工作将同类表征扩展到疾病风险预测。Omni-Sleep 引入中枢/自主神经（CNS/ANS）层次先验；CIMSleepNet 针对任意模态缺失做想象补全与对比校准。
+睡眠分期（Wake / N1 / N2 / N3 / REM）与睡眠呼吸障碍（SDB）评估依赖多导睡眠图（PSG）。SleepFM（ICML 2024；PMLR 235；arXiv:2405.17766）在 BAS、ECG、呼吸三路上做对比预训练，显示 LOO 优于简单 pairwise。后续 Nature Medicine 工作（doi:10.1038/s41591-025-04133-4）将同类 LOO-CL 扩展到疾病风险预测与 SHHS 迁移——**不可把该文 C-Index 直接填进本仓库 CinC/SHHS 表**。Omni-Sleep（arXiv:2607.07720）引入中枢/自主神经（CNS/ANS）层次先验；CIMSleepNet（NeurIPS 2024）针对任意模态缺失做想象补全与对比校准。
 
-### 共享–私有思想
+### 共享–私有思想与本工作定位
 
-多模态学习中常把表示拆成“跨模态共享”与“模态私有”两支，避免对齐损失抹掉特异信息。Unify 把该思想落到 SleepFM 编码器接口内部：共享支承载 LOO/pairwise，私有支退出对比、仅经正交与下游拼接使用。
+多模态学习中常把表示拆成“跨模态共享”与“模态私有”两支，避免对齐损失抹掉特异信息。Unify 把该思想落到 SleepFM 编码器接口内部：共享支承载 LOO/pairwise，私有支退出对比、仅经正交与下游拼接使用。相对 Omni-Sleep 的生理拓扑与 CIMSleepNet 的缺失想象，Unify 更轻量，便于与官方 LOO 做消融对照。
 
 ### 拟模仿的论文结构
 
@@ -76,7 +77,7 @@
 
 ### A. 仓库基线
 
-- 非 git 仓库（无 HEAD）。
+- 已 `git init` 并推送公开仓库（见封面 GitHub URL）。
 - 文档：`README.md`、`docs/UNIFY.md`、既有 `docs/reports/2026-08-15-*.md`。
 - 先前 P0/P1：GRU padding、`L_miss` mask、空 loader 守卫、paper suite temporal、通道/标签门控。
 
@@ -137,10 +138,10 @@ Unify 的科学故事是：**共享空间继续讲 SleepFM 的跨模态对齐故
 ## 局限性
 
 - 无真实 CinC/SHHS/MESA 训练与评测数字。  
-- ChatGPT 顾问环断裂（浏览器 MCP）。  
+- ChatGPT 顾问环本轮仍因浏览器 MCP 中断（可人工粘贴 brief）。  
 - 合成指标接近随机，不可写入摘要作为主结果。  
 - 夜级 AHI 为占位定义。  
-- 非 git，版本以报告与 ZIP SHA 追溯。  
+- 大体积数据与 checkpoint 未入库（故意排除）。  
 
 ---
 
@@ -177,14 +178,14 @@ Unify 的科学故事是：**共享空间继续讲 SleepFM 的跨模态对齐故
 
 | 项 | 内容 |
 |----|------|
-| ChatGPT URL | 无（MCP navigate 失败） |
+| GitHub | https://github.com/Coucou2016/SleepFM-Unify （public；code/docs，非部署） |
+| ChatGPT URL | 无（MCP navigate 仍失败）；粘贴 brief 见 `chatgpt-paste-brief-2026-08-16.md` |
 | nature-skills | 已找到并遵循写作/出图路由 |
 | SciencePlots | 已安装；图已出（fig01–fig06） |
 | 论文 | `docs/paper/paper.{md,html,pdf}` |
 | 报告 | `docs/reports/report.{md,html,pdf}`（HTML 自包含 Base64） |
 | 代码清理 | retrieval 规范化；gallery RNG；check_data_ready 阶段命名 |
-| 测试 | **68 passed**；smoke **PASSED** |
-| Git | 未 commit / push / PR |
+| 测试 | 见本轮 `run_tests.py` / `smoke_test.py` |
 | 真实指标 | 待补充 |
 
-完整条目：`docs/reports/section-19-final.md`。
+完整条目：`docs/reports/section-19-final-20260816.md`。

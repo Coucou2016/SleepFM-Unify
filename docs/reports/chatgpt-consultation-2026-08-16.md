@@ -4,21 +4,34 @@
 
 | Item | Result |
 |------|--------|
-| Conversation URL | **None** — browser MCP blocked |
-| Attempt | `browser_tabs` `new` → viewId returned; immediate `browser_navigate` → `Browser view not found` / `No browser tab available` |
+| Conversation URL | **None** — browser MCP still blocked this turn |
+| Attempt (prior) | `browser_tabs` `new` → viewId; `browser_navigate` → `Browser view not found` |
+| Attempt (this turn) | `tabs new` → viewId; navigate w/ viewId → not found; navigate w/o viewId → no tab; `newTab:true` → no tab |
 | Upload | Not performed (text-only policy; also blocked) |
+| Manual path | User/Cursor paste `docs/reports/chatgpt-paste-brief-2026-08-16.md` + GitHub URL |
 | Fallback | Local WebSearch + nature-skills (`nature-writing` / `nature-figure`) |
 
-**Unblock needed:** restore Cursor Simple Browser MCP navigate attachment, then re-run ChatGPT Pro/Plus with web search for architecture + innovation framing.
+**Unblock needed:** restore Cursor Simple Browser MCP tab↔navigate attachment, then re-run ChatGPT Pro/Plus with web search.
 
-## Literature survey (WebSearch, not ChatGPT)
+## GitHub for ChatGPT (authorized)
+
+| Item | Value |
+|------|-------|
+| URL | https://github.com/Coucou2016/SleepFM-Unify |
+| Visibility | **public** |
+| Branch | `main` |
+| Contents | code + docs (excl. large `data/`, `outputs/`, secrets) |
+
+Tell ChatGPT: “Please read the public GitHub repo at https://github.com/Coucou2016/SleepFM-Unify for full code/docs” and still paste the focused TEXT brief (no ZIP).
+
+## Literature survey (WebSearch, independently verified this turn)
 
 ### Core baselines to cite
 
-1. **SleepFM (ICML 2024)** — Thapa et al. Multi-modal PSG foundation model; leave-one-out (LOO) contrastive learning across BAS/ECG/respiratory; strong staging / SDB / retrieval. arXiv:2405.17766; PMLR 235.
-2. **SleepFM disease prediction (Nature Medicine 2025)** — Large-scale LOO-CL sleep FM; disease risk from night embeddings; SHHS transfer. Do not conflate with ICML 2024 numbers.
-3. **CIMSleepNet (NeurIPS 2024)** — Missing-modality robust staging via modal imagination + semantic/modal calibration contrastive learning + multi-level temporal attention.
-4. **Omni-Sleep (arXiv 2607.07720)** — CNS/ANS physiological prior; hierarchical contrastive (intra-system + inter-system) + latent temporal modeling; missing-modality robustness.
+1. **SleepFM (ICML 2024)** — Thapa et al. Multi-modal PSG foundation model; leave-one-out (LOO) contrastive learning across BAS/ECG/respiratory; staging / SDB / retrieval. PMLR 235:48019–48037; arXiv:2405.17766; code https://github.com/rthapa84/sleepfm-codebase.
+2. **SleepFM disease prediction (Nature Medicine)** — doi:10.1038/s41591-025-04133-4; medRxiv 10.1101/2025.02.04.25321675. Large-scale LOO-CL; disease risk; SHHS transfer. **Do not conflate** with ICML 2024 staging/retrieval numbers or invent local CinC metrics.
+3. **CIMSleepNet (NeurIPS 2024)** — Missing-modality robust staging via MAIM + SMCCL + multi-level temporal attention. https://github.com/SQAIYY/CIMSleepNet.
+4. **Omni-Sleep (arXiv:2607.07720)** — CNS/ANS physiological prior; hierarchical contrastive (intra-system + inter-system) + latent temporal modeling; missing-modality robustness.
 
 ### Shared–private / factorization relatives (architecture imitation)
 
@@ -61,6 +74,7 @@ One-sentence argument (nature-writing):
 - Synthetic AUROC≈0.5 is **not** a paper result.
 - Night `ahi` / `ahi_bin` = apnea-epoch-rate placeholders.
 - Official SleepFM 5/1/3 vs schema 10/2/7 requires explicit mismatch override.
+- Nature Medicine disease C-Index values are **not** our local results.
 
 ## nature-skills
 

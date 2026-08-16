@@ -174,38 +174,53 @@ def figure_block(stem: str, label: str, title: str, long_explain: str) -> str:
 
 EXPLAINS = {
     "fig01_architecture": """
-<p><strong>来龙去脉：</strong>本图说明 SleepFM-Unify 如何在既有 SleepFM 编码器之上增加共享/私有头，而不是重写骨干网络。
-左侧三路输入 BAS（脑电相关通道组）、ECG（心电图）、Respiratory（呼吸）分别进入 1D EffNet 编码器；中间共享头
-<code>z<sup>shared</sup></code> 负责跨模态 InfoNCE 对齐，私有头 <code>z<sup>private</sup></code> 保留模态特异信息且不进入对比损失；
-右侧汇总 LOO+Pairwise、正交约束与模态丢弃 + <code>L<sub>miss</sub></code>。</p>
-<p><strong>如何阅读：</strong>顺着箭头从左到右：信号 → 编码器 → 双头 → 损失。基线 SleepFM 对应 <code>unify.enabled=false</code>，仅 LOO。</p>
-<p><strong>结论边界：</strong>这是架构示意图，不含任何 CinC/SHHS 准确率数字。</p>
+<p><strong>来龙去脉（为什么画这张）：</strong>审稿人/合作者首先需要看清 Unify <em>挂在哪里</em>。
+SleepFM 已有三路 1D EffNet；若直接改骨干，就无法与官方 LOO 基线做干净对照。
+因此我们只在骨干向量后接线性共享/私有头，把“对齐什么 / 保留什么”显式拆开。</p>
+<p><strong>图中元素：</strong>左列 BAS（脑电相关通道组）、ECG、Respiratory → 中列同结构编码器 →
+共享头 <code>z<sup>shared</sup></code>（进 LOO/pairwise InfoNCE）与私有头 <code>z<sup>private</sup></code>（退出对比）→
+右列三项目标：跨模态对齐、正交去相关、模态丢弃 + <code>L<sub>miss</sub></code>。</p>
+<p><strong>如何阅读：</strong>沿箭头从左到右。基线对应 <code>unify.enabled=false</code>（无双头、仅 LOO）。
+下游默认拼接 shared‖private；检索默认只用 shared，以保持与 SleepFM 检索语义可比。</p>
+<p><strong>结论边界：</strong>架构示意，<strong>不含</strong> CinC/SHHS 准确率。<span class="todo">待补充：真实数据上的参数量/FLOPs 表</span>。</p>
 """,
     "fig02_loss_curves": """
-<p><strong>来龙去脉：</strong>为验证 Unify 混合损失在本地可跑通，我们在合成数据集上做了 5 个 epoch 的短训练，并记录总损失与分项
-（LOO / pairwise / orth / miss）。</p>
-<p><strong>如何阅读：</strong>左图是 train/val 总损失随 epoch 变化；右图是分项。合成数据标签噪声大，曲线波动属预期。</p>
-<p><strong>结论：</strong>仅证明工程可运行与损失可分解记录。<span class="todo">待补充：真实 PSG 上的稳定收敛曲线</span>。禁止把合成损失下降解读为临床性能提升。</p>
+<p><strong>来龙去脉：</strong>混合损失是否“能训练、可分解记录”是工程验收点。我们在合成数据上跑 5 个 epoch 的 Unify 预训练，
+把总损失与 LOO / pairwise / orth / miss 分项写入 <code>fig02_loss_history.json</code>，再画成曲线。</p>
+<p><strong>如何阅读：</strong>左：train/val 总损失随 epoch；右：分项。合成标签噪声大，短程波动是预期现象，
+<strong>不是</strong>临床收敛证据。若某分项恒为 0，应检查权重配置（如 <code>loss_weights.*</code>）。</p>
+<p><strong>结论：</strong>证明损失接口可运行。<span class="todo">待补充：真实 PSG 上多种子稳定收敛曲线与学习率日程</span>。
+禁止把合成损失下降写成方法优越性。</p>
 """,
     "fig03_ablation_schematic": """
-<p><strong>来龙去脉：</strong>消融实验设计用于回答“正交项 / 缺失项 / 时序头各自贡献什么”。在真实数据到位前，本图用接近随机的合成 AUROC（≈0.5）占位，并画 chance 线。</p>
-<p><strong>如何阅读每一柱：</strong>LOO 基线、完整 Unify、去掉 orth、去掉 miss、加上 temporal。数值标注带 * 表示 demo only。</p>
-<p><strong>结论：</strong>当前不能宣称任何方法优于基线。<span class="todo">待补充：CinC/SHHS 消融表</span>。</p>
+<p><strong>来龙去脉：</strong>投稿级主张需要消融：完整 Unify vs 去掉 orth / 去掉 miss / 加 temporal，以及相对 LOO 基线。
+在 DUA 数据到位前，用合成下游 AUROC（≈0.5，chance 附近）占位版式，并画水平 chance 线，避免读者把柱高误读为真实增益。</p>
+<p><strong>如何阅读每一柱：</strong>LOO · Unify-full · −orth · −miss · +temporal。带 * 的数值 = demo only。
+柱高接近 0.5 表示<strong>当前没有可发表的排序能力</strong>，只说明评测脚本与图模板就绪。</p>
+<p><strong>结论：</strong>不可宣称任何变体优于基线。<span class="todo">待补充：CinC/SHHS 消融表（均值±标准差，多种子）</span>。</p>
 """,
     "fig04_orthogonality": """
-<p><strong>来龙去脉：</strong>正交损失希望共享与私有子空间不要编码同一组因子。我们在合成 batch 上做前向，取共享/私有嵌入的交叉 Gram 子集可视化。</p>
-<p><strong>子图解读：</strong>左：热力图（红蓝表示正负相关）；右：Gram 元素直方图。这是诊断图，不是性能排行榜。</p>
-<p><strong>结论：</strong>可用于检查训练是否在推动去相关；真实数据上的定量 orth 统计 <span class="todo">待补充</span>。</p>
+<p><strong>来龙去脉：</strong>正交项的科学意图是：共享因子被 InfoNCE 拉齐后，私有头不应再重复同一组方向。
+我们在合成 batch 上前向，取共享×私有交叉 Gram 的子块做诊断可视化（实现为行 L2 后的平方均值，细节见 <code>docs/UNIFY.md</code>）。</p>
+<p><strong>子图解读：</strong>左热力图看方向耦合结构；右直方图看 Gram 元素分布是否被推向 0 附近。
+这是<strong>训练诊断</strong>，不是下游 AUROC 排行榜；热图“好看”≠分期更准。</p>
+<p><strong>结论：</strong>可用于检查去相关是否在起作用。<span class="todo">待补充：真实数据上 orth 统计随 epoch 曲线与消融对照</span>。</p>
 """,
     "fig05_modality_dropout": """
-<p><strong>来龙去脉：</strong>临床 PSG 常缺导联。Unify 用模态丢弃 + <code>L_miss</code> 训练缺失鲁棒性。本图为合成示意折线，接近 chance。</p>
-<p><strong>如何阅读：</strong>横轴是保留/丢弃设定，纵轴是合成下游 AUROC。</p>
-<p><strong>结论：</strong>仅展示实验版式。<span class="todo">待补充：真实缺失模式表（对齐 CIMSleepNet 设定）</span>。</p>
+<p><strong>来龙去脉：</strong>临床 PSG 常缺导联；CIMSleepNet 等用想象补全处理缺失，而 Unify 采用更轻的
+<strong>训练期模态丢弃 + <code>L_miss</code></strong>（剩余共享均值 vs 被丢模态共享，且尊重 <code>present_mask</code>）。
+本图用合成 AUROC 折线固定版式，数值接近 chance。</p>
+<p><strong>如何阅读：</strong>横轴 = 保留/丢弃设定（如全模态、丢 ECG、丢呼吸等），纵轴 = 合成下游 AUROC。
+折线贴近 0.5 时，只能说明脚本能在缺失设定下跑完评测。</p>
+<p><strong>结论：</strong>版式就绪，非鲁棒性主张。<span class="todo">待补充：真实缺失模式表（可对齐 CIMSleepNet 的 missing patterns）</span>。</p>
 """,
     "fig06_pipeline": """
-<p><strong>来龙去脉：</strong>从原始 PSG 到论文套件 JSON 的流水线。真实 CinC/SHHS 下载仍属用户 DUA 动作。</p>
-<p><strong>如何阅读：</strong>从左到右：Raw → Export/Validate → Pretrain → Downstream/Retrieval → Ablation/Night → Paper suite。</p>
-<p><strong>结论：</strong>仓库已具备该流水线脚本；纸面数字仍依赖真实数据。</p>
+<p><strong>来龙去脉：</strong>论文数字可信的前提是流水线门控正确：原始文件存在 ≠ 已导出可训；
+标签覆盖不足时不能宣称分期/SDB。本图把 Raw→Export/Validate→Pretrain→Downstream/Retrieval→Ablation/Night→Paper suite
+串成一条可审计路径，对应 <code>check_data_ready --stage raw|pretrain</code> 与 <code>run_paper_suite</code>。</p>
+<p><strong>如何阅读：</strong>从左到右；任一菱形门控失败应停止宣称指标。真实 CinC/SHHS 下载仍是用户 DUA 动作，
+仓库只提供 exporter / channel tables / fixture。</p>
+<p><strong>结论：</strong>代码与脚本已公开（GitHub）；纸面 CinC/SHHS 数字仍 <span class="todo">待补充</span>。</p>
 """,
 }
 

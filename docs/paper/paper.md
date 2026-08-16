@@ -30,9 +30,11 @@ A remaining tension is that LOO alignment encourages factors that are *predictab
 
 ## Related work
 
-**Sleep foundation models.** SleepFM (ICML 2024) introduced multimodal LOO-CL on PSG; a later Nature Medicine study scaled disease prediction. Omni-Sleep imposes CNS/ANS topology; CIMSleepNet targets incomplete multimodal staging via imagination and calibrated contrastive learning.
+**Sleep foundation models.** SleepFM (Thapa et al., ICML 2024; arXiv:2405.17766) introduced multimodal leave-one-out contrastive learning (LOO-CL) on BAS/ECG/respiratory PSG clips and showed LOO outperforming pairwise alignment on staging, SDB detection and cross-modal retrieval. A later SleepFM line (Nature Medicine, doi:10.1038/s41591-025-04133-4; medRxiv 2025.02.04.25321675) scaled LOO-CL to disease-risk prediction with SHHS transfer — **do not conflate those clinical C-Index numbers with the ICML 2024 staging/retrieval setting**, and do not paste them into our CinC/SHHS tables until we re-run locally. Omni-Sleep (arXiv:2607.07720) imposes a CNS/ANS physiological hierarchy with intra-/inter-system contrastive terms and latent temporal modeling. CIMSleepNet (NeurIPS 2024) targets incomplete multimodal staging via modal imagination (MAIM) plus semantic/modal calibration contrastive learning.
 
-**Shared–private multimodal learning.** Disentangling shared and modality-specific subspaces is a recurring theme (e.g. shared–private streams, low-rank shared/specific edits). Unify instantiates this idea *inside* SleepFM’s encoder interface rather than replacing the backbone.
+**Shared–private multimodal learning.** Disentangling shared and modality-specific subspaces is a recurring theme (shared–private streams; low-rank shared/specific edits). Unify instantiates this idea *inside* SleepFM’s encoder interface rather than replacing the backbone or inventing a new physiological ontology: contrastive terms act only on the shared head, while private capacity remains for downstream concat and missing-modality regimes.
+
+**Positioning one-liner.** Relative to SleepFM (flat LOO space), Omni-Sleep (CNS/ANS hierarchy) and CIMSleepNet (imagination under missingness), SleepFM-Unify is a **lightweight shared–private factorization + mixed loss + dropout/miss objective on frozen SleepFM-compatible encoders**, designed for fair LOO-vs-Unify ablations once real PSG exports exist.
 
 ---
 
@@ -128,7 +130,7 @@ Limitations: no real CinC/SHHS numbers in this draft; night `ahi_bin` uses apnea
 
 ### Code / data availability
 
-Code is the local SleepFM-Unify workspace. Public PhysioNet/NSRR data require user accounts and DUAs. Synthetic and fixture datasets are generated in-repo.
+Public code/docs snapshot: [https://github.com/Coucou2016/SleepFM-Unify](https://github.com/Coucou2016/SleepFM-Unify) (`main`; large `data/` and `outputs/` excluded). PhysioNet/NSRR downloads require user accounts and DUAs. Synthetic and fixture datasets are generated in-repo.
 
 ---
 
@@ -145,16 +147,16 @@ Code is the local SleepFM-Unify workspace. Public PhysioNet/NSRR data require us
 
 ## References (selected)
 
-1. Thapa et al. SleepFM. ICML 2024 / arXiv:2405.17766.
-2. SleepFM disease prediction. Nature Medicine 2025.
-3. CIMSleepNet. NeurIPS 2024.
-4. Omni-Sleep. arXiv:2607.07720.
-5. Related shared–private multimodal factorization literature (see consultation notes).
+1. Thapa R. et al. SleepFM: Multi-modal Representation Learning for Sleep Across Brain Activity, ECG and Respiratory Signals. *ICML* 2024; PMLR 235:48019–48037; arXiv:2405.17766.
+2. A multimodal sleep foundation model for disease prediction. *Nature Medicine* (doi:10.1038/s41591-025-04133-4); preprint medRxiv 10.1101/2025.02.04.25321675. (Distinct scale/task from [1].)
+3. CIMSleepNet — Robust Sleep Staging over Incomplete Multimodal Physiological Signals via Contrastive Imagination. *NeurIPS* 2024; https://github.com/SQAIYY/CIMSleepNet.
+4. Hou et al. Omni-Sleep: A Sleep Foundation Model via Hierarchical Contrastive Learning of CNS–ANS Dynamics. arXiv:2607.07720.
+5. Shared–private multimodal factorization relatives (see `docs/reports/chatgpt-consultation-2026-08-16.md`).
 
 ---
 
 ## Assumptions / missing inputs
 
 - Real CinC/SHHS/MESA metrics: **待补充**.
-- ChatGPT advisor pass: **blocked** (browser MCP); literature via WebSearch + nature-skills.
+- ChatGPT advisor pass: browser MCP still blocked this turn; literature independently verified via WebSearch + nature-skills. Paste brief for ChatGPT: `docs/reports/chatgpt-paste-brief-2026-08-16.md`.
 - Clinical AHI: not computed; use `apnea_epoch_rate` wording.
