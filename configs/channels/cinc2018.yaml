@@ -1,0 +1,49 @@
+# PhysioNet Computing in Cardiology Challenge 2018 (CinC 2018)
+# https://physionet.org/content/challenge-2018/1.0.0/
+# Access: free PhysioNet account (credentialed / logged-in download).
+dataset: cinc2018
+target_fs: 256
+clip_seconds: 30
+target_channels:
+  bas: 10
+  ecg: 2
+  respiratory: 7
+annotation_format: cinc  # WFDB .arousal if wfdb is installed; else CSV/JSON/XML sidecar
+# Typical header montage (13 signals @ 200 Hz). SleepFM paper uses 10/2/7 from
+# Stanford clinic PSG — unmatched slots are zero-padded (documented below).
+bas:
+  - [F3-M2, "EEG F3-M2", F3-A2, F3]
+  - [F4-M1, "EEG F4-M1", F4-A1, F4]
+  - [C3-M2, "EEG C3-M2", C3-A2, C3]
+  - [C4-M1, "EEG C4-M1", C4-A1, C4]
+  - [O1-M2, "EEG O1-M2", O1-A2, O1]
+  - [O2-M1, "EEG O2-M1", O2-A1, O2]
+  - [E1-M2, EOG, "EOG E1-M2", EOG1, LOC]
+  - [Chin1-Chin2, EMG, CHIN, Chin]
+  - []   # pad: clinic slot 9 (extra EEG/EMG) not in CinC
+  - []   # pad: clinic slot 10
+ecg:
+  - [ECG, EKG, "ECG1", "EKG 1"]
+  - []   # pad: second ECG lead usually absent
+respiratory:
+  - [ABD, Abdomen, ABDO, "ABDO RES"]
+  - [Chest, Thorax, THOR, "THOR RES"]
+  - [Airflow, AIRFLOW, Flow, "Nasal"]
+  - [SaO2, SpO2, SAO2, "OX STAT"]  # oximetry placed in respiratory group (best-effort)
+  - []   # pad: nasal pressure
+  - []   # pad: snore
+  - []   # pad: extra effort belt
+missing_slots:
+  bas: ["clinic EEG/EMG extras (slots 9–10)"]
+  ecg: ["second ECG lead"]
+  respiratory: ["nasal pressure", "snore", "extra effort channel"]
+notes: |
+  CinC 2018 is primarily an *arousal* challenge. Full AASM sleep-stage and
+  respiratory-event XML is often absent; unmatched epochs get stage_id=0 and
+  apnea=0 unless a sidecar annotation file is provided (.xml / .csv / .json).
+  Signals are typically 200 Hz in WFDB .mat+.hea; the exporter resamples to 256 Hz.
+access: |
+  1. Create a PhysioNet account: https://physionet.org/
+  2. Download https://physionet.org/content/challenge-2018/1.0.0/ (training/)
+  3. Export:
+     python scripts/export_edf.py --dataset cinc2018 --input-dir data/raw/cinc2018 --output-dir data/cinc2018

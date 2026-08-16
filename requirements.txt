@@ -1,0 +1,13 @@
+numpy>=1.24
+scipy>=1.10
+torch>=2.0
+torchvision>=0.15
+scikit-learn>=1.3
+PyYAML>=6.0
+tqdm>=4.65
+loguru>=0.7
+pytest>=7.0
+# Optional PSG I/O. Built-in EDF reader covers fixtures/standard 16-bit EDF.
+# mne>=1.5
+# pyedflib>=0.1.37
+# wfdb>=4.1

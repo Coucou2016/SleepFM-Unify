@@ -1,0 +1,47 @@
+# NSRR Multi-Ethnic Study of Atherosclerosis (MESA) Sleep
+# https://sleepdata.org/datasets/mesa
+# Access: NSRR account + executed Data Use Agreement (DUA).
+dataset: mesa
+target_fs: 256
+clip_seconds: 30
+target_channels:
+  bas: 10
+  ecg: 2
+  respiratory: 7
+annotation_format: nsrr_xml
+bas:
+  - [EEG1, "EEG 1", "F3", "F3-A2", "Fz"]
+  - [EEG2, "EEG 2", "C3", "C3-A2", "Cz"]
+  - [EEG3, "EEG 3", "O1", "O1-A2", "Oz"]
+  - [EOGL, "EOG L", LOC, "LEOG"]
+  - [EOGR, "EOG R", ROC, "REOG"]
+  - [EMG, CHIN, "Chin EMG"]
+  - []   # pad
+  - []
+  - []
+  - []
+ecg:
+  - [EKG, ECG, "EKG1"]
+  - []   # pad: second lead
+respiratory:
+  - [THOR, Thoracic, "Thorax", Chest, "THOR RES"]
+  - [ABDO, ABD, Abdomen, "ABDO RES"]
+  - [AIRFLOW, Airflow, FLOW, "Nasal", "Cannula"]
+  - [SaO2, SAO2, SpO2]
+  - []   # pad: snore
+  - []   # pad: extra effort
+  - []   # pad: Pleth / PPG not mapped into SleepFM respiratory by default
+missing_slots:
+  bas: ["fourth+ EEG/EMG leads when MESA EDF has only 3 EEG + 2 EOG + chin"]
+  ecg: ["second ECG lead"]
+  respiratory: ["snore", "extra effort", "PPG/pleth (available on some MESA studies, not mapped)"]
+notes: |
+  MESA channel labels are heterogeneous across sites. This table is best-effort:
+  review a few EDF headers after download and extend aliases if a slot is
+  systematically unmatched. XML scored events provide stages and respiratory
+  events (AHI can be derived at night level from those events).
+access: |
+  1. Register at https://sleepdata.org/ and complete the MESA Sleep DUA.
+  2. Download polysomnography EDFs + NSRR annotation XML.
+  3. Export:
+     python scripts/export_nsrr.py --dataset mesa --input-dir data/raw/mesa --output-dir data/mesa

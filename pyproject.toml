@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sleepfm"
+version = "0.1.0"
+description = "Multi-modal contrastive learning for sleep (ECG, EEG/BAS, respiratory)"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "torch>=2.0",
+    "torchvision>=0.15",
+    "scikit-learn>=1.3",
+    "PyYAML>=6.0",
+    "tqdm>=4.65",
+    "loguru>=0.7",
+]
+
+[project.scripts]
+sleepfm-pretrain = "scripts.pretrain:main"
+sleepfm-eval = "scripts.evaluate_downstream:main"
+fourdvarnet-generate = "scripts.fourdvarnet_generate_data:main"
+fourdvarnet-train = "scripts.fourdvarnet_train:main"
+fourdvarnet-eval = "scripts.fourdvarnet_eval:main"
+fourdvarnet-infer = "scripts.fourdvarnet_infer:main"
+fourdvarnet-smoke = "scripts.fourdvarnet_smoke_test:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sleepfm*", "fourdvarnet*", "scripts*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

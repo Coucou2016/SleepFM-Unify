@@ -1,0 +1,19 @@
+_base: configs/unify.yaml
+output_dir: outputs/unify_temporal
+
+unify:
+  loss_weights:
+    loo: 1.0
+    pairwise: 0.5
+    orth: 0.1
+    temporal: 0.2
+    miss: 0.5
+
+temporal:
+  enabled: true
+  window: 8
+  stride: 4
+  model: gru
+  n_layers: 2
+  n_heads: 4
+  mask_prob: 0.15

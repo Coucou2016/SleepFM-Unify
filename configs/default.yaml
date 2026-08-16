@@ -1,0 +1,80 @@
+# SleepFM default config (paper-aligned; demo overrides in smoke_test)
+seed: 42
+data_dir: data/synthetic
+output_dir: outputs/pretrain
+
+# Signal preprocessing (paper: 256 Hz, 30 s epochs)
+sample_rate: 256
+clip_seconds: 30
+# Modality channel counts from paper (BAS/EEG, ECG, respiratory)
+channels:
+  bas: 10
+  ecg: 2
+  respiratory: 7
+
+# Pretraining (paper Appendix A.3)
+contrastive_mode: leave_one_out  # pairwise | leave_one_out
+batch_size: 32
+num_workers: 0
+epochs: 20
+lr: 0.001
+momentum: 0.9
+weight_decay: 0.0
+lr_step_period: 5
+lr_gamma: 0.1
+temperature_init: 0.0
+embedding_dim: 512
+
+# Downstream logistic regression (paper Table 8; train split != pretrain cohort)
+downstream:
+  train_split: train
+  valid_split: valid
+  test_split: test
+  tune_c_on_valid: true
+  c_grid: [0.01, 0.1, 1.0, 10.0, 100.0]
+  penalty: l2
+  C: 1.0
+  max_iter: 10000
+  class_weight: balanced
+  solver: lbfgs
+
+# Early stopping on validation contrastive loss (paper Appendix A.3)
+early_stopping_patience: 5
+
+# SleepFM-Unify (off by default = paper-aligned LOO baseline)
+unify:
+  enabled: false
+  shared_dim: 256
+  private_dim: 256
+  modality_dropout: 0.3
+  downstream_space: concat  # concat | shared | private
+  loss_weights:
+    loo: 1.0
+    pairwise: 0.5
+    orth: 0.1
+    temporal: 0.0
+    miss: 0.5
+
+# Optional night-level temporal context (P3)
+temporal:
+  enabled: false
+  window: 32
+  stride: 16
+  model: gru  # gru | transformer
+  n_layers: 2
+  n_heads: 4
+  mask_prob: 0.15
+
+# Demo / smoke (fast CPU run)
+demo:
+  sample_rate: 64
+  clip_seconds: 5
+  batch_size: 8
+  epochs: 2
+  num_pretrain: 64
+  num_val: 16
+  num_train: 48
+  num_test: 32
+  num_participants: 24
+  epochs_per_participant: 4
+  apnea_rate: 0.2

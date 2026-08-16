@@ -1,0 +1,15 @@
+_base: configs/default.yaml
+output_dir: outputs/unify
+
+unify:
+  enabled: true
+  shared_dim: 256
+  private_dim: 256
+  modality_dropout: 0.3
+  downstream_space: concat
+  loss_weights:
+    loo: 1.0
+    pairwise: 0.5
+    orth: 0.1
+    temporal: 0.0
+    miss: 0.5

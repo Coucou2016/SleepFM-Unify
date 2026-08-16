@@ -1,0 +1,47 @@
+# NSRR Sleep Heart Health Study (SHHS)
+# https://sleepdata.org/datasets/shhs
+# Access: NSRR account + executed Data Use Agreement (DUA). Academic use is typically free.
+dataset: shhs
+target_fs: 256
+clip_seconds: 30
+target_channels:
+  bas: 10
+  ecg: 2
+  respiratory: 7
+annotation_format: nsrr_xml
+# Channel labels vary across SHHS1 / SHHS2 visits. Aliases are case-insensitive.
+bas:
+  - ["EEG(sec)", EEG1, "C3", "C3-A2", "EEG C3-A2"]
+  - [EEG, EEG2, "C4", "C4-A1", "EEG C4-A1"]
+  - ["EOG(L)", EOGL, LOC, "EOG L", "LEOG"]
+  - ["EOG(R)", EOGR, ROC, "EOG R", "REOG"]
+  - [EMG, CHIN, "Chin EMG", "EMG1"]
+  - []   # pad: extra EEG (F3) not standard on all SHHS EDFs
+  - []   # pad: extra EEG (F4)
+  - []   # pad: extra EEG (O1)
+  - []   # pad: extra EEG (O2)
+  - []   # pad: extra EMG
+ecg:
+  - [ECG, EKG, "ECG1"]
+  - []   # pad: second lead
+respiratory:
+  - ["THOR RES", THOR, Thoracic, Chest]
+  - ["ABDO RES", ABDO, ABD, Abdomen]
+  - ["NEW AIR", AIRFLOW, Airflow, FLOW, "Nasal"]
+  - [SaO2, SAO2, SpO2, "OX STAT", "OXSTAT"]
+  - [POSITION, POS]   # body position (not airflow; kept as a documented extra slot)
+  - []   # pad: snore
+  - []   # pad: extra cannula/pressure
+missing_slots:
+  bas: ["F3/F4/O1/O2 EEG and extra EMG (SHHS core is 2 EEG + 2 EOG + chin EMG)"]
+  ecg: ["second ECG lead"]
+  respiratory: ["snore", "nasal pressure on some visits"]
+notes: |
+  Prefer NSRR scored-event XML (*-nsrr.xml) for Stages + respiratory events.
+  SHHS1 vs SHHS2 montages differ; unmatched slots are zero-padded so the on-disk
+  schema stays 10/2/7. Do not treat padded channels as real physiology.
+access: |
+  1. Register at https://sleepdata.org/ and complete the SHHS DUA.
+  2. Download polysomnography EDFs + annotations-events-nsrr XML.
+  3. Export:
+     python scripts/export_nsrr.py --dataset shhs --input-dir data/raw/shhs --output-dir data/shhs
