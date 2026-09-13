@@ -3,7 +3,7 @@
 This repository **does not ship** PhysioNet or NSRR recordings. Paper tables that need
 clinical metrics remain **待补充** until you complete the steps below.
 
-## Disk status (this machine, 2026-08-16)
+## Disk status (this machine, 2026-09-14)
 
 | Path | Role | Present? |
 |------|------|----------|
@@ -15,6 +15,13 @@ clinical metrics remain **待补充** until you complete the steps below.
 | Env `PHYSIONET_USER` / `PHYSIONET_PASSWORD` | PhysioNet wget/wfdb | **Unset** |
 | `~/.netrc` PhysioNet entry | Same | **Not found** |
 | `NSRR_TOKEN` | NSRR downloads | **Unset** |
+
+Re-check anytime:
+
+```powershell
+python scripts/protocol_checklist.py
+python scripts/check_data_ready.py --path data/raw/cinc2018 --dataset cinc2018 --stage raw
+```
 
 ## CinC 2018 (PhysioNet challenge-2018)
 
@@ -36,7 +43,7 @@ $env:PHYSIONET_PASSWORD = "your_physionet_password"
 python scripts/check_data_ready.py --path data/raw/cinc2018 --dataset cinc2018 --stage raw
 python scripts/export_edf.py --dataset cinc2018 --input-dir data/raw/cinc2018 --output-dir data/cinc2018 --validate
 python scripts/check_data_ready.py --path data/cinc2018 --dataset cinc2018 --stage pretrain
-python scripts/run_paper_suite.py --data-dir data/cinc2018 --output-dir outputs/paper_suite_cinc
+python scripts/run_paper_suite.py --data-dir data/cinc2018 --output-dir outputs/paper_suite_cinc --space-probe
 ```
 
 5. **Honesty:** CinC 2018 is arousal-centric; staging / SDB label coverage is gated by

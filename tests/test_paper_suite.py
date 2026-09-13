@@ -110,8 +110,13 @@ def test_paper_suite_demo(tmp_path):
     assert ret["n"] <= 16
     ab = suite._ablation(cfg, ckpt, str(data), batch_size=8)
     assert ab
-    fs = suite._fewshot(cfg, ckpt, str(data), [1, 2], batch_size=8)
+    fs = suite._fewshot(cfg, ckpt, str(data), [1, 2], batch_size=8, n_repeats=2)
     assert fs
+    assert "protocol" in fs
+    assert fs["protocol"]["n_repeats"] == 2
+    assert "summary" in fs["1"]
+    sp = suite._space_probe(cfg, ckpt, str(data), batch_size=8)
+    assert "skipped" in sp or "concat" in sp
     night = suite._night(ckpt, str(data), batch_size=8)
     assert "temporal_head" in night
     summary = {
@@ -137,5 +142,7 @@ def test_paper_suite_cli_help():
     assert r.returncode == 0
     assert "--demo" in r.stdout
     assert "--train-temporal" in r.stdout
+    assert "--fewshot-repeats" in r.stdout
+    assert "--space-probe" in r.stdout
     assert "--temporal-checkpoint" in r.stdout
     assert "--allow-channel-mismatch" in r.stdout

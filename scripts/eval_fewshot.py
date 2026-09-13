@@ -1,11 +1,19 @@
-"""k-shot linear probe by participant (paper-plan Figure 2 analogue)."""
+"""k-shot linear probe by participant (paper-plan Figure 2 analogue).
+
+Paper mode defaults to ≥10 repeats and reports mean±95% CI (participant-level).
+Pass ``--demo`` (or ``--repeats N``) for fast CI runs.
+"""
 
 import argparse
 import json
 
 import torch
 
-from sleepfm.eval.experiments import fewshot_curve
+from sleepfm.eval.experiments import (
+    DEMO_FEWSHOT_REPEATS,
+    PAPER_FEWSHOT_REPEATS,
+    fewshot_curve,
+)
 from sleepfm.models.sleepfm import MultiModalSleepFM
 from sleepfm.utils.config import load_config
 from sleepfm.utils.seed import set_seed
@@ -17,7 +25,25 @@ def main():
     parser.add_argument("--data-dir", type=str, default=None)
     parser.add_argument("--checkpoint", type=str, required=True)
     parser.add_argument("--ks", type=str, default="1,2,4,8")
-    parser.add_argument("--repeats", type=int, default=3)
+    parser.add_argument(
+        "--repeats",
+        type=int,
+        default=None,
+        help=f"Participant-sampling repeats (default: {PAPER_FEWSHOT_REPEATS} paper / "
+        f"{DEMO_FEWSHOT_REPEATS} with --demo)",
+    )
+    parser.add_argument(
+        "--demo",
+        action="store_true",
+        help=f"Fast CI defaults (repeats={DEMO_FEWSHOT_REPEATS} unless --repeats set)",
+    )
+    parser.add_argument(
+        "--space",
+        type=str,
+        default="downstream",
+        choices=["downstream", "shared", "private", "concat", "backbone"],
+        help="Embedding space for the linear probe",
+    )
     parser.add_argument("--batch-size", type=int, default=32)
     args = parser.parse_args()
 
@@ -28,6 +54,11 @@ def main():
     model = MultiModalSleepFM.from_checkpoint(args.checkpoint, device=str(device))
     model.to(device)
     ks = [int(x) for x in args.ks.split(",") if x.strip()]
+    if args.repeats is not None:
+        n_repeats = args.repeats
+    else:
+        n_repeats = DEMO_FEWSHOT_REPEATS if args.demo else PAPER_FEWSHOT_REPEATS
+    space = "downstream" if args.space == "concat" else args.space
     curve = fewshot_curve(
         model,
         data_dir,
@@ -36,7 +67,8 @@ def main():
         ks=ks,
         seed=cfg["seed"],
         batch_size=args.batch_size,
-        n_repeats=args.repeats,
+        n_repeats=n_repeats,
+        space=space,
     )
     print(json.dumps(curve, indent=2))
 

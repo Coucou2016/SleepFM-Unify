@@ -30,7 +30,9 @@ def test_group_and_summary():
     assert list(groups[("P1", "P1")])[0]["path"] == "b.npy"
     summary = night_summary_from_entries(groups[("P1", "P1")], epoch_seconds=30.0)
     assert summary["n_epochs"] == 2
-    assert math.isfinite(summary["ahi"])
+    assert math.isfinite(summary["apnea_positive_epoch_rate"])
+    assert math.isfinite(summary["ahi"])  # deprecated alias
+    assert "apnea_positive_epoch_rate_bin" in summary
     assert 0.0 <= summary["sleep_efficiency"] <= 1.0
 
 
@@ -84,7 +86,7 @@ def test_night_eval_helpers(tiny_data_dir):
     X_te, s_te, _ = night_embedding_table(model, str(tiny_data_dir), "test", device, batch_size=4)
     assert X_tr.ndim == 2
     metrics = probe_night_tasks(X_tr, s_tr, X_te, s_te)
-    assert "ahi_bin" in metrics
+    assert "apnea_positive_epoch_rate_bin" in metrics or "ahi_bin" in metrics
     assert "sleep_efficiency" in metrics
 
 
@@ -115,7 +117,7 @@ def test_night_eval_temporal_and_kappa(tiny_data_dir):
     metrics = probe_night_tasks(
         pack_tr["X"], pack_tr["summaries"], pack_te["X"], pack_te["summaries"]
     )
-    assert "ahi_bin" in metrics
+    assert "apnea_positive_epoch_rate_bin" in metrics or "ahi_bin" in metrics
 
 
 def test_temporal_from_checkpoint_roundtrip(tmp_path):

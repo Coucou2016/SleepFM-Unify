@@ -1,6 +1,7 @@
 """Night-level labels and linear probes.
 
-Night ``ahi`` / ``ahi_bin`` use **apnea-epoch rate** placeholders (not clinical AHI).
+Night severity uses ``apnea_positive_epoch_rate`` (and bins thereof) — **not**
+clinical AASM AHI. Deprecated aliases ``ahi`` / ``ahi_bin`` remain for probes.
 Sleep-efficiency is stage-based (non-Wake fraction), also a coarse placeholder.
 """
 
@@ -39,7 +40,15 @@ def _collate_with_labels(batch):
 
 
 def _batch_to_device(batch: dict, device: torch.device) -> dict:
-    return {k: v.to(device) if torch.is_tensor(v) else v for k, v in batch.items()}
+    out = {}
+    for k, v in batch.items():
+        if torch.is_tensor(v):
+            out[k] = v.to(device)
+        elif isinstance(v, dict):
+            out[k] = {kk: vv.to(device) if torch.is_tensor(vv) else vv for kk, vv in v.items()}
+        else:
+            out[k] = v
+    return out
 
 
 def encode_epoch_features(
@@ -69,7 +78,15 @@ def encode_epoch_features(
         for batch, lab in loader:
             batch = _batch_to_device(batch, device)
             z = model.encode(batch, space=space)
-            parts = [z[m] for m in model.MODALITY_ORDER if m in z]
+            mask = batch.get("present_mask")
+            parts = []
+            for i, m in enumerate(model.MODALITY_ORDER):
+                if m not in z:
+                    continue
+                vec = z[m]
+                if mask is not None and i < mask.size(-1):
+                    vec = vec * mask[:, i : i + 1].to(dtype=vec.dtype)
+                parts.append(vec)
             if not parts:
                 continue
             if reduce == "mean":
@@ -230,38 +247,49 @@ def probe_night_tasks(
     X_test: np.ndarray,
     summaries_test: Sequence[dict],
 ) -> Dict[str, dict]:
-    y_bin_tr = np.array([s["ahi_bin"] for s in summaries_train], dtype=np.int64)
-    y_bin_te = np.array([s["ahi_bin"] for s in summaries_test], dtype=np.int64)
+    def _rate_bin(s: dict) -> int:
+        if "apnea_positive_epoch_rate_bin" in s:
+            return int(s["apnea_positive_epoch_rate_bin"])
+        return int(s.get("ahi_bin", -1))
+
+    y_bin_tr = np.array([_rate_bin(s) for s in summaries_train], dtype=np.int64)
+    y_bin_te = np.array([_rate_bin(s) for s in summaries_test], dtype=np.int64)
     y_se_tr = np.array([s["sleep_efficiency"] for s in summaries_train], dtype=np.float64)
     y_se_te = np.array([s["sleep_efficiency"] for s in summaries_test], dtype=np.float64)
     out: Dict[str, dict] = {
         "n_train_nights": int(len(summaries_train)),
         "n_test_nights": int(len(summaries_test)),
-        "ahi_note": (
-            "ahi_bin uses apnea-positive epochs/hour cut-points as a placeholder; "
-            "not clinical AASM AHI"
+        "apnea_positive_epoch_rate_note": (
+            "Bins use coarse rate cut-points (<5 / <15 / <30 / >=30 positive-epochs/hour); "
+            "NOT clinical AASM AHI (events per hour of sleep)."
         ),
     }
+    bin_key = "apnea_positive_epoch_rate_bin"
     if len(np.unique(y_bin_tr)) >= 2 and len(X_train) >= 2:
         try:
             clf = LogisticRegression(max_iter=2000, class_weight="balanced")
             clf.fit(X_train, y_bin_tr)
             pred = clf.predict(X_test)
-            out["ahi_bin"] = {
+            bin_metrics = {
                 "accuracy": float(accuracy_score(y_bin_te, pred)),
                 "n_classes_train": int(len(np.unique(y_bin_tr))),
-                "label": "apnea_epoch_rate_bin_placeholder",
+                "label": "apnea_positive_epoch_rate_bin_placeholder",
             }
             if len(np.unique(y_bin_te)) >= 2 and hasattr(clf, "predict_proba"):
                 proba = clf.predict_proba(X_test)
                 if proba.shape[1] == 2:
-                    out["ahi_bin"]["auroc"] = float(roc_auc_score(y_bin_te, proba[:, 1]))
+                    bin_metrics["auroc"] = float(roc_auc_score(y_bin_te, proba[:, 1]))
+            out[bin_key] = bin_metrics
+            out["ahi_bin"] = bin_metrics  # deprecated alias
         except Exception as exc:
-            out["ahi_bin"] = {"error": str(exc)}
+            out[bin_key] = {"error": str(exc)}
+            out["ahi_bin"] = out[bin_key]
     else:
-        out["ahi_bin"] = {
-            "note": "need >=2 apnea_epoch_rate bins in train nights (placeholder labels)"
+        note = {
+            "note": "need >=2 apnea_positive_epoch_rate bins in train nights (placeholder)"
         }
+        out[bin_key] = note
+        out["ahi_bin"] = note
 
     if len(X_train) >= 2:
         reg = LinearRegression()

@@ -54,7 +54,7 @@ code { font-family: Consolas, "Courier New", monospace; font-size:0.9em; }
 <li><a href="#methods-reproducibility">Methods</a></li>
 <li><a href="#figures-embedded">Figures</a></li>
 </ol></nav>
-<h1 id="sleepfm-unify-shared-private-factorization-for-multimodal-sleep-foundation-models">SleepFM-Unify: Shared–Private Factorization for Multimodal Sleep Foundation Models</h1>
+<h1 id="sleepfm-unify-robust-multimodal-pretraining-under-heterogeneous-and-missing-psg">SleepFM-Unify: Robust Multimodal Pretraining under Heterogeneous and Missing PSG</h1>
 <p><strong>Draft manuscript (methods paper)</strong>  </p>
 <p><strong>Status:</strong> engineering-complete codebase + synthetic demos; <strong>CinC / SHHS / MESA quantitative claims 待补充</strong>  </p>
 <p><strong>Target framing:</strong> Nature Machine Intelligence–style methods article / ICML-compatible experimental spine  </p>
@@ -62,49 +62,63 @@ code { font-family: Consolas, "Courier New", monospace; font-size:0.9em; }
 <p><strong>Code:</strong> https://github.com/Coucou2016/SleepFM-Unify (<code>main</code>)</p>
 <hr/>
 <h2 id="abstract">Abstract</h2>
-<p>Polysomnography (PSG) yields heterogeneous brain, cardiac and respiratory streams that sleep foundation models such as SleepFM align with leave-one-out (LOO) contrastive learning. Pure cross-modal alignment can blur modality-specific structure and under-specify behaviour when channels are missing. We introduce <strong>SleepFM-Unify</strong>, a shared–private factorization on SleepFM 1D EfficientNet encoders: shared subspaces carry mixed LOO and pairwise InfoNCE, private subspaces stay out of contrastive alignment under an orthogonality penalty, and modality dropout with a <code>present_mask</code>-aware missingness term trains incomplete montages; an optional night-level temporal head contextualizes shared epoch sequences. We release configs, export/validation gates and a dual LOO–Unify paper suite. <strong>Quantitative CinC/SHHS/MESA results remain 待补充</strong> pending user DUA downloads; synthetic demos are engineering smoke tests (AUROC near chance) and are not scientific claims.</p>
+<p>Polysomnography (PSG) is routinely incomplete: montages differ across clinics, leads drop out overnight, and public corpora expose mismatched channel sets. Sleep foundation models such as SleepFM align brain, cardiac and respiratory streams with leave-one-out (LOO) contrastive learning, but pure cross-modal alignment under-specifies behaviour when modalities or channels are missing. We introduce <strong>SleepFM-Unify</strong>, a robustness layer on SleepFM 1D EfficientNet encoders for <strong>heterogeneous and arbitrarily missing PSG</strong>: sample-wise modality dropout, <code>present_mask</code>-aware encoding (no BatchNorm pollution), a missingness InfoNCE term gated by original presence, optional per-lead <code>channel_mask</code> zeroing, and mixed LOO/pairwise objectives on a shared subspace with private capacity retained for downstream probes. Shared–private heads are an implementation tool (FOCAL already factorizes shared/private multimodal time series); <strong>they are not our novelty claim</strong>. We release configs, export/validation gates and a dual LOO–Unify paper suite. <strong>Quantitative CinC/SHHS/MESA results remain 待补充</strong> pending user DUA downloads; synthetic demos are engineering smoke tests (AUROC near chance) and are not scientific claims.</p>
 <hr/>
 <h2 id="introduction">Introduction</h2>
-<p>Sleep staging and sleep-disordered breathing (SDB) assessment rely on multimodal PSG. SleepFM showed that large-scale LOO contrastive pretraining across brain-activity (BAS), ECG and respiratory streams yields transferable embeddings for staging, SDB detection and cross-modal retrieval. Follow-on models emphasize scale and structure under montage heterogeneity: a Nature Medicine SleepFM line scales LOO-CL to disease-risk prediction with SHHS transfer; Omni-Sleep imposes a CNS/ANS physiological hierarchy; CIMSleepNet targets incomplete multimodal staging via modal imagination.</p>
-<p>A remaining tension is that LOO alignment encourages factors that are <em>predictable across modalities</em>, which can suppress private cues that matter for unimodal or partially observed inference. SleepFM-Unify addresses this by <strong>explicit shared–private factorization</strong> on top of the existing SleepFM backbone, without replacing the paper LOO baseline (<code>unify.enabled: false</code>).</p>
+<p>Sleep staging and sleep-disordered breathing (SDB) assessment rely on multimodal PSG. SleepFM showed that large-scale LOO contrastive pretraining across brain-activity (BAS), ECG and respiratory streams yields transferable embeddings for staging, SDB detection and cross-modal retrieval. Follow-on models emphasize scale, structure and incomplete montages: a Nature Medicine SleepFM line scales LOO-CL to disease-risk prediction with SHHS transfer; PhysioOmni-style and Omni-Sleep lines impose physiological hierarchies; CIMSleepNet targets incomplete multimodal staging via modal imagination; OSF/SleepBench-style benchmarks stress standardized evaluation under montage heterogeneity.</p>
+<p>A remaining systems gap is <strong>SleepFM-compatible training and evaluation that remains well-defined when entire modalities or individual leads are absent</strong>, without replacing the paper LOO baseline (<code>unify.enabled: false</code>). SleepFM-Unify addresses this with mask-aware encoding, missingness objectives and evaluation honesty gates—not by claiming a new shared–private factorization theory.</p>
 <p><strong>Contributions (evidence-gated):</strong></p>
-<p>1. Shared–private projection heads with mixed LOO + pairwise + orthogonality + miss (+ optional temporal) losses, contrastive terms on shared only.</p>
-<p>2. Modality dropout training with <code>present_mask</code>-aware $\mathcal{L}_{\mathrm{miss}}$.</p>
-<p>3. Evaluation honesty gates: channel meta fail-fast, CinC label coverage, apnea-epoch-rate vs clinical AHI wording, seeded RNG gallery caps.</p>
-<p>4. Reproducible CLI paper suite for LOO vs Unify comparisons once real exports exist.</p>
-<p><strong>Non-claims.</strong> Synthetic AUROC≈0.5 is demo-only. Night <code>ahi_bin</code> uses apnea-epoch-rate cut-points, not clinical AASM AHI. Nature Medicine disease C-Index values are not our local results.</p>
+<p>1. Heterogeneous / missing-PSG training stack on SleepFM encoders: sample-wise modality dropout, mask-aware BN skip, $\mathcal{L}_{\mathrm{miss}}$ gated by original presence, optional lead masks.</p>
+<p>2. Shared–private projection heads as a <strong>tool</strong> (mixed LOO + pairwise on shared; private for concat / space probes), with orthogonality + VICReg-style private hinge—explicitly positioned as FOCAL-adjacent, not novel factorization.</p>
+<p>3. Evaluation honesty gates: channel meta fail-fast, CinC label coverage, apnea-epoch-rate vs clinical AHI wording, seeded RNG gallery caps, strict split isolation (<code>RuntimeError</code> on leak), few-shot mean±95% CI (≥10 participant-level repeats in paper mode).</p>
+<p>4. Reproducible CLI paper suite for LOO vs Unify comparisons once real exports exist (shared/private/concat probes included).</p>
+<p><strong>Non-claims.</strong> Synthetic AUROC≈0.5 is demo-only. Night <code>ahi_bin</code> uses apnea-epoch-rate cut-points, not clinical AASM AHI. Nature Medicine disease C-Index values are not our local results. We do <strong>not</strong> claim novelty for shared–private factorization per se.</p>
 <hr/>
 <h2 id="related-work">Related work</h2>
-<p><strong>Sleep foundation models.</strong> SleepFM (Thapa et al., ICML 2024; PMLR 235:48019–48037; arXiv:2405.17766) introduced multimodal leave-one-out contrastive learning (LOO-CL) on BAS/ECG/respiratory PSG clips and showed LOO outperforming pairwise alignment on staging, SDB detection and cross-modal retrieval (e.g. reported macro AUROC 0.88 vs CNN 0.72 for staging in that paper — <strong>prior art only</strong>). A later SleepFM line (Nature Medicine, doi:10.1038/s41591-025-04133-4; ~585k hours / ~65k participants; disease C-Index reporting) scales LOO-CL to future disease risk and SHHS transfer — <strong>do not conflate</strong> those clinical numbers with the ICML 2024 staging/retrieval setting, and do not paste them into our CinC/SHHS tables. Omni-Sleep (arXiv:2607.07720) uses CNS/ANS partitions with intra-/inter-system contrastive terms and latent temporal modeling. CIMSleepNet (NeurIPS 2024) targets incomplete multimodal staging via MAIM plus semantic/modal calibration contrastive learning.</p>
-<p><strong>Shared–private multimodal learning.</strong> Disentangling shared and modality-specific subspaces is a recurring theme (shared–private streams; low-rank shared/specific edits). Unify instantiates this idea <em>inside</em> SleepFM’s encoder interface rather than replacing the backbone or inventing a new physiological ontology: contrastive terms act only on the shared head, while private capacity remains for downstream concat and missing-modality regimes.</p>
-<p><strong>Positioning.</strong> Relative to SleepFM (flat LOO space), Omni-Sleep (CNS/ANS hierarchy) and CIMSleepNet (imagination under missingness), SleepFM-Unify is a <strong>lightweight shared–private factorization + mixed loss + dropout/miss objective on SleepFM-compatible encoders</strong>, designed for fair LOO-vs-Unify ablations once real PSG exports exist.</p>
+<p><strong>Sleep foundation models.</strong> SleepFM (Thapa et al., ICML 2024; PMLR 235:48019–48037; arXiv:2405.17766) introduced multimodal leave-one-out contrastive learning (LOO-CL) on BAS/ECG/respiratory PSG clips and showed LOO outperforming pairwise alignment on staging, SDB detection and cross-modal retrieval (e.g. reported macro AUROC 0.88 vs CNN 0.72 for staging in that paper — <strong>prior art only</strong>). A later SleepFM line (Nature Medicine, doi:10.1038/s41591-025-04133-4; ~585k hours / ~65k participants; disease C-Index reporting) scales LOO-CL to future disease risk and SHHS transfer — <strong>do not conflate</strong> those clinical numbers with the ICML 2024 staging/retrieval setting, and do not paste them into our CinC/SHHS tables.</p>
+<p><strong>Incomplete multimodal sleep.</strong> CIMSleepNet (NeurIPS 2024) targets incomplete multimodal staging via modal imagination (MAIM) plus semantic/modal calibration contrastive learning. SleepFM-Unify instead keeps SleepFM’s LOO interface and trains under dropout/masks without an imagination decoder.</p>
+<p><strong>Physiological hierarchy / omnibus models.</strong> Omni-Sleep (arXiv:2607.07720) uses CNS/ANS partitions with intra-/inter-system contrastive terms. PhysioOmni-style work similarly emphasizes structured physiological priors across biosignals. Unify does not introduce a new ontology; it hardens SleepFM under missingness.</p>
+<p><strong>Shared–private multimodal learning.</strong> FOCAL and related shared–private factorizations for multimodal time series already separate aligned and modality-specific subspaces (often with orthogonality). Unify <strong>instantiates</strong> shared/private heads inside SleepFM’s encoder interface so contrastive terms can stay on shared embeddings while private capacity remains for downstream concat and missing-modality regimes. <strong>Novelty is not “we invented shared–private.”</strong></p>
+<p><strong>Benchmarks.</strong> OSF / SleepBench-style efforts standardize sleep foundation evaluation under heterogeneous setups. Our contribution is a reproducible SleepFM-compatible training/eval stack with honesty gates; we do not replace SleepBench.</p>
+<p><strong>Positioning (one sentence).</strong> Relative to SleepFM (flat LOO), Nature Med SleepFM (scale + disease risk), CIMSleepNet (imagination under missingness), PhysioOmni/Omni-Sleep (physiological hierarchy), FOCAL (shared/private factorization), and OSF/SleepBench (benchmarking), SleepFM-Unify is a <strong>lightweight missing/heterogeneous-PSG robustness layer on SleepFM-compatible encoders</strong>, designed for fair LOO-vs-Unify ablations once real PSG exports exist.</p>
 <hr/>
 <h2 id="method">Method</h2>
 <h3 id="backbone-unchanged-sleepfm">Backbone (unchanged SleepFM)</h3>
 <p>Per-modality 1D EfficientNet-style encoders map 30 s clips to backbone vectors of size <code>embedding_dim</code> (default 512). Baseline contrastive mode is leave-one-out InfoNCE (<code>configs/default.yaml</code>, <code>unify.enabled: false</code>).</p>
-<h3 id="shared-private-factorization">Shared–private factorization</h3>
+<h3 id="missing-heterogeneous-psg-stack">Missing / heterogeneous PSG stack</h3>
+<ul>
+<li>- <strong>Modality dropout:</strong> default sample-wise random non-empty subsets (<code>modality_dropout_mode: sample</code>); batch drop-one remains available.</li>
+<li>- <strong>Mask-aware encode:</strong> rows with <code>present_mask=0</code> skip the encoder (no BatchNorm pollution); missing-modality embeddings stay exactly zero.</li>
+<li>- <strong>$\mathcal{L}_{\mathrm{miss}}$:</strong> InfoNCE(remaining shared mean, dropped shared) only where the dropped modality was <strong>originally present</strong>.</li>
+<li>- <strong>Channel mask (partial):</strong> dataset → collate → encode zeros padded/absent leads before the CNN. <strong>Done:</strong> lead zeroing + fixed montage schema (10/2/7 with documented pads). <strong>TODO:</strong> true variable-channel encoders / mask-aware channel attention beyond zero-fill.</li>
+</ul>
+<h3 id="shared-private-heads-tool-not-claim">Shared–private heads (tool, not claim)</h3>
 <p>When Unify is enabled, each backbone vector is mapped by linear heads:</p>
 <p>\[</p>
 <p>z_m = [z_m^{\mathrm{shared}};\, z_m^{\mathrm{private}}],\qquad</p>
 <p>\dim(z_m^{\mathrm{shared}})=\dim(z_m^{\mathrm{private}})=256</p>
 <p>\]</p>
-<p>by default, preserving a 512-d concat for downstream logistic heads comparable to SleepFM. <strong>Assumption:</strong> shared and private factors are approximately linearly separable in the backbone embedding; we do not claim nonlinear disentanglement completeness.</p>
+<p>by default, preserving a 512-d concat for downstream logistic heads comparable to SleepFM. Contrastive terms act on shared only; private stays for concat / <code>shared|private</code> space probes. Orthogonality: center columns, column-L2 normalize, then $\mathrm{mean}((S^\top P)^2)$. Optional VICReg-style private variance hinge. Optional temporal head (GRU/Transformer) on shared epoch sequences.</p>
 <h3 id="mixed-objective">Mixed objective</h3>
 <p>\[</p>
 <p>\mathcal{L}=\lambda_{\mathrm{LOO}}\mathcal{L}_{\mathrm{LOO}}</p>
 <p>+\lambda_{\mathrm{pair}}\mathcal{L}_{\mathrm{pair}}</p>
-<p>+\lambda_{\mathrm{orth}}\mathrm{mean}\big((Z_s^\top Z_p)^2\big)</p>
+<p>+\lambda_{\mathrm{priv}}\mathcal{L}_{\mathrm{private}}</p>
+<p>+\lambda_{\mathrm{orth}}\mathcal{L}_{\mathrm{orth}}</p>
 <p>+\lambda_{\mathrm{miss}}\mathcal{L}_{\mathrm{miss}}</p>
 <p>+\lambda_{\mathrm{temp}}\mathcal{L}_{\mathrm{temp}}</p>
 <p>\]</p>
-<p>Default Unify weights (see <code>configs/unify.yaml</code>): LOO and pairwise on shared embeddings; private excluded from contrastive terms; orthogonality uses mean squared Gram entries after row centering / column normalization (<code>docs/UNIFY.md</code>); modality dropout drops one present modality; $\mathcal{L}_{\mathrm{miss}}$ is InfoNCE between the mean of remaining shared embeddings and the dropped modality’s shared embedding, masked by <code>present_mask</code>; optional temporal head (GRU/Transformer) on shared epoch sequences with adjacent-epoch contrastive and masked MSE (<code>configs/unify_temporal.yaml</code>).</p>
+<p>Default Unify weights: see <code>configs/unify.yaml</code> and <code>docs/UNIFY.md</code>.</p>
 <h3 id="downstream-and-retrieval">Downstream and retrieval</h3>
-<p>Default downstream space concatenates shared$\|$private per modality. Retrieval uses <strong>shared</strong> embeddings from the same checkpoint. Gallery caps use seeded RNG subsample (<code>limit_gallery(..., mode=&quot;rng&quot;)</code>), not a loader-order prefix.</p>
+<p>Default downstream space concatenates shared$\|$private per modality. CLI / paper suite also probe <strong>shared-only</strong> and <strong>private-only</strong>. Retrieval uses <strong>shared</strong> embeddings from the same checkpoint. Gallery caps use seeded RNG subsample (<code>limit_gallery(..., mode=&quot;rng&quot;)</code>), not a loader-order prefix.</p>
+<h3 id="few-shot-protocol">Few-shot protocol</h3>
+<p>Participant-level $k$-shot linear probes with <strong>≥10 repeats</strong> in paper mode (<code>scripts/eval_fewshot.py</code>, <code>run_paper_suite.py</code>); report <strong>mean±95% CI</strong> (Student-$t$ on repeat means). Demo/CI may use 2 repeats.</p>
 <h3 id="honesty-gates-part-of-the-method-interface">Honesty gates (part of the method interface)</h3>
 <ul>
 <li>- Channel meta fail-fast when official 5/1/3 montage weights meet schema 10/2/7 without explicit override.</li>
 <li>- CinC label-coverage gate blocks degenerate staging/SDB claims when annotations are arousal-only.</li>
 <li>- Night probes report <strong>apnea_epoch_rate</strong>, never clinical AHI unless a true AHI column is supplied.</li>
+<li>- Split isolation: all pretrain/valid/train/test pairs disjoint on path, participant, and night/recording ids — leaks raise <code>RuntimeError</code>.</li>
 </ul>
 <hr/>
 <h2 id="experiments">Experiments</h2>
@@ -117,9 +131,9 @@ code { font-family: Consolas, "Courier New", monospace; font-size:0.9em; }
 <tr><td>NSRR SHHS / MESA</td><td>Transfer / night labels</td><td><strong>待补充</strong> (DUA download)</td></tr>
 </table>
 <h3 id="protocol-when-data-land">Protocol (when data land)</h3>
-<p>1. <code>check_data_ready --stage raw</code> → export → <code>check_data_ready --stage pretrain</code> → validate.</p>
+<p>1. <code>check_data_ready --stage raw</code> → export → <code>check_data_ready --stage pretrain</code> → validate (strict isolation).</p>
 <p>2. Pretrain LOO baseline vs Unify (<code>configs/default.yaml</code> vs <code>configs/unify.yaml</code>).</p>
-<p>3. Downstream staging / apnea probes, retrieval Recall@k, modality ablation, few-shot, night-level probes.</p>
+<p>3. Downstream staging / apnea probes (concat / shared / private), retrieval Recall@k, modality ablation, few-shot (≥10 repeats, mean±95% CI), night-level probes.</p>
 <p>4. Optional temporal: <code>configs/unify_temporal.yaml</code> + <code>evaluate_night.py</code>.</p>
 <p>5. Multi-seed uncertainty on real data (planned; <strong>待补充</strong>).</p>
 <h3 id="experiment-matrix-planned">Experiment matrix (planned)</h3>
@@ -129,8 +143,9 @@ code { font-family: Consolas, "Courier New", monospace; font-size:0.9em; }
 <tr><td>SDB / apnea probe</td><td>LOO</td><td>Full</td><td>AUROC</td><td><strong>待补充</strong></td></tr>
 <tr><td>Retrieval Recall@1/@5</td><td>LOO</td><td>Shared</td><td>Recall@k</td><td><strong>待补充</strong></td></tr>
 <tr><td>Modality dropout robustness</td><td>LOO</td><td>Full ± miss</td><td>ΔAUROC</td><td><strong>待补充</strong></td></tr>
+<tr><td>Space probe (concat / shared / private)</td><td>—</td><td>Unify</td><td>Macro AUROC</td><td><strong>待补充</strong></td></tr>
 <tr><td>Ablation −orth / −miss / +temporal</td><td>—</td><td>Variants</td><td>Same</td><td><strong>待补充</strong></td></tr>
-<tr><td>Few-shot (k∈{1,2,4})</td><td>LOO</td><td>Full</td><td>Macro AUROC</td><td><strong>待补充</strong></td></tr>
+<tr><td>Few-shot (k∈{1,2,4}, ≥10 repeats)</td><td>LOO</td><td>Full</td><td>Macro AUROC mean±95% CI</td><td><strong>待补充</strong></td></tr>
 <tr><td>Night κ / apnea_epoch_rate bin</td><td>LOO pool</td><td>+temporal</td><td>κ, AUROC</td><td><strong>待补充</strong></td></tr>
 </table>
 <h3 id="results">Results</h3>
@@ -143,28 +158,29 @@ code { font-family: Consolas, "Courier New", monospace; font-size:0.9em; }
 </table>
 <p>Loss curves in Fig. 2 are from a <strong>local few-epoch Unify pretrain on synthetic data</strong> (engineering verification). Orthogonality Gram heatmaps (Fig. 4) are forward-pass diagnostics on the same demo checkpoint. Ablation bars in Fig. 3 and modality-dropout curves in Fig. 5 are <strong>schematic / chance-level</strong> and must not be cited as method superiority.</p>
 <h4 id="ablations-planned-numbers-待补充-on-real-data">Ablations (planned; numbers 待补充 on real data)</h4>
-<p>LOO baseline; Unify full; Unify − orth; Unify − miss; Unify + temporal; modality dropout robustness.</p>
+<p>LOO baseline; Unify full; Unify − orth; Unify − miss; Unify + temporal; space probes; modality dropout robustness.</p>
 <hr/>
 <h2 id="discussion">Discussion</h2>
-<p>Unify keeps SleepFM’s LOO retrieval semantics in the shared space while retaining private capacity for downstream concat. Missing-modality training is first-class. Honesty constraints (label gates, AHI wording, channel meta) are part of the scientific interface: they prevent over-claiming when CinC arousal-only labels or montage mismatches appear.</p>
-<p><strong>Failure modes.</strong> (i) Montage mismatch without override → load fails by design. (ii) CinC staging claims without coverage → gate blocks. (iii) Interpreting synthetic AUROC≈0.5 as a positive result → rejected by caption policy. (iv) Calling night apnea-epoch-rate “AHI” → wording violation.</p>
-<p>Limitations: no real CinC/SHHS numbers in this draft; night <code>ahi_bin</code> uses apnea-epoch-rate cut-points as placeholders; transfer claims bounded to evaluated montages once data exist.</p>
+<p>Unify keeps SleepFM’s LOO retrieval semantics in the shared space while retaining private capacity for downstream concat, and makes missing-modality / heterogeneous-montage training first-class. Honesty constraints (label gates, AHI wording, channel meta, strict isolation) are part of the scientific interface.</p>
+<p><strong>Failure modes.</strong> (i) Montage mismatch without override → load fails by design. (ii) CinC staging claims without coverage → gate blocks. (iii) Interpreting synthetic AUROC≈0.5 as a positive result → rejected by caption policy. (iv) Calling night apnea-epoch-rate “AHI” → wording violation. (v) Claiming novel shared–private factorization → rejected by Related work positioning.</p>
+<p>Limitations: no real CinC/SHHS numbers in this draft; channel-aware pooling beyond lead zeroing is partial; night <code>ahi_bin</code> uses apnea-epoch-rate cut-points as placeholders; transfer claims bounded to evaluated montages once data exist; strong public baselines (CIMSleepNet, FOCAL ports, full SleepBench) not yet run locally.</p>
 <hr/>
 <h2 id="methods-reproducibility">Methods (reproducibility)</h2>
 <ul>
 <li>- Package: <code>sleepfm/</code> (Python). Configs: <code>configs/unify.yaml</code>, <code>configs/unify_temporal.yaml</code>.</li>
 <li>- Figures: <code>scripts/plot_unify_figures.py</code> with SciencePlots + Times New Roman / SimHei.</li>
 <li>- Tests: <code>scripts/run_tests.py</code>, <code>scripts/smoke_test.py</code>.</li>
-<li>- Paper suite: <code>scripts/run_paper_suite.py --demo</code> (synthetic) or <code>--data-dir</code> after export.</li>
+<li>- Paper suite: <code>scripts/run_paper_suite.py --demo</code> (synthetic) or <code>--data-dir</code> after export; paper few-shot defaults to 10 repeats; <code>--space-probe</code> for shared/private/concat.</li>
+<li>- Space probe CLI: <code>scripts/eval_space_probe.py</code>.</li>
 <li>- Protocol inventory: <code>scripts/protocol_checklist.py</code>; access steps: <code>docs/DATA_ACCESS.md</code>.</li>
 <li>- Compute note (demo): CPU or single GPU; synthetic few-epoch pretrain completes in minutes on a workstation. Full CinC/SHHS wall-clock <strong>待补充</strong>.</li>
 </ul>
 <h3 id="code-data-availability">Code / data availability</h3>
-<p>Public code/docs snapshot: <a href="https://github.com/Coucou2016/SleepFM-Unify">https://github.com/Coucou2016/SleepFM-Unify</a> (<code>main</code>; large <code>data/</code> and <code>outputs/</code> excluded). PhysioNet/NSRR downloads require user accounts and DUAs. Synthetic and fixture datasets are generated in-repo.</p>
+<p>Public code/docs snapshot: <a href="https://github.com/Coucou2016/SleepFM-Unify">https://github.com/Coucou2016/SleepFM-Unify</a> (<code>main</code>; large <code>data/</code> and <code>outputs/</code> excluded). PhysioNet/NSRR downloads require user accounts and DUAs. Synthetic and fixture datasets are generated in-repo. License: MIT (see <code>LICENSE</code>); cite via <code>CITATION.cff</code>.</p>
 <hr/>
 <h2 id="figures">Figures</h2>
 <ul>
-<li>- <strong>Fig. 1</strong> Architecture (shared–private heads + mixed losses). Schematic; no clinical metrics.</li>
+<li>- <strong>Fig. 1</strong> Architecture (missing-PSG stack + shared–private tool heads). Schematic; no clinical metrics.</li>
 <li>- <strong>Fig. 2</strong> Synthetic Unify pretrain loss curves (demo only).</li>
 <li>- <strong>Fig. 3</strong> Ablation schematic with chance baseline (demo numbers only; CinC/SHHS 待补充).</li>
 <li>- <strong>Fig. 4</strong> Shared×private Gram diagnostic (demo forward pass).</li>
@@ -177,13 +193,14 @@ code { font-family: Consolas, "Courier New", monospace; font-size:0.9em; }
 <p>2. A multimodal sleep foundation model for disease prediction. <em>Nature Medicine</em> (doi:10.1038/s41591-025-04133-4). (Distinct scale/task from [1]; do not conflate metrics.)</p>
 <p>3. CIMSleepNet — Robust Sleep Staging over Incomplete Multimodal Physiological Signals via Contrastive Imagination. <em>NeurIPS</em> 2024; https://github.com/SQAIYY/CIMSleepNet.</p>
 <p>4. Hou et al. Omni-Sleep: A Sleep Foundation Model via Hierarchical Contrastive Learning of CNS–ANS Dynamics. arXiv:2607.07720.</p>
-<p>5. Shared–private multimodal factorization relatives (see <code>docs/reports/chatgpt-consultation-2026-08-16.md</code> and Round 1 notes).</p>
+<p>5. FOCAL and shared–private multimodal factorization relatives (shared/private + orthogonality for multimodal time series; see literature notes in <code>docs/reports/</code>).</p>
+<p>6. OSF / SleepBench-style sleep foundation benchmarking efforts (heterogeneous evaluation; not replaced here).</p>
 <hr/>
 <h2 id="assumptions-missing-inputs">Assumptions / missing inputs</h2>
 <ul>
-<li>- Real CinC/SHHS/MESA metrics: <strong>待补充</strong> (no credentials / raw downloads on this host as of 2026-08-16).</li>
-<li>- ChatGPT advisor pass: browser MCP blocked this turn; five documented substitute rounds in <code>docs/reports/rounds/</code>. Paste briefs: <code>docs/reports/chatgpt-paste-brief-2026-08-16.md</code>.</li>
+<li>- Real CinC/SHHS/MESA metrics: <strong>待补充</strong> (no credentials / raw downloads on this host as of 2026-09-14).</li>
 <li>- Clinical AHI: not computed; use <code>apnea_epoch_rate</code> wording.</li>
+<li>- Strong external baselines (CIMSleepNet, FOCAL ports, SleepBench): <strong>待补充</strong>.</li>
 </ul><h2 id='figures-embedded'>Embedded figures</h2>
 
 <figure id="fig01_architecture">

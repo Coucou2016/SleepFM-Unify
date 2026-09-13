@@ -177,7 +177,13 @@ def apply_metric_gate(
     *,
     staging_keys: Sequence[str] = ("staging", "staging_epoch_kappa"),
     apnea_keys: Sequence[str] = ("apnea",),
-    night_ahi_keys: Sequence[str] = ("ahi_bin", "ahi", "night_ahi"),
+    night_ahi_keys: Sequence[str] = (
+        "apnea_positive_epoch_rate_bin",
+        "apnea_positive_epoch_rate",
+        "ahi_bin",
+        "ahi",
+        "night_ahi",
+    ),
 ) -> Dict[str, Any]:
     """Replace blocked metric blobs with an explicit skipped marker."""
     out = dict(metrics)

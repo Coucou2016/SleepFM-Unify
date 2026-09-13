@@ -125,6 +125,7 @@ def main():
         early_stopping_patience=cfg.get("early_stopping_patience"),
         loss_weights=loss_weights,
         modality_dropout=float(unify_cfg.get("modality_dropout", 0.0) if unify else 0.0),
+        modality_dropout_mode=str(unify_cfg.get("modality_dropout_mode", "sample")),
         temporal_encoder=temporal_encoder,
         temporal_mask_prob=float(temporal_cfg.get("mask_prob", 0.15)),
         use_mixed_loss=unify or temporal_encoder is not None,

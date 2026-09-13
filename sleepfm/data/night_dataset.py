@@ -49,42 +49,46 @@ def night_summary_from_entries(
 ) -> dict:
     """Night placeholders from epoch labels in index.json.
 
-    ``apnea_epoch_rate`` is apnea-positive **epochs per hour of recording**
+    ``apnea_positive_epoch_rate`` is apnea-positive **epochs per hour of recording**
     (binary apnea flags / hours). It is **not** clinical AHI (events/hour with
-    AASM scoring). Key ``ahi`` is kept as a deprecated alias of the same value
-    for backward-compatible probes; do not claim clinical AHI in papers.
+    AASM scoring). Deprecated aliases: ``apnea_epoch_rate``, ``ahi``.
+    Bins are coarse rate cut-points — not clinical AHI severity classes.
     """
     n = len(entries)
     if n == 0:
         return {
             "n_epochs": 0,
+            "apnea_positive_epoch_rate": float("nan"),
             "apnea_epoch_rate": float("nan"),
             "ahi": float("nan"),
             "sleep_efficiency": float("nan"),
+            "apnea_positive_epoch_rate_bin": -1,
             "ahi_bin": -1,
-            "ahi_definition": "placeholder_apnea_epoch_rate_not_clinical_ahi",
+            "ahi_definition": "placeholder_apnea_positive_epoch_rate_not_clinical_ahi",
         }
     stages = [int(e.get("stage_id", 0)) for e in entries]
     apneas = [int(e.get("apnea", 0)) for e in entries]
     hours = max(n * float(epoch_seconds) / 3600.0, 1e-6)
     rate = float(sum(apneas) / hours)
     sleep_eff = float(sum(s != 0 for s in stages) / n)
-    # Bins reuse common clinical AHI cut-points only as a coarse placeholder.
+    # Coarse rate bins (same numeric cut-points as common AHI tables, but NOT AHI).
     if rate < 5:
-        ahi_bin = 0
+        rate_bin = 0
     elif rate < 15:
-        ahi_bin = 1
+        rate_bin = 1
     elif rate < 30:
-        ahi_bin = 2
+        rate_bin = 2
     else:
-        ahi_bin = 3
+        rate_bin = 3
     return {
         "n_epochs": n,
-        "apnea_epoch_rate": rate,
+        "apnea_positive_epoch_rate": rate,
+        "apnea_epoch_rate": rate,  # alias
         "ahi": rate,  # deprecated alias — not clinical AHI
         "sleep_efficiency": sleep_eff,
-        "ahi_bin": ahi_bin,
-        "ahi_definition": "placeholder_apnea_epoch_rate_not_clinical_ahi",
+        "apnea_positive_epoch_rate_bin": rate_bin,
+        "ahi_bin": rate_bin,  # deprecated alias
+        "ahi_definition": "placeholder_apnea_positive_epoch_rate_not_clinical_ahi",
         "participant_id": entries[0].get("participant_id"),
         "night_id": night_key(entries[0])[1],
     }

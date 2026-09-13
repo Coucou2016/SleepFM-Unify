@@ -75,7 +75,68 @@ def test_loo_with_missing_modality():
     assert math.isfinite(float(loss2.item()))
 
 
-def test_mixed_loss_backward():
+def test_loo_single_modality_safe():
+    """LOO must not crash when only one modality is present."""
+    channels = {"bas": 4, "ecg": 2, "respiratory": 3}
+    model = MultiModalSleepFM(channels=channels, embedding_dim=16)
+    batch = _batch(8, 48, channels)
+    batch["present_mask"][:] = 0
+    batch["present_mask"][:, 0] = 1.0  # BAS only
+    loss, meta = model.contrastive_loss(batch, mode="leave_one_out")
+    assert math.isfinite(float(loss.item()))
+    assert float(loss.item()) == 0.0
+    assert meta.get("note") == "single_modality_skipped" or meta.get("num_modalities") in (0, 1)
+
+
+def test_encode_skips_missing_for_bn():
+    """Missing rows must not enter the encoder (zeros written; BN not fed zeros)."""
+    channels = {"bas": 4, "ecg": 2, "respiratory": 3}
+    model = MultiModalSleepFM(channels=channels, embedding_dim=16)
+    model.eval()
+    batch = _batch(4, 32, channels)
+    batch["present_mask"][:, 1] = 0.0
+    batch["ecg"] = torch.randn_like(batch["ecg"])  # garbage that must be ignored
+    with torch.no_grad():
+        z = model.encode(batch, normalize=False)
+    assert torch.allclose(z["ecg"], torch.zeros_like(z["ecg"]))
+
+
+def test_l_miss_respects_original_present_mask():
+    """Naturally missing modalities must not be L_miss teachers after dropout."""
+    torch.manual_seed(0)
+    channels = {"bas": 4, "ecg": 2, "respiratory": 3}
+    model = MultiModalSleepFM(
+        channels=channels, embedding_dim=16, unify=True, shared_dim=8, private_dim=8
+    )
+    model.train()
+    batch = _batch(8, 48, channels)
+    # Mark respiratory naturally missing; force-drop ecg via batch dropout path
+    batch["present_mask"][:, 2] = 0.0
+    orig = model._apply_modality_dropout
+
+    def force_drop(present_mask, batch_size, device, p, mode="batch"):
+        if present_mask is None:
+            present_mask = torch.ones(batch_size, 3, device=device)
+        original = present_mask.clone()
+        present_mask = present_mask.clone()
+        present_mask[:, 1] = 0.0  # drop ecg
+        return present_mask, "ecg", original
+
+    model._apply_modality_dropout = force_drop
+    loss, logs = model.pretrain_loss(
+        batch,
+        mode="leave_one_out",
+        loss_weights={"loo": 0.0, "pairwise": 0.0, "orth": 0.0, "miss": 1.0, "temporal": 0.0},
+        modality_dropout=1.0,
+        modality_dropout_mode="batch",
+    )
+    model._apply_modality_dropout = orig
+    assert math.isfinite(float(loss.item()))
+    assert logs.get("dropped_modality") == "ecg"
+    assert "loss_miss" in logs
+
+
+def test_private_variance_loss_runs():
     channels = {"bas": 4, "ecg": 2, "respiratory": 3}
     model = MultiModalSleepFM(
         channels=channels, embedding_dim=16, unify=True, shared_dim=8, private_dim=8
@@ -84,48 +145,30 @@ def test_mixed_loss_backward():
     loss, logs = model.pretrain_loss(
         _batch(8, 48, channels),
         mode="leave_one_out",
-        loss_weights={"loo": 1.0, "pairwise": 0.5, "orth": 0.1, "miss": 0.5, "temporal": 0.0},
-        modality_dropout=1.0,
+        loss_weights={"loo": 0.0, "pairwise": 0.0, "orth": 0.0, "miss": 0.0, "private": 1.0},
+        modality_dropout=0.0,
     )
     assert math.isfinite(float(loss.item()))
-    loss.backward()
-    assert model.encoders["bas"].stage1.weight.grad is not None
-    assert model.proj_shared["bas"].weight.grad is not None
-    assert "loss_loo" in logs
+    assert "loss_private" in logs
 
 
-def test_l_miss_respects_present_mask():
-    """Naturally missing modalities must not enter the remaining mean for L_miss."""
-    torch.manual_seed(0)
+def test_sample_wise_modality_dropout():
     channels = {"bas": 4, "ecg": 2, "respiratory": 3}
     model = MultiModalSleepFM(
         channels=channels, embedding_dim=16, unify=True, shared_dim=8, private_dim=8
     )
     model.train()
-    batch = _batch(8, 48, channels)
-    # Mark respiratory naturally missing; force-drop another via dropout path
-    batch["present_mask"][:, 2] = 0.0
-    # Call pretrain_loss with miss weight; monkeypatch dropout to always drop ecg
-    orig = model._apply_modality_dropout
-
-    def force_drop(present_mask, batch_size, device, p):
-        if present_mask is None:
-            present_mask = torch.ones(batch_size, 3, device=device)
-        present_mask = present_mask.clone()
-        present_mask[:, 1] = 0.0  # drop ecg
-        return present_mask, "ecg"
-
-    model._apply_modality_dropout = force_drop
     loss, logs = model.pretrain_loss(
-        batch,
+        _batch(16, 48, channels),
         mode="leave_one_out",
-        loss_weights={"loo": 0.0, "pairwise": 0.0, "orth": 0.0, "miss": 1.0, "temporal": 0.0},
+        loss_weights={"loo": 1.0, "pairwise": 0.0, "orth": 0.0, "miss": 0.5, "private": 0.1},
         modality_dropout=1.0,
+        modality_dropout_mode="sample",
     )
-    model._apply_modality_dropout = orig
     assert math.isfinite(float(loss.item()))
-    assert logs.get("dropped_modality") == "ecg"
-    assert "loss_miss" in logs
+    assert logs.get("modality_dropout_mode") == "sample"
+    loss.backward()
+
 
 
 def test_empty_loader_raises():
@@ -158,9 +201,9 @@ def test_mixed_loss_single_encode_and_backward():
     calls = {"n": 0}
     orig = model.encode_backbone
 
-    def counted(batch):
+    def counted(batch, present_mask=None):
         calls["n"] += 1
-        return orig(batch)
+        return orig(batch, present_mask=present_mask)
 
     model.encode_backbone = counted
     batch = {

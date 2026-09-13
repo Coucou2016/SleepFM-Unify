@@ -11,7 +11,7 @@ from sleepfm.data.label_coverage import (
     compute_label_coverage,
     gate_claimed_metrics,
 )
-from sleepfm.data.splits import downstream_isolation_ok
+from sleepfm.data.splits import assert_paper_isolation
 from sleepfm.eval.downstream import (
     build_embedding_matrix,
     can_train_binary,
@@ -42,6 +42,13 @@ def main():
         action="store_true",
         help="Claim staging/apnea even when label coverage gate would block them",
     )
+    parser.add_argument(
+        "--space",
+        type=str,
+        default="downstream",
+        choices=["downstream", "shared", "private", "concat", "backbone"],
+        help="Embedding space for the linear probe (Unify: shared|private|concat)",
+    )
     args = parser.parse_args()
 
     cfg = load_config(args.config)
@@ -63,10 +70,8 @@ def main():
     test_split = ds_cfg.get("test_split", "test")
     valid_split = ds_cfg.get("valid_split", "valid")
 
-    iso = downstream_isolation_ok(data_dir)
-    failed = [k for k, v in iso.items() if not v]
-    if failed:
-        print(f"WARNING: split isolation checks failed: {failed}")
+    # Paper/strict mode: raise on participant/path/night leaks (do not warn-and-continue).
+    assert_paper_isolation(data_dir, strict=True)
 
     coverage = compute_label_coverage(data_dir)
     gate = gate_claimed_metrics(coverage)
@@ -77,21 +82,42 @@ def main():
     train_ds = SleepEpochDataset(data_dir, split=train_split, return_labels=True)
     test_ds = SleepEpochDataset(data_dir, split=test_split, return_labels=True)
 
-    X_train, y_train = build_embedding_matrix(model, train_ds, device, args.batch_size)
-    X_test, y_test = build_embedding_matrix(model, test_ds, device, args.batch_size)
+    encode_space = "downstream" if args.space == "concat" else args.space
+    X_train, y_train = build_embedding_matrix(
+        model, train_ds, device, args.batch_size, space=encode_space
+    )
+    X_test, y_test = build_embedding_matrix(
+        model, test_ds, device, args.batch_size, space=encode_space
+    )
 
     lr_cfg = dict(ds_cfg)
-    if ds_cfg.get("tune_c_on_valid") and (gate.claim_staging or args.force_metrics):
+    X_val = y_val = None
+    if ds_cfg.get("tune_c_on_valid"):
         try:
             valid_ds = SleepEpochDataset(data_dir, split=valid_split, return_labels=True)
-            X_val, y_val = build_embedding_matrix(model, valid_ds, device, args.batch_size)
-            best_c = tune_lr_c(X_val, y_val["stage_id"], {**ds_cfg, "task": "staging"})
-            lr_cfg["C"] = best_c
-            print(f"Tuned L2 C on {valid_split}: {best_c}")
+            X_val, y_val = build_embedding_matrix(
+                model, valid_ds, device, args.batch_size, space=encode_space
+            )
         except KeyError:
             print(f"Skipping C tuning: split '{valid_split}' not in index.json")
 
+    if (
+        X_val is not None
+        and ds_cfg.get("tune_c_on_valid")
+        and (gate.claim_staging or args.force_metrics)
+    ):
+        best_c = tune_lr_c(
+            X_train,
+            y_train["stage_id"],
+            X_val,
+            y_val["stage_id"],
+            {**ds_cfg, "task": "staging"},
+        )
+        lr_cfg["C"] = best_c
+        print(f"Tuned L2 C on {valid_split} (fit train, score valid): {best_c}")
+
     out = {}
+    out["encode_space"] = encode_space
     if gate.claim_staging or args.force_metrics:
         clf_stage = train_logistic_regression(X_train, y_train["stage_id"], lr_cfg)
         out["staging"] = evaluate_sleep_staging(clf_stage, X_test, y_test["stage_id"])
@@ -105,17 +131,17 @@ def main():
 
     if (gate.claim_apnea or args.force_metrics) and can_train_binary(y_train["apnea"]):
         apnea_cfg = lr_cfg
-        if ds_cfg.get("tune_c_on_valid"):
-            try:
-                valid_ds = SleepEpochDataset(data_dir, split=valid_split, return_labels=True)
-                X_val, y_val = build_embedding_matrix(model, valid_ds, device, args.batch_size)
-                if can_train_binary(y_val["apnea"]):
-                    apnea_cfg = {
-                        **lr_cfg,
-                        "C": tune_lr_c(X_val, y_val["apnea"], {**ds_cfg, "task": "apnea"}),
-                    }
-            except KeyError:
-                pass
+        if X_val is not None and ds_cfg.get("tune_c_on_valid") and can_train_binary(y_val["apnea"]):
+            apnea_cfg = {
+                **lr_cfg,
+                "C": tune_lr_c(
+                    X_train,
+                    y_train["apnea"],
+                    X_val,
+                    y_val["apnea"],
+                    {**ds_cfg, "task": "apnea"},
+                ),
+            }
         clf_apnea = train_logistic_regression(X_train, y_train["apnea"], apnea_cfg)
         out["apnea"] = evaluate_apnea(clf_apnea, X_test, y_test["apnea"])
         print("Apnea (SDB):", out["apnea"])

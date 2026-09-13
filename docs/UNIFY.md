@@ -1,6 +1,8 @@
 # SleepFM-Unify
 
-Shared–private factorization + mixed contrastive loss + modality dropout + optional night-level temporal context, **on top of the existing SleepFM encoders**. The package name stays `sleepfm/`.
+Robust multimodal pretraining for **heterogeneous / missing PSG** on top of SleepFM encoders
+(shared–private factorization is a *tool*, not the novelty claim — FOCAL already has shared/private).
+The package name stays `sleepfm/`.
 
 Paper-aligned **baseline** is unchanged: `contrastive_mode: leave_one_out` with `unify.enabled: false`.
 
@@ -17,15 +19,39 @@ Default `shared_dim=256`, `private_dim=256` so the downstream concat per modalit
 | Piece | Where it is used |
 |-------|------------------|
 | Shared subspace | Pairwise + leave-one-out InfoNCE (cross-modal alignment) |
-| Private subspace | Kept out of contrastive loss; orthogonality vs shared |
-| Mixed loss | \(\lambda_{\mathrm{LOO}}\mathcal{L}_{\mathrm{LOO}} + \lambda_{\mathrm{pair}}\mathcal{L}_{\mathrm{pair}} + \lambda_{\mathrm{orth}}\mathrm{mean}((Z_s^\top Z_p)^2) + \lambda_{\mathrm{temp}}\mathcal{L}_{\mathrm{temp}} + \lambda_{\mathrm{miss}}\mathcal{L}_{\mathrm{miss}}\) (implementation uses mean squared Gram entries after row-L2; not an unnormalized Frobenius sum) |
-| Modality dropout | Batch-level drop of one present modality; LOO mean over **remaining** modalities only |
-| \(\mathcal{L}_{\mathrm{miss}}\) | InfoNCE(mean of remaining shared, dropped shared) when a modality was dropped |
-| Temporal (optional) | GRU/Transformer over a window of **shared** epoch embeddings; adjacent-epoch contrastive + masked epoch MSE |
+| Private subspace | Orthogonal to shared; **plus** VICReg-style variance hinge \(\mathcal{L}_{\mathrm{private}}\) (anti-collapse) |
+| Orthogonality | Center columns, column-L2 normalize, then \(\mathrm{mean}((S^\top P)^2)\) — matches `orthogonality_loss` |
+| Mixed loss | \(\lambda_{\mathrm{LOO}}\mathcal{L}_{\mathrm{LOO}} + \lambda_{\mathrm{pair}}\mathcal{L}_{\mathrm{pair}} + \lambda_{\mathrm{priv}}\mathcal{L}_{\mathrm{private}} + \lambda_{\mathrm{orth}}\mathcal{L}_{\mathrm{orth}} + \lambda_{\mathrm{temp}}\mathcal{L}_{\mathrm{temp}} + \lambda_{\mathrm{miss}}\mathcal{L}_{\mathrm{miss}}\) |
+| Modality dropout | Default **sample-wise** random non-empty modality subsets; `modality_dropout_mode: batch` keeps legacy drop-one |
+| \(\mathcal{L}_{\mathrm{miss}}\) | InfoNCE(remaining shared mean, dropped shared) only where dropped modality was **originally present** |
+| Temporal (optional) | GRU/Transformer over a window of **shared** epoch embeddings |
 
-Missing keys in a batch are skipped (zero-fill + `present_mask` in the dataset). Training does not crash if ECG or respiratory is absent.
+**Mask-aware encode:** rows with `present_mask=0` are skipped in the encoder (no BatchNorm pollution); embeddings for missing modalities are exactly zero. Downstream / night / retrieval multiply by `present_mask` again after encode.
 
-Downstream default: concatenate shared\(\|\)private per modality (`downstream_space: concat`). Retrieval uses **shared** embeddings from the **same checkpoint**.
+Optional `channel_mask` per modality (dataset → collate → encode) zeros padded/absent leads before the 1D CNN.
+
+| Channel mask | Status |
+|--------------|--------|
+| Emit masks from index / missing slots; collate stacks them | **Done** |
+| Zero padded leads in `encode_backbone` (no fake signal into BN/conv) | **Done** |
+| Fixed montage schema 10/2/7 with documented pads | **Done** |
+| True variable-channel encoders / mask-aware channel attention or pooling that resizes the channel axis | **TODO** |
+
+Downstream default: concatenate shared\(\|\)private per modality (`downstream_space: concat`). Probe helpers / CLIs support `space=shared|private|concat` (`scripts/eval_space_probe.py`, `evaluate_downstream.py --space`, paper suite `--space-probe`). Retrieval uses **shared** embeddings from the **same checkpoint**.
+
+### Downstream evaluation protocol
+
+1. Fit logistic regression on **train** embeddings.
+2. Select L2 `C` by scoring on **valid** (fit train → score valid; **no** resubstitution on valid alone).
+3. Refit on train with best `C`; evaluate **once** on test.
+
+Split isolation (paper/strict): all pairs among pretrain/valid/train/test must be disjoint on `path`, `participant_id`, and `night_id`/`recording_id` when present — leaks raise `RuntimeError` (`assert_paper_isolation`; also wired in `run_paper_suite.py`).
+
+Few-shot (paper mode): ≥10 participant-level sampling repeats; report **mean±95% CI** (Student-$t$). Demo/`--demo` may use 2 repeats.
+
+### Novelty positioning
+
+FOCAL already introduces shared/private + orthogonality for multimodal time series. CIMSleepNet imagines missing modalities; PhysioOmni/Omni-Sleep add physiological hierarchy; SleepFM ICML 2024 / Nature Med SleepFM 2026 scale LOO; OSF/SleepBench standardize evaluation. SleepFM-Unify’s claim is **robust SleepFM-style LOO under incomplete/heterogeneous PSG** (sample-wise missing, mask-aware BN, \(\mathcal{L}_{\mathrm{miss}}\) with original presence, optional channel masks, honesty gates) — **not** “novel shared-private factorization.”
 
 ## How to run
 
@@ -62,7 +88,7 @@ python scripts/evaluate_night.py --checkpoint outputs/unify_temporal/best.pt --d
 
 Mixed Unify `pretrain_loss` encodes shared/private embeddings **once per step**; LOO, pairwise, orthogonality, miss, and temporal terms reuse that encode.
 
-Retrieval uses the **full split** as the paired gallery by default (not in-batch). Cap it with `--max-gallery N` for large CinC/SHHS runs; omit the flag on synthetic demos. Caps use **seeded RNG subsample** (`--gallery-mode rng`, default) rather than a loader-order prefix; pass `--gallery-mode prefix` only for legacy comparisons.
+Retrieval uses the **full split** as the paired gallery by default (not in-batch). Cap it with `--max-gallery N` for large CinC/SHHS runs; omit the flag on synthetic demos. Caps **sample indices from the full dataset before encoding** (`--gallery-mode rng`, default); pass `--gallery-mode prefix` only for legacy comparisons. Random Recall@k baseline is \(\min(k,n)/n\). Similarity is chunked to avoid \(N\times N\) OOM.
 
 ### Real PSG export (CinC / SHHS / MESA)
 
@@ -96,8 +122,11 @@ python scripts/pretrain.py --config configs/unify.yaml --data-dir data/cinc2018 
 ```powershell
 python scripts/eval_modality_ablation.py --checkpoint outputs/unify/best.pt --data-dir data/synthetic
 python scripts/eval_fewshot.py --checkpoint outputs/unify/best.pt --data-dir data/synthetic --ks 1,2,4
+# Fast CI: python scripts/eval_fewshot.py ... --demo
+python scripts/eval_space_probe.py --checkpoint outputs/unify/best.pt --data-dir data/synthetic
 python scripts/eval_transfer.py --checkpoint outputs/unify/best.pt --data-dir data/synthetic
 python scripts/evaluate_night.py --checkpoint outputs/unify/best.pt --data-dir data/synthetic
+python scripts/evaluate_downstream.py --checkpoint outputs/unify/best.pt --space shared
 ```
 
 ## Data access (user action required)
@@ -159,6 +188,10 @@ SHHS/MESA NSRR XML is the preferred annotation source.
 ```powershell
 # Fast CI path (dual LOO+Unify only; night uses mean-pool unless temporal ckpt given)
 python scripts/run_paper_suite.py --demo
+
+# Paper / real-data path: few-shot repeats default to 10; optional space probe
+python scripts/run_paper_suite.py --data-dir data/cinc2018 --max-gallery 5000 --space-probe
+python scripts/run_paper_suite.py --demo --fewshot-repeats 2 --space-probe
 
 # Real temporal night head (opt-in; still uses demo epoch counts when --demo)
 python scripts/run_paper_suite.py --demo --train-temporal

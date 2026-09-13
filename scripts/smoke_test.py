@@ -74,7 +74,14 @@ def main():
         # Forward pass
         ds = SleepEpochDataset(data_dir, split="pretrain")
         batch = collate_multimodal([ds[0], ds[1]])
-        batch = {k: v.to(device) for k, v in batch.items()}
+        batch = {
+            k: (
+                {kk: vv.to(device) if torch.is_tensor(vv) else vv for kk, vv in v.items()}
+                if isinstance(v, dict)
+                else (v.to(device) if torch.is_tensor(v) else v)
+            )
+            for k, v in batch.items()
+        }
         z = model.encode(batch)
         assert all(z[m].shape[-1] == cfg["embedding_dim"] for m in z)
         loss, _ = model.contrastive_loss(batch, mode="leave_one_out")

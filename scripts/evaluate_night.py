@@ -1,4 +1,4 @@
-"""Night-level AHI-bin / sleep-efficiency placeholders from index.json labels."""
+"""Night-level apnea_positive_epoch_rate-bin / sleep-efficiency placeholders."""
 
 import argparse
 import json
@@ -34,7 +34,7 @@ def main():
     parser.add_argument(
         "--force-metrics",
         action="store_true",
-        help="Claim night staging/AHI even when label coverage gate would block them",
+        help="Claim night staging / apnea_positive_epoch_rate metrics even when label gate would block them",
     )
     args = parser.parse_args()
 
@@ -89,11 +89,19 @@ def main():
             gate,
             staging_keys=("staging_epoch_kappa",),
             apnea_keys=(),
-            night_ahi_keys=("ahi_bin_auroc", "ahi_bin", "ahi"),
+            night_ahi_keys=(
+                "apnea_positive_epoch_rate_bin",
+                "apnea_positive_epoch_rate",
+                "ahi_bin_auroc",
+                "ahi_bin",
+                "ahi",
+            ),
         )
         if not gate.claim_night_ahi:
             for k in list(metrics.keys()):
-                if "ahi" in k.lower() and k != "label_gate":
+                if (
+                    "ahi" in k.lower() or "apnea_positive_epoch_rate" in k.lower()
+                ) and k != "label_gate":
                     if isinstance(metrics[k], dict) and metrics[k].get("skipped"):
                         continue
                     metrics[k] = {

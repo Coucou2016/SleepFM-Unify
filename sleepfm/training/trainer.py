@@ -19,6 +19,11 @@ def _move_batch(batch: dict, device: torch.device) -> dict:
     for key, value in batch.items():
         if torch.is_tensor(value):
             out[key] = value.to(device, non_blocking=True)
+        elif isinstance(value, dict):
+            out[key] = {
+                k: v.to(device, non_blocking=True) if torch.is_tensor(v) else v
+                for k, v in value.items()
+            }
         else:
             out[key] = value
     return out
@@ -41,6 +46,7 @@ class PretrainTrainer:
         early_stopping_patience: Optional[int] = None,
         loss_weights: Optional[Dict[str, float]] = None,
         modality_dropout: float = 0.0,
+        modality_dropout_mode: str = "sample",
         temporal_encoder: Optional[NightTemporalEncoder] = None,
         temporal_mask_prob: float = 0.15,
         use_mixed_loss: bool = False,
@@ -57,6 +63,7 @@ class PretrainTrainer:
         self.epochs_without_improvement = 0
         self.loss_weights = loss_weights
         self.modality_dropout = float(modality_dropout)
+        self.modality_dropout_mode = str(modality_dropout_mode)
         self.temporal_encoder = temporal_encoder.to(device) if temporal_encoder is not None else None
         self.temporal_mask_prob = temporal_mask_prob
         self.use_mixed_loss = bool(
@@ -84,6 +91,7 @@ class PretrainTrainer:
                 mode=self.contrastive_mode,
                 loss_weights=self.loss_weights,
                 modality_dropout=self.modality_dropout,
+                modality_dropout_mode=self.modality_dropout_mode,
                 temporal_encoder=self.temporal_encoder,
                 temporal_mask_prob=self.temporal_mask_prob,
             )
@@ -175,6 +183,7 @@ class PretrainTrainer:
             "downstream_space": self.model.downstream_space,
             "loss_weights": self.loss_weights,
             "modality_dropout": self.modality_dropout,
+            "modality_dropout_mode": self.modality_dropout_mode,
             "model_state_dict": self.model.state_dict(),
             "optimizer_state_dict": self.optimizer.state_dict(),
         }

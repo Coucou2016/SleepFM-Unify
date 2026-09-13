@@ -47,6 +47,7 @@ unify:
   shared_dim: 256
   private_dim: 256
   modality_dropout: 0.3
+  modality_dropout_mode: sample  # sample | batch (batch = legacy drop-one)
   downstream_space: concat  # concat | shared | private
   loss_weights:
     loo: 1.0
@@ -54,6 +55,7 @@ unify:
     orth: 0.1
     temporal: 0.0
     miss: 0.5
+    private: 0.1  # VICReg-style variance hinge on private (anti-collapse)
 
 # Optional night-level temporal context (P3)
 temporal:

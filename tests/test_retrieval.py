@@ -2,7 +2,12 @@
 
 import torch
 
-from sleepfm.eval.retrieval import limit_gallery, random_recall_baseline, recall_at_k
+from sleepfm.eval.retrieval import (
+    limit_gallery,
+    random_recall_baseline,
+    recall_at_k,
+    sample_gallery_indices,
+)
 
 
 def test_perfect_retrieval():
@@ -14,7 +19,29 @@ def test_perfect_retrieval():
 
 
 def test_random_baseline_formula():
-    assert abs(random_recall_baseline(100, k=10) - 10 / 99) < 1e-6
+    # True match is one of n gallery items (uniform): min(k,n)/n
+    assert abs(random_recall_baseline(100, k=10) - 10 / 100) < 1e-6
+    assert abs(random_recall_baseline(10, k=10) - 1.0) < 1e-6
+
+
+def test_chunked_recall_matches_full():
+    torch.manual_seed(0)
+    n, d = 64, 8
+    q = torch.randn(n, d)
+    q = q / q.norm(dim=-1, keepdim=True)
+    g = q.clone()
+    assert abs(recall_at_k(q, g, k=5, chunk_size=7) - recall_at_k(q, g, k=5, chunk_size=512)) < 1e-6
+
+
+def test_sample_gallery_indices_before_encode():
+    idx = sample_gallery_indices(100, max_gallery=10, seed=3, mode="rng")
+    assert idx is not None and len(idx) == 10
+    assert idx.min() >= 0 and idx.max() < 100
+    assert list(idx) == sorted(idx.tolist())
+    # Different from prefix
+    prefix = sample_gallery_indices(100, max_gallery=10, seed=3, mode="prefix")
+    assert not (idx == prefix).all()
+    assert sample_gallery_indices(5, max_gallery=10) is None
 
 
 def test_limit_gallery():
@@ -30,7 +57,6 @@ def test_limit_gallery():
 
 
 def test_limit_gallery_rng_reproducible_and_not_prefix():
-    # Distinct rows so different index sets are detectable after gather.
     z = torch.randn(40, 8)
     z = z / z.norm(dim=-1, keepdim=True).clamp_min(1e-8)
     embs = {"bas": z, "ecg": z.clone()}
@@ -40,9 +66,7 @@ def test_limit_gallery_rng_reproducible_and_not_prefix():
     prefix = limit_gallery(embs, max_gallery=8, mode="prefix")
     assert torch.equal(a["bas"], b["bas"])
     assert not torch.equal(a["bas"], c["bas"])
-    # Same indices across modalities
     assert torch.equal(a["bas"], a["ecg"])
-    # RNG default should differ from prefix for this sized tensor
     assert not torch.equal(a["bas"], prefix["bas"])
 
 

@@ -8,7 +8,7 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 
-from sleepfm.data.splits import assert_disjoint_splits, downstream_isolation_ok
+from sleepfm.data.splits import assert_paper_isolation, downstream_isolation_ok
 
 
 def validate_dataset(data_dir: str | Path, strict_participants: bool = False) -> Tuple[bool, List[str]]:
@@ -75,13 +75,20 @@ def validate_dataset(data_dir: str | Path, strict_participants: bool = False) ->
                 ok = False
                 messages.append(f"channel_slices[{mod}] width mismatch vs channels[{mod}]")
 
-    # Paper isolation: pretrain vs train/test
+    # Full paper isolation: all split pairs, path + participant + night
     try:
-        iso = downstream_isolation_ok(data_dir)
-        for name, passed in iso.items():
-            if not passed:
-                ok = False
-                messages.append(f"Split isolation failed: {name}")
+        if strict_participants:
+            assert_paper_isolation(data_dir, strict=True)
+            messages.append("Paper isolation (strict): passed.")
+        else:
+            iso = downstream_isolation_ok(data_dir)
+            for name, passed in iso.items():
+                if not passed:
+                    ok = False
+                    messages.append(f"Split isolation failed: {name}")
+    except RuntimeError as exc:
+        ok = False
+        messages.append(str(exc))
     except Exception as exc:
         ok = False
         messages.append(f"Split isolation check error: {exc}")

@@ -171,6 +171,7 @@ def _pretrain(
         early_stopping_patience=local.get("early_stopping_patience"),
         loss_weights=loss_weights,
         modality_dropout=float(unify_cfg.get("modality_dropout", 0.0) if unify_on else 0.0),
+        modality_dropout_mode=str(unify_cfg.get("modality_dropout_mode", "sample")),
         temporal_encoder=temporal_encoder,
         temporal_mask_prob=float(temporal_cfg.get("mask_prob", 0.15)),
         use_mixed_loss=unify_on or temporal_encoder is not None,
@@ -254,7 +255,13 @@ def _downstream(
                 data_dir, split=ds_cfg.get("valid_split", "valid"), return_labels=True
             )
             X_va, y_va = build_embedding_matrix(model, valid_ds, device, batch_size)
-            lr_cfg["C"] = tune_lr_c(X_va, y_va["stage_id"], {**ds_cfg, "task": "staging"})
+            lr_cfg["C"] = tune_lr_c(
+                X_tr,
+                y_tr["stage_id"],
+                X_va,
+                y_va["stage_id"],
+                {**ds_cfg, "task": "staging"},
+            )
         except KeyError:
             pass
     out: Dict[str, Any] = {
@@ -284,36 +291,26 @@ def _retrieval(
     gallery_seed: int = 0,
     gallery_mode: str = "rng",
 ) -> Dict:
-    from sleepfm.data.dataset import SleepEpochDataset, collate_multimodal
-    from sleepfm.eval.retrieval import limit_gallery, modality_retrieval_metrics, random_recall_baseline
+    from sleepfm.data.dataset import SleepEpochDataset
+    from sleepfm.eval.retrieval import (
+        encode_retrieval_embeddings,
+        modality_retrieval_metrics,
+        random_recall_baseline,
+    )
     from sleepfm.models.sleepfm import MultiModalSleepFM
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = MultiModalSleepFM.from_checkpoint(checkpoint, device=str(device))
     model.to(device).eval()
     ds = SleepEpochDataset(data_dir, split=split)
-    loader = DataLoader(ds, batch_size=32, collate_fn=collate_multimodal)
-    all_emb = {m: [] for m in model.MODALITY_ORDER}
-    n_got = 0
-    with torch.no_grad():
-        for batch in loader:
-            batch = {k: v.to(device) if torch.is_tensor(v) else v for k, v in batch.items()}
-            space = "shared" if getattr(model, "unify", False) else "downstream"
-            z = model.encode(batch, space=space)
-            for m, t in z.items():
-                all_emb[m].append(t.cpu())
-            if z:
-                n_got += next(iter(z.values())).size(0)
-            # Collect more than the cap so RNG subsample is not a prefix of loader order.
-            collect_target = None if max_gallery is None else max(max_gallery * 4, max_gallery)
-            if collect_target is not None and n_got >= collect_target:
-                break
-    embeddings = {m: torch.cat(c, dim=0) for m, c in all_emb.items() if c}
-    embeddings = limit_gallery(
-        embeddings,
+    embeddings = encode_retrieval_embeddings(
+        model,
+        ds,
+        device,
+        batch_size=32,
         max_gallery=max_gallery,
-        seed=gallery_seed,
-        mode=gallery_mode,
+        gallery_seed=gallery_seed,
+        gallery_mode=gallery_mode,
     )
     metrics = modality_retrieval_metrics(embeddings, k=k)
     n = next(iter(embeddings.values())).size(0)
@@ -339,7 +336,16 @@ def _ablation(cfg: dict, checkpoint: str, data_dir: str, batch_size: int) -> Dic
     )
 
 
-def _fewshot(cfg: dict, checkpoint: str, data_dir: str, ks, batch_size: int) -> Dict:
+def _fewshot(
+    cfg: dict,
+    checkpoint: str,
+    data_dir: str,
+    ks,
+    batch_size: int,
+    *,
+    n_repeats: int,
+    space: str = "downstream",
+) -> Dict:
     from sleepfm.eval.experiments import fewshot_curve
     from sleepfm.models.sleepfm import MultiModalSleepFM
 
@@ -354,8 +360,34 @@ def _fewshot(cfg: dict, checkpoint: str, data_dir: str, ks, batch_size: int) -> 
         ks=ks,
         seed=cfg["seed"],
         batch_size=batch_size,
-        n_repeats=2 if len(ks) <= 3 else 3,
+        n_repeats=n_repeats,
+        space=space,
     )
+
+
+def _space_probe(cfg: dict, checkpoint: str, data_dir: str, batch_size: int) -> Dict:
+    """Shared-only / private-only / concat probes (Unify ablations)."""
+    from sleepfm.eval.experiments import probe_split
+    from sleepfm.models.sleepfm import MultiModalSleepFM
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = MultiModalSleepFM.from_checkpoint(checkpoint, device=str(device))
+    model.to(device)
+    if not getattr(model, "unify", False):
+        return {"skipped": True, "reason": "checkpoint is not Unify (no shared/private heads)"}
+    out = {}
+    for name, space in (("concat", "downstream"), ("shared", "shared"), ("private", "private")):
+        metrics = probe_split(
+            model,
+            data_dir,
+            device,
+            cfg["downstream"],
+            batch_size=batch_size,
+            space=space,
+        )
+        metrics["requested_space"] = name
+        out[name] = metrics
+    return out
 
 
 def _night(
@@ -404,7 +436,13 @@ def _night(
             gate,
             staging_keys=("staging_epoch_kappa",),
             apnea_keys=(),
-            night_ahi_keys=("ahi_bin_auroc", "ahi_bin", "ahi"),
+            night_ahi_keys=(
+                "apnea_positive_epoch_rate_bin",
+                "apnea_positive_epoch_rate",
+                "ahi_bin_auroc",
+                "ahi_bin",
+                "ahi",
+            ),
         )
         # probe_night_tasks may use different key names — gate common summary probes
         if not gate.claim_night_ahi:
@@ -468,6 +506,18 @@ def main():
         help="Gallery cap mode: rng (default) or prefix (legacy)",
     )
     parser.add_argument("--fewshot-ks", type=str, default="1,2,4")
+    parser.add_argument(
+        "--fewshot-repeats",
+        type=int,
+        default=None,
+        help="Few-shot participant-sampling repeats "
+        "(default: 2 for --demo, 10 for paper / real-data mode)",
+    )
+    parser.add_argument(
+        "--space-probe",
+        action="store_true",
+        help="Also run concat/shared/private downstream probes (Unify checkpoints)",
+    )
     parser.add_argument("--batch-size", type=int, default=None)
     args = parser.parse_args()
 
@@ -497,7 +547,19 @@ def main():
         print(f"[1/9] Ensuring synthetic data at {data_dir}")
         _ensure_demo_data(cfg, data_dir)
 
-    print("[1/9] validate_data")
+    print("[1/9] validate_data + paper isolation (strict RuntimeError on leak)")
+    from sleepfm.data.splits import assert_paper_isolation
+
+    try:
+        assert_paper_isolation(str(data_dir), strict=True)
+        results["steps"]["isolation"] = {"ok": True, "strict": True}
+    except RuntimeError as exc:
+        results["steps"]["isolation"] = {"ok": False, "strict": True, "error": str(exc)}
+        _save(out_root / "01_isolation.json", results["steps"]["isolation"])
+        print(f"Split isolation failed: {exc}")
+        _save(out_root / "summary.json", results)
+        sys.exit(1)
+
     results["steps"]["validate"] = _run_validate(str(data_dir), strict=True)
     _save(out_root / "01_validate.json", results["steps"]["validate"])
     if not results["steps"]["validate"]["ok"]:
@@ -631,10 +693,23 @@ def main():
     results["steps"]["modality_ablation"] = _ablation(cfg, eval_ckpt, str(data_dir), batch_size)
     _save(out_root / "07_modality_ablation.json", results["steps"]["modality_ablation"])
 
-    print("[8/9] few-shot")
+    print("[8/9] few-shot (mean±95% CI; paper repeats≥10 unless --demo)")
     ks = [int(x) for x in args.fewshot_ks.split(",") if x.strip()]
-    results["steps"]["fewshot"] = _fewshot(cfg, eval_ckpt, str(data_dir), ks, batch_size)
+    if args.fewshot_repeats is not None:
+        fs_repeats = int(args.fewshot_repeats)
+    else:
+        fs_repeats = 2 if demo else 10
+    results["steps"]["fewshot"] = _fewshot(
+        cfg, eval_ckpt, str(data_dir), ks, batch_size, n_repeats=fs_repeats
+    )
     _save(out_root / "08_fewshot.json", results["steps"]["fewshot"])
+
+    if args.space_probe or (unify_ckpt and not demo):
+        print("[8b/9] shared/private/concat space probe")
+        results["steps"]["space_probe"] = _space_probe(
+            cfg, eval_ckpt, str(data_dir), batch_size
+        )
+        _save(out_root / "08b_space_probe.json", results["steps"]["space_probe"])
 
     night_ckpt = temporal_ckpt or eval_ckpt
     print("[9/9] night eval")
