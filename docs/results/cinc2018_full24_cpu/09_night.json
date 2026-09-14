@@ -1,0 +1,35 @@
+{
+  "n_train_nights": 2,
+  "n_test_nights": 3,
+  "apnea_positive_epoch_rate_note": "Continuous apnea-positive epochs/hour of recording (regression). NOT clinical AASM AHI; 5/15/30 severity bins intentionally removed.",
+  "apnea_positive_epoch_rate": {
+    "r2": -4.8954653482249055,
+    "mae": 32.191070556640625,
+    "label": "apnea_positive_epoch_rate_continuous"
+  },
+  "ahi": {
+    "r2": -4.8954653482249055,
+    "mae": 32.191070556640625,
+    "label": "apnea_positive_epoch_rate_continuous"
+  },
+  "sleep_efficiency": {
+    "r2": -0.17686655530147588,
+    "mae": 0.21666666401757131
+  },
+  "temporal_head": "mean_pool_fallback",
+  "staging_epoch_kappa": {
+    "cohen_kappa": -0.00881689563256094,
+    "accuracy": 0.08888888888888889,
+    "cohen_kappa_linear": 0.025998731769181882
+  },
+  "train_n_nights": 2,
+  "test_n_nights": 3,
+  "label_gate": {
+    "claim_staging": true,
+    "claim_apnea": true,
+    "claim_night_ahi": true,
+    "claim_night_staging_kappa": true,
+    "messages": [],
+    "skipped": []
+  }
+}

@@ -4,11 +4,11 @@
 
 本报告对应公开仓库 [SleepFM-Unify](https://github.com/Coucou2016/SleepFM-Unify) 中的工作：**异构 / 任意缺失 PSG 下的 SleepFM 兼容鲁棒预训练**（共享–私有头是实现工具，**不是**新颖性主张；FOCAL 等已有 shared/private）。配套混合对比损失、模态丢弃、导联 mask、导出校验、标签门控与论文实验套件。
 
-- **报告性质：** 工程实现 + 论文框架 + **真实 CinC 2018（开放训练集子集）CPU-8 实测**；SHHS/MESA 仍缺 NSRR DUA。
+- **报告性质：** 工程实现 + 论文框架 + **真实 CinC 2018 CPU-8 与 full24 实测**；SHHS/MESA 仍缺 `NSRR_TOKEN`。
 - **公开仓库：** [https://github.com/Coucou2016/SleepFM-Unify](https://github.com/Coucou2016/SleepFM-Unify)（`main`；不含大体积 `data/` / `outputs/`）。
 - **图表风格：** SciencePlots + Times New Roman；中文用 SimHei 渲染。
-- **诚实约束：** 合成 AUROC≈0.5 仅标为 demo；CinC 表内数字来自 `docs/results/cinc2018_cpu8/` 实测 JSON；**不编造** SHHS/MESA。
-- **本轮重点：** ChannelAwareMaskedPool 接线、CinC 开放下载/导出/重训、paper suite + 监督基线、文档填表。
+- **诚实约束：** 合成 AUROC≈0.5 仅标为 demo；CinC 表内数字来自 `docs/results/cinc2018_cpu8/` 与 `docs/results/cinc2018_full24_cpu/` 实测 JSON；**不编造** SHHS/MESA。
+- **本轮重点：** full24 导出/CPU 重训、lite paper suite、文档填表；NSRR 仍阻塞。
 
 <!--FIGURES-->
 
@@ -20,7 +20,7 @@
 
 **方法：** SleepFM-Unify 在 SleepFM 编码器上增加 **缺失/异构 PSG 训练栈**（样本级模态丢弃、`present_mask` 感知编码、按原始在场门控的 $\mathcal{L}_{\mathrm{miss}}$、可选 `channel_mask` 导联清零），并以共享–私有头作为工具（对比只看共享；下游可 probe concat/shared/private）。**不主张“发明了 shared-private”。**
 
-**证据状态：** CinC 2018 开放训练子集已下载/导出；LOO+Unify 在 **P0 修复后**于 CPU-8 协议重训并跑通 paper suite（见 `docs/results/cinc2018_cpu8/`）。**SHHS/MESA 仍待 NSRR DUA**（本机无 `NSRR_TOKEN`）。分期 AUROC 在短 CPU 日程下接近随机——按实测如实填表，不当作 clinic SOTA。
+**证据状态：** CinC 2018 开放训练子集已完成 CPU-8 与 **full24** 导出/LOO+Unify/suite（见 `docs/results/cinc2018_cpu8/`、`docs/results/cinc2018_full24_cpu/`）。**SHHS/MESA 仍待 `NSRR_TOKEN`**。分期 AUROC 在短 CPU 日程下接近随机——按实测如实填表，不当作 clinic SOTA。
 
 **边界：** 本报告不主张 Unify 在真实 PSG 上已超越 LOO；夜级 `ahi` 使用 **apnea_epoch_rate** 占位，**不是**临床 AASM AHI。
 
@@ -110,7 +110,21 @@
 | Space probe concat/shared/private | — | 0.495 / 0.510 / 0.499 | staging AUROC |
 | EffNet supervised | 0.393 | — | 同索引 |
 | SeqStagingBaseline | 0.518 | — | CNN+GRU；非 U-Sleep |
-| SHHS / MESA | — | — | **DUA 阻塞，空白** |
+| SHHS / MESA | — | — | **`NSRR_TOKEN` unset — blank** |
+
+### CinC 2018 full24 CPU 实测
+
+来源：`docs/results/cinc2018_full24_cpu/measured_compact.json`。24 受试者导出；CPU stride 2100/21532；预训练 5 epoch；paper suite lite（few-shot×3）。
+
+| 项目 | LOO | Unify | 备注 |
+|------|-----|-------|------|
+| Staging macro AUROC / AUPRC | 0.496 / 0.224 | **0.557** / 0.231 | n_test=180；3 test 受试者 |
+| Apnea AUROC / AUPRC | **0.664** / 0.307 | 0.326 / 0.154 | 标签门控通过 |
+| Retrieval R@10 macro | 0.0214 | 0.0200≈rand 0.020 | co-presence |
+| Few-shot k=1 staging | — | 0.5371±0.1927 | lite×3 repeats |
+| Space probe concat/shared/private | — | 0.557 / 0.562 / 0.561 | staging AUROC |
+| Night staging κ | — | −0.009 (acc 0.089) | 2 train / 3 test nights |
+| SHHS / MESA | — | — | **`NSRR_TOKEN` unset — blank** |
 
 ### 合成演示（工程冒烟，非论文主张）
 
@@ -136,8 +150,8 @@
 ## 结论
 
 1. SleepFM-Unify 方法与工程接口已落地；主张为 **异构/缺失 PSG 鲁棒性**。  
-2. CinC 开放子集已完成下载→导出→P0 后重训→paper suite；数字见 `docs/results/cinc2018_cpu8/`。  
-3. SHHS/MESA 仍缺用户 NSRR DUA；GPU/全量日程可扩展规模。  
+2. CinC 开放子集已完成 CPU-8 与 full24 导出→LOO/Unify→suite；数字见 `docs/results/cinc2018_cpu8/` 与 `docs/results/cinc2018_full24_cpu/`。  
+3. SHHS/MESA 仍缺 `NSRR_TOKEN`（NSRR DUA）；本机 PyTorch 无 CUDA，训练为 CPU。  
 4. 评价链路强调不夸大：标签门控、通道门控、AHI 措辞、RNG gallery。  
 
 ---

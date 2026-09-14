@@ -12,10 +12,11 @@ arrays stay local under `data/` (gitignored).
 | `data/cinc2018_fixture/` | Schema fixture (no DUA) | Yes |
 | `data/raw/cinc2018/` | Real CinC 2018 (open training subset) | **Yes** (24 subjects via S3) |
 | `data/cinc2018/` | Exported epochs + CPU stride index | **Yes** (8-subject measured protocol) |
+| `data/cinc2018_full24/` | Full 24-subject export + CPU stride index | **Yes** (21532 full / 2100 CPU epochs) |
 | `data/raw/shhs/` | Real SHHS | **No** |
 | `data/raw/mesa/` | Real MESA | **No** |
 | Env `PHYSIONET_USER` / `PHYSIONET_PASSWORD` | Optional (CinC training is open) | Unset |
-| `NSRR_TOKEN` | NSRR downloads | **Unset — blocked** |
+| `NSRR_TOKEN` | NSRR downloads | **Unset — SHHS/MESA blocked until you export NSRR_TOKEN** |
 
 Re-check anytime:
 
@@ -36,6 +37,13 @@ python scripts/export_edf.py --dataset cinc2018 --input-dir data/raw/cinc2018 --
 python scripts/pretrain.py --config configs/cinc_cpu.yaml --data-dir data/cinc2018
 python scripts/pretrain.py --config configs/unify_cinc_cpu.yaml --data-dir data/cinc2018
 python scripts/run_paper_suite.py --config configs/cinc_cpu.yaml --unify-config configs/unify_cinc_cpu.yaml --data-dir data/cinc2018 --space-probe --fewshot-repeats 10 --skip-pretrain --checkpoint outputs/pretrain_cinc_cpu/best.pt --unify-checkpoint outputs/unify_cinc_cpu/best.pt
+
+# Full 24-subject export + CPU stride protocol (measured: docs/results/cinc2018_full24_cpu/)
+python scripts/export_edf.py --dataset cinc2018 --input-dir data/raw/cinc2018 --output-dir data/cinc2018_full24 --validate
+# then build stride index (see data/cinc2018_full24/cpu_protocol.json) and:
+python scripts/pretrain.py --config configs/cinc_full24_cpu.yaml --data-dir data/cinc2018_full24
+python scripts/pretrain.py --config configs/unify_cinc_full24_cpu.yaml --data-dir data/cinc2018_full24 --unify
+python scripts/run_paper_suite.py --config configs/cinc_full24_cpu.yaml --unify-config configs/unify_cinc_full24_cpu.yaml --data-dir data/cinc2018_full24 --space-probe --fewshot-repeats 3 --max-gallery 500 --skip-pretrain --checkpoint outputs/pretrain_cinc_full24_cpu/best.pt --unify-checkpoint outputs/unify_cinc_full24_cpu/best.pt
 ```
 
 Full ~135 GB training tree:
