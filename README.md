@@ -4,8 +4,8 @@ Robust multimodal pretraining for **heterogeneous / missing PSG** on SleepFM enc
 (shared–private factorization is a *tool*, not the novelty claim).
 
 **Public repo:** [https://github.com/Coucou2016/SleepFM-Unify](https://github.com/Coucou2016/SleepFM-Unify)  
-**Method docs:** [`docs/UNIFY.md`](docs/UNIFY.md) · **Paper draft:** [`docs/paper/paper.md`](docs/paper/paper.md) · **Data access:** [`docs/DATA_ACCESS.md`](docs/DATA_ACCESS.md)  
-**License:** MIT ([`LICENSE`](LICENSE)) · **Citation:** [`CITATION.cff`](CITATION.cff)
+**Method docs:** [`docs/UNIFY.md`](docs/UNIFY.md) · **Paper draft:** [`docs/paper/paper.md`](docs/paper/paper.md) · **Data access:** [`docs/DATA_ACCESS.md`](docs/DATA_ACCESS.md) · **Experiment gates:** [`docs/EXPERIMENT_CHECKLIST.md`](docs/EXPERIMENT_CHECKLIST.md)  
+**License:** MIT ([`LICENSE`](LICENSE)) · **Third-party:** [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) · **Citation:** [`CITATION.cff`](CITATION.cff)
 
 Upstream SleepFM (Thapa et al., ICML 2024): [PMLR](https://proceedings.mlr.press/v235/thapa24a.html) · [arXiv:2405.17766](https://arxiv.org/abs/2405.17766) · [official code](https://github.com/rthapa84/sleepfm-codebase).
 
@@ -25,6 +25,8 @@ Upstream SleepFM (Thapa et al., ICML 2024): [PMLR](https://proceedings.mlr.press
 ```powershell
 pip install -r requirements.txt
 pip install -e .
+# Optional: pip install -e ".[paper]"   # matplotlib, SciencePlots
+# Optional: pip install -e ".[psg]"     # mne, pyedflib, wfdb
 
 python scripts/generate_synthetic_data.py --demo
 python scripts/validate_data.py --data-dir data/synthetic --strict-participants

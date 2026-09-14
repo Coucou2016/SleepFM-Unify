@@ -190,6 +190,38 @@ def test_private_variance_uses_raw_not_normalized():
     assert not torch.allclose(raw_norms, torch.ones_like(raw_norms), atol=1e-3)
 
 
+def test_private_embedding_diagnostics():
+    from sleepfm.models.sleepfm import private_embedding_diagnostics
+
+    torch.manual_seed(0)
+    raw = {
+        "bas": torch.randn(32, 8) * 2.0,
+        "ecg": torch.randn(32, 8) * 2.0,
+    }
+    diag = private_embedding_diagnostics(raw, torch.ones(32, 3))
+    assert diag["bas_std_mean"] > 0.5
+    assert diag["bas_eff_rank"] > 1.0
+    assert math.isfinite(diag["ecg_eff_rank"])
+
+
+def test_private_variance_with_cov_penalty():
+    torch.manual_seed(0)
+    channels = {"bas": 4, "ecg": 2, "respiratory": 3}
+    model = MultiModalSleepFM(
+        channels=channels, embedding_dim=16, unify=True, shared_dim=8, private_dim=8
+    )
+    raw = {
+        "bas": torch.randn(32, 8) * 2.0,
+        "ecg": torch.randn(32, 8) * 2.0,
+        "respiratory": torch.randn(32, 8) * 2.0,
+    }
+    mask = torch.ones(32, 3)
+    base = model._private_variance_loss(raw, mask, cov_weight=0.0)
+    with_cov = model._private_variance_loss(raw, mask, cov_weight=1.0)
+    assert float(with_cov.item()) >= float(base.item()) - 1e-6
+    assert math.isfinite(float(with_cov.item()))
+
+
 def test_sample_wise_modality_dropout_excludes_full_set():
     """When K>=2 and p=1, every corrupted row must drop at least one modality."""
     torch.manual_seed(0)

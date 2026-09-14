@@ -35,8 +35,37 @@ def test_path_disjoint(tiny_data_dir):
 
 def test_downstream_isolation(tiny_data_dir):
     checks = downstream_isolation_ok(tiny_data_dir)
-    assert all(checks.values()), checks
+    # True = pass; "n/a" = field absent (allowed); False = fail.
+    assert all(v is not False for v in checks.values()), checks
     assert_paper_isolation(tiny_data_dir, strict=True)
+
+
+def test_night_id_missing_is_explicit_na(tmp_path):
+    """Absent night_id must report n/a, not a silent True pass."""
+    channels = {"bas": 4, "ecg": 2, "respiratory": 3}
+    data_dir = tmp_path / "no_night"
+    write_synthetic_dataset(
+        data_dir,
+        channels,
+        clip_length=32,
+        splits={"pretrain": 8, "valid": 4, "train": 8, "test": 4},
+        seed=0,
+        num_participants=8,
+        epochs_per_participant=2,
+    )
+    index_path = data_dir / "index.json"
+    payload = json.loads(index_path.read_text(encoding="utf-8"))
+    for split in payload["splits"].values():
+        for entry in split:
+            entry.pop("night_id", None)
+            entry.pop("recording_id", None)
+    index_path.write_text(json.dumps(payload), encoding="utf-8")
+    checks = downstream_isolation_ok(data_dir)
+    night_keys = [k for k in checks if k.endswith("_night_id")]
+    assert night_keys, checks
+    assert all(checks[k] == "n/a" for k in night_keys), checks
+    # Strict isolation still passes (n/a is not a leak).
+    assert_paper_isolation(data_dir, strict=True)
 
 
 def test_validate_dataset(tiny_data_dir):

@@ -15,3 +15,5 @@ unify:
     temporal: 0.0
     miss: 0.5
     private: 0.1
+    # Optional VICReg off-diagonal covariance weight on raw private (λ_cov).
+    private_cov: 0.01

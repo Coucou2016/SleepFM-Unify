@@ -4,9 +4,12 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, Iterable, List, Mapping, Optional, Set, Tuple
+from typing import Dict, Iterable, List, Mapping, Optional, Set, Tuple, Union
 
 import numpy as np
+
+# Isolation check value: True=pass, False=fail, "n/a"=field absent (not a silent pass).
+IsolationStatus = Union[bool, str]
 
 DEFAULT_SPLIT_FRACTIONS: Dict[str, float] = {
     "pretrain": 0.70,
@@ -168,6 +171,8 @@ def split_overlap(
     elif by == "night_id":
         a = entry_night_ids(splits[split_a])
         b = entry_night_ids(splits[split_b])
+        # Missing night_id is not proof of isolation — callers must treat empty
+        # sets as N/A (see downstream_isolation_ok), not as a silent PASS.
         if not a or not b:
             return False, set()
     else:
@@ -205,18 +210,29 @@ def downstream_isolation_ok(
     data_dir: str | Path,
     *,
     strict_participant_ids: bool = False,
-) -> Dict[str, bool]:
+) -> Dict[str, IsolationStatus]:
     """Full cohort separation across pretrain/valid/train/test (paths + participants + nights).
+
+    Values are ``True`` (pass), ``False`` (fail/leak), or ``\"n/a\"`` when the
+    checked id field is absent (night_id only — **not** a silent PASS).
 
     When ``strict_participant_ids=True``, missing ``participant_id`` fails the
     corresponding check (and ``assert_paper_isolation`` raises).
     """
-    checks: Dict[str, bool] = {}
+    checks: Dict[str, IsolationStatus] = {}
+    payload = load_index(data_dir)
+    splits = payload.get("splits", {})
     pairs = _existing_pairs(data_dir, PAPER_SPLIT_PAIRS)
     for sa, sb in pairs:
         for by in ("path", "participant_id", "night_id"):
             key = f"{sa}_vs_{sb}_{by}"
             try:
+                if by == "night_id":
+                    a_ids = entry_night_ids(splits.get(sa, []))
+                    b_ids = entry_night_ids(splits.get(sb, []))
+                    if not a_ids or not b_ids:
+                        checks[key] = "n/a"
+                        continue
                 has, _ = split_overlap(
                     data_dir,
                     sa,
@@ -239,16 +255,19 @@ def assert_paper_isolation(
     data_dir: str | Path,
     *,
     strict: bool = True,
-) -> Dict[str, bool]:
+) -> Dict[str, IsolationStatus]:
     """
     Verify path / participant / night isolation for all paper split pairs.
 
     When ``strict=True`` (paper / evaluate / paper-suite mode), raise
     ``RuntimeError`` on any leak **or** missing participant_id fields
     instead of warning-and-continue / silent True.
+
+    ``night_id`` checks that are ``\"n/a\"`` (field absent) do **not** fail
+    isolation; they are reported explicitly and skipped as proof of isolation.
     """
     checks = downstream_isolation_ok(data_dir, strict_participant_ids=strict)
-    failed = [k for k, v in checks.items() if not v]
+    failed = [k for k, v in checks.items() if v is False]
     if failed and strict:
         details = []
         for key in failed:

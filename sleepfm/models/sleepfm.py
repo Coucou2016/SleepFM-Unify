@@ -24,6 +24,59 @@ def symmetric_infonce(a: torch.Tensor, b: torch.Tensor, temp: torch.Tensor) -> t
     return 0.5 * (F.cross_entropy(logits, labels) + F.cross_entropy(logits.T, labels))
 
 
+def effective_rank(x: torch.Tensor, eps: float = 1e-12) -> torch.Tensor:
+    """Soft effective rank from singular values (exp entropy of normalized spectrum)."""
+    if x.ndim != 2 or min(x.shape) < 1:
+        return x.new_zeros(())
+    # Center columns for a covariance-like spectrum.
+    x_c = x - x.mean(dim=0, keepdim=True)
+    # Economy SVD; clamp for numerical stability.
+    try:
+        s = torch.linalg.svdvals(x_c)
+    except RuntimeError:
+        return x.new_zeros(())
+    s = s.clamp_min(0.0)
+    total = s.sum()
+    if float(total.item()) <= eps:
+        return x.new_zeros(())
+    p = s / total.clamp_min(eps)
+    ent = -(p * (p + eps).log()).sum()
+    return torch.exp(ent)
+
+
+def private_embedding_diagnostics(
+    private: Dict[str, torch.Tensor],
+    present_mask: Optional[torch.Tensor] = None,
+    modality_order: Optional[List[str]] = None,
+) -> Dict[str, float]:
+    """Cheap PRIVATE-space diagnostics on **raw** (pre-L2) embeddings.
+
+    Reports per-modality mean per-dim std and soft effective rank. Intended for
+    logging / collapse checks — not a training loss.
+    """
+    order = list(modality_order or ["bas", "ecg", "respiratory"])
+    out: Dict[str, float] = {}
+    for i, name in enumerate(order):
+        if name not in private or private[name].numel() == 0 or private[name].size(-1) == 0:
+            continue
+        p = private[name]
+        if present_mask is not None and present_mask.size(-1) > i:
+            keep = present_mask[:, i] > 0.5
+            if int(keep.sum()) < 2:
+                out[f"{name}_std_mean"] = float("nan")
+                out[f"{name}_eff_rank"] = float("nan")
+                continue
+            p = p[keep]
+        if p.size(0) < 2:
+            out[f"{name}_std_mean"] = float("nan")
+            out[f"{name}_eff_rank"] = float("nan")
+            continue
+        std = p.std(dim=0, unbiased=False)
+        out[f"{name}_std_mean"] = float(std.mean().item())
+        out[f"{name}_eff_rank"] = float(effective_rank(p).item())
+    return out
+
+
 def orthogonality_loss(
     shared: torch.Tensor,
     private: torch.Tensor,
@@ -757,6 +810,12 @@ class MultiModalSleepFM(nn.Module):
             )
             logs["loss_private"] = float(priv.detach().item())
             total = total + weights["private"] * priv
+            # Optional cheap diagnostics (raw private; not part of the loss).
+            if bool(weights.get("private_diagnostics", 0)):
+                diag = private_embedding_diagnostics(
+                    private_raw, original_present_mask, self.MODALITY_ORDER
+                )
+                logs.update({f"private_diag_{k}": v for k, v in diag.items()})
 
         if temporal_encoder is not None and seq_shape is not None and weights.get("temporal", 0) > 0:
             from sleepfm.models.temporal import temporal_losses

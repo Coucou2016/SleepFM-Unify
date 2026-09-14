@@ -19,12 +19,27 @@ Default `shared_dim=256`, `private_dim=256` so the downstream concat per modalit
 | Piece | Where it is used |
 |-------|------------------|
 | Shared subspace | Pairwise + leave-one-out InfoNCE (cross-modal alignment) on **L2-normalized** shared |
-| Private subspace | Orthogonal to shared; **VICReg variance on raw (pre-L2) private** — never on unit vectors |
+| Private subspace | Orthogonal to shared; **VICReg on raw (pre-L2) private** — never on unit vectors |
 | Orthogonality | Center columns, column-L2 normalize, then \(\mathrm{mean}((S^\top P)^2)\) — matches `orthogonality_loss` |
 | Mixed loss | \(\lambda_{\mathrm{LOO}}\mathcal{L}_{\mathrm{LOO}} + \lambda_{\mathrm{pair}}\mathcal{L}_{\mathrm{pair}} + \lambda_{\mathrm{priv}}\mathcal{L}_{\mathrm{private}} + \lambda_{\mathrm{orth}}\mathcal{L}_{\mathrm{orth}} + \lambda_{\mathrm{temp}}\mathcal{L}_{\mathrm{temp}} + \lambda_{\mathrm{miss}}\mathcal{L}_{\mathrm{miss}}\) |
 | Modality dropout | Default **sample-wise** random **non-empty proper** subsets (full set excluded when \(K\ge 2\)); `modality_dropout_mode: batch` keeps legacy drop-one |
 | \(\mathcal{L}_{\mathrm{miss}}\) | InfoNCE(remaining shared mean, dropped shared) only where dropped modality was **originally present** |
 | Temporal (optional) | GRU/Transformer over `masked_modality_mean` of **post-dropout** shared epoch embeddings |
+
+**Private VICReg (math).** Let \(p\in\mathbb{R}^{N\times D}\) be **raw** private projections (before row L2-normalize), restricted to present rows. With per-dimension std \(s_d=\sqrt{\mathrm{Var}_n(p_{n,d})+\varepsilon}\):
+
+\[
+\mathcal{L}_{\mathrm{var}}=\frac{1}{D}\sum_{d=1}^{D}\mathrm{ReLU}(\gamma - s_d),\qquad \gamma=1
+\]
+
+Optional covariance term (\(\lambda_{\mathrm{cov}}\) = `loss_weights.private_cov`): center \(P_c\), form \(C=P_c^\top P_c/(N-1)\), then
+
+\[
+\mathcal{L}_{\mathrm{cov}}=\frac{1}{D}\sum_{i\neq j} C_{ij}^2,\qquad
+\mathcal{L}_{\mathrm{private}}=\mathcal{L}_{\mathrm{var}}+\lambda_{\mathrm{cov}}\mathcal{L}_{\mathrm{cov}}.
+\]
+
+Do **not** feed L2-normalized unit vectors into \(\mathcal{L}_{\mathrm{var}}\) with \(\gamma=1\): after row-normalize, typical per-dim std is \(\lesssim 1/\sqrt{D}\), so the hinge saturates near \(1-1/\sqrt{D}\) and is not a meaningful anti-collapse signal.
 
 **Mask-aware encode:** rows with `present_mask=0` are skipped in the encoder (no BatchNorm pollution); embeddings for missing modalities are exactly zero. Downstream / night / retrieval multiply by `present_mask` again after encode.
 
@@ -45,7 +60,7 @@ Downstream default: concatenate shared\(\|\)private per modality (`downstream_sp
 2. Select L2 `C` by scoring on **valid** (fit train → score valid; **no** resubstitution on valid alone).
 3. Refit on train with best `C`; evaluate **once** on test.
 
-Split isolation (paper/strict): all pairs among pretrain/valid/train/test must be disjoint on `path`, `participant_id`, and `night_id`/`recording_id` when present — leaks raise `RuntimeError` (`assert_paper_isolation`; also wired in `run_paper_suite.py`).
+Split isolation (paper/strict): all pairs among pretrain/valid/train/test must be disjoint on `path`, `participant_id`, and `night_id`/`recording_id` when present — leaks raise `RuntimeError` (`assert_paper_isolation`; also wired in `run_paper_suite.py`). Missing `participant_id` is **fail-closed**. Missing `night_id` is reported as **N/A** (not a silent PASS and not a leak).
 
 Few-shot (paper mode): ≥10 participant-level sampling repeats; report **mean±95% CI** (Student-$t$). Demo/`--demo` may use 2 repeats.
 
@@ -90,9 +105,7 @@ Mixed Unify `pretrain_loss` encodes shared/private embeddings **once per step**;
 
 Retrieval uses the **full split** as the paired gallery by default (not in-batch). Cap it with `--max-gallery N` for large CinC/SHHS runs; omit the flag on synthetic demos. Caps **sample indices from the full dataset before encoding** (`--gallery-mode rng`, default); pass `--gallery-mode prefix` only for legacy comparisons. For each directed pair A→B, only samples where **both** modalities are present enter the gallery/query; random Recall@k baseline is \(\min(k,N_{\mathrm{pair}})/N_{\mathrm{pair}}\). Scripts report directed pairs (e.g. BAS→ECG) plus a macro average. Similarity is chunked to avoid \(N\times N\) OOM.
 
-**Private VICReg scale:** `encode_factorized` keeps raw projections (`*_raw`) and L2-normalized copies. Contrastive / miss / LOO / pairwise use normalized shared; \(\mathcal{L}_{\mathrm{private}}\) runs on **raw** private (optional `private_cov` covariance term). Do **not** apply a std-target of 1 to unit vectors.
-
-**Formal real-data checkpoints:** any Unify checkpoint trained *before* the raw-private VICReg + retrieval co-presence fixes must be **retrained** before quoting CinC/SHHS/MESA numbers. This repo does not invent real PSG metrics.
+**Formal real-data checkpoints:** any Unify checkpoint trained *before* the raw-private VICReg + retrieval co-presence fixes must be **retrained** before quoting CinC/SHHS/MESA numbers. This repo does not invent real PSG metrics. See `docs/EXPERIMENT_CHECKLIST.md` and `docs/DEVELOPMENT_STATUS.md`.
 
 ### Real PSG export (CinC / SHHS / MESA)
 

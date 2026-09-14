@@ -24,7 +24,20 @@ sleepfm-pretrain = "scripts.pretrain:main"
 sleepfm-eval = "scripts.evaluate_downstream:main"
 
 [project.optional-dependencies]
-# Legacy FourDVarNet research tree (not installed by default).
+# Paper figures (SciencePlots / matplotlib). Install: pip install -e ".[paper]"
+paper = [
+    "matplotlib>=3.7",
+    "SciencePlots>=2.1",
+]
+# Optional PSG I/O for awkward hospital EDFs / WFDB. Built-in reader covers
+# fixtures and standard 16-bit EDF. Install: pip install -e ".[psg]"
+psg = [
+    "mne>=1.5",
+    "pyedflib>=0.1.37",
+    "wfdb>=4.1",
+]
+# Legacy FourDVarNet research tree (not installed by default; excluded from
+# package discovery below). Opt-in marker only — import fourdvarnet manually.
 fourdvarnet = []
 
 [tool.setuptools.packages.find]

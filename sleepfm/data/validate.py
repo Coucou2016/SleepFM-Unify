@@ -82,8 +82,10 @@ def validate_dataset(data_dir: str | Path, strict_participants: bool = False) ->
             messages.append("Paper isolation (strict): passed.")
         else:
             iso = downstream_isolation_ok(data_dir)
-            for name, passed in iso.items():
-                if not passed:
+            for name, status in iso.items():
+                if status == "n/a":
+                    messages.append(f"Split isolation N/A (missing night_id): {name}")
+                elif status is False:
                     ok = False
                     messages.append(f"Split isolation failed: {name}")
     except RuntimeError as exc:
