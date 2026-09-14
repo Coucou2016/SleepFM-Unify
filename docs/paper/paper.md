@@ -1,7 +1,7 @@
 # SleepFM-Unify: Robust Multimodal Pretraining under Heterogeneous and Missing PSG
 
 **Draft manuscript (methods paper)**  
-**Status:** engineering-complete codebase + synthetic demos; **CinC / SHHS / MESA quantitative claims 待补充**  
+**Status:** engineering-complete codebase + synthetic demos; **CinC / SHHS / MESA quantitative claims 待补充** (see `docs/DEVELOPMENT_STATUS.md`). Formal Unify checkpoints must be **retrained after** raw-private VICReg + retrieval co-presence fixes before any real-data narrative.  
 **Target framing:** Nature Machine Intelligence–style methods article / ICML-compatible experimental spine  
 **nature-skills:** `nature-writing` (methods + nat-mach-intell), `nature-figure` (Python / SciencePlots)  
 **Code:** https://github.com/Coucou2016/SleepFM-Unify (`main`)
@@ -27,7 +27,7 @@ A remaining systems gap is **SleepFM-compatible training and evaluation that rem
 3. Evaluation honesty gates: channel meta fail-fast, CinC label coverage, apnea-epoch-rate vs clinical AHI wording, seeded RNG gallery caps, strict split isolation (`RuntimeError` on leak), few-shot mean±95% CI (≥10 participant-level repeats in paper mode).
 4. Reproducible CLI paper suite for LOO vs Unify comparisons once real exports exist (shared/private/concat probes included).
 
-**Non-claims.** Synthetic AUROC≈0.5 is demo-only. Night `ahi_bin` uses apnea-epoch-rate cut-points, not clinical AASM AHI. Nature Medicine disease C-Index values are not our local results. We do **not** claim novelty for shared–private factorization per se.
+**Non-claims.** Synthetic AUROC≈0.5 is demo-only. Night probes use continuous `apnea_positive_epoch_rate` (regression), not clinical AASM AHI and not 5/15/30 severity bins. Nature Medicine disease C-Index values are not our local results. We do **not** claim novelty for shared–private factorization per se.
 
 ---
 
@@ -69,7 +69,7 @@ z_m = [z_m^{\mathrm{shared}};\, z_m^{\mathrm{private}}],\qquad
 \dim(z_m^{\mathrm{shared}})=\dim(z_m^{\mathrm{private}})=256
 \]
 
-by default, preserving a 512-d concat for downstream logistic heads comparable to SleepFM. Contrastive terms act on shared only; private stays for concat / `shared|private` space probes. Orthogonality: center columns, column-L2 normalize, then $\mathrm{mean}((S^\top P)^2)$. Optional VICReg-style private variance hinge. Optional temporal head (GRU/Transformer) on shared epoch sequences.
+by default, preserving a 512-d concat for downstream logistic heads comparable to SleepFM. Contrastive terms act on **L2-normalized shared** only; private stays for concat / `shared|private` space probes. Orthogonality: center columns, column-L2 normalize, then $\mathrm{mean}((S^\top P)^2)$. VICReg-style private variance hinge runs on **raw** (pre-L2) private projections — not on unit vectors. Optional temporal head (GRU/Transformer) on `masked_modality_mean` of shared epoch sequences.
 
 ### Mixed objective
 
@@ -131,7 +131,7 @@ Participant-level $k$-shot linear probes with **≥10 repeats** in paper mode (`
 | Space probe (concat / shared / private) | — | Unify | Macro AUROC | **待补充** |
 | Ablation −orth / −miss / +temporal | — | Variants | Same | **待补充** |
 | Few-shot (k∈{1,2,4}, ≥10 repeats) | LOO | Full | Macro AUROC mean±95% CI | **待补充** |
-| Night κ / apnea_epoch_rate bin | LOO pool | +temporal | κ, AUROC | **待补充** |
+| Night κ / apnea_positive_epoch_rate | LOO pool | +temporal | κ, R²/MAE | **待补充** |
 
 ### Results
 
@@ -157,7 +157,7 @@ Unify keeps SleepFM’s LOO retrieval semantics in the shared space while retain
 
 **Failure modes.** (i) Montage mismatch without override → load fails by design. (ii) CinC staging claims without coverage → gate blocks. (iii) Interpreting synthetic AUROC≈0.5 as a positive result → rejected by caption policy. (iv) Calling night apnea-epoch-rate “AHI” → wording violation. (v) Claiming novel shared–private factorization → rejected by Related work positioning.
 
-Limitations: no real CinC/SHHS numbers in this draft; channel-aware pooling beyond lead zeroing is partial; night `ahi_bin` uses apnea-epoch-rate cut-points as placeholders; transfer claims bounded to evaluated montages once data exist; strong public baselines (CIMSleepNet, FOCAL ports, full SleepBench) not yet run locally.
+Limitations: no real CinC/SHHS numbers in this draft; channel-aware pooling beyond lead zeroing is stub-only; night severity uses continuous apnea-epoch-rate (not clinical AHI bins); transfer claims bounded to evaluated montages once data exist; strong public baselines (CIMSleepNet, FOCAL ports, full SleepBench) not yet run locally. Formal checkpoints must be retrained after raw-private VICReg + retrieval co-presence fixes (see `docs/DEVELOPMENT_STATUS.md`).
 
 ---
 

@@ -85,7 +85,11 @@ class SleepEpochDataset(Dataset):
                     cm = entry_cm[name]
                     channel_mask[name] = torch.tensor(cm, dtype=torch.float32)
                     if channel_mask[name].numel() != n_ch:
-                        channel_mask[name] = torch.ones(n_ch, dtype=torch.float32)
+                        raise ValueError(
+                            f"channel_mask for {name!r} has length "
+                            f"{channel_mask[name].numel()} but montage expects {n_ch} "
+                            f"(entry path={entry.get('path')!r})"
+                        )
                 else:
                     # Default: all channels present (zero-pad slots still marked 1 unless listed).
                     channel_mask[name] = torch.ones(n_ch, dtype=torch.float32)

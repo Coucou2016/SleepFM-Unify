@@ -46,6 +46,41 @@ def orthogonality_loss(
     return gram.pow(2).mean()
 
 
+def masked_modality_mean(
+    embeddings: Dict[str, torch.Tensor],
+    present_mask: Optional[torch.Tensor],
+    modality_order: Optional[List[str]] = None,
+) -> torch.Tensor:
+    """Mean of present modality embeddings (absent mods do not dilute the mean).
+
+    embeddings: name → (N, D) or (B, L, D)
+    present_mask: (N, M) or (B, L, M) with M = len(modality_order), or already
+    sliced to the selected modalities. When None, falls back to unweighted mean.
+    """
+    order = list(modality_order or ["bas", "ecg", "respiratory"])
+    names = [m for m in order if m in embeddings]
+    if not names:
+        raise ValueError("masked_modality_mean: no modality embeddings provided")
+    stacked = torch.stack([embeddings[m] for m in names], dim=0)  # (K, *batch, D)
+    if present_mask is None:
+        return stacked.mean(dim=0)
+    idx = [order.index(m) for m in names]
+    if present_mask.size(-1) == len(order):
+        w_batch = present_mask[..., idx]  # (*batch, K)
+    elif present_mask.size(-1) == len(names):
+        w_batch = present_mask
+    else:
+        raise ValueError(
+            f"present_mask last dim {present_mask.size(-1)} incompatible with "
+            f"{len(order)} modalities / {len(names)} selected"
+        )
+    # (*batch, K) → (K, *batch, 1)
+    perm = (w_batch.ndim - 1,) + tuple(range(w_batch.ndim - 1))
+    w = w_batch.permute(*perm).unsqueeze(-1).to(dtype=stacked.dtype)
+    denom = w.sum(dim=0).clamp_min(1e-6)
+    return (stacked * w).sum(dim=0) / denom
+
+
 class MultiModalSleepFM(nn.Module):
     """Three encoders (BAS/EEG, ECG, respiratory) + contrastive training interface.
 
@@ -167,8 +202,9 @@ class MultiModalSleepFM(nn.Module):
             # Channel mask (DONE vs TODO):
             # DONE — dataset/collate emit per-lead masks; here we zero padded/absent
             #   leads before the 1D CNN so BatchNorm/conv do not treat pad as signal.
-            # TODO — true variable-channel encoders / mask-aware channel attention or
-            #   pooling that resizes the channel axis (beyond zero-fill + fixed in_ch).
+            # STUB — ``ChannelAwareMaskedPool`` (see sleepfm.models.channel_pool) for
+            #   mask-aware channel attention; not wired into the default forward yet.
+            # TODO — true variable-channel encoders that resize the channel axis.
             if isinstance(channel_mask, dict) and name in channel_mask:
                 cm = channel_mask[name]
                 if seq_shape is not None and cm.ndim == 2 and cm.size(0) == seq_shape[0]:
@@ -194,7 +230,15 @@ class MultiModalSleepFM(nn.Module):
         batch: Dict[str, torch.Tensor],
         normalize: bool = True,
         present_mask: Optional[torch.Tensor] = None,
+        return_raw: bool = False,
     ) -> Tuple[Dict[str, torch.Tensor], Dict[str, torch.Tensor]]:
+        """Project backbone → shared/private.
+
+        When ``normalize=True`` (default), returned tensors are L2-normalized
+        (safe for InfoNCE). Raw projections are always computed first; pass
+        ``return_raw=True`` to also receive ``(shared_raw, private_raw)`` for
+        VICReg-style private variance (must **not** use unit vectors).
+        """
         signals = self._signal_batch(batch)
         flat, seq_shape = self._flatten_signals(signals)
         if present_mask is None:
@@ -206,26 +250,35 @@ class MultiModalSleepFM(nn.Module):
         backbone = self.encode_backbone(enc_batch, present_mask=present_mask)
         shared: Dict[str, torch.Tensor] = {}
         private: Dict[str, torch.Tensor] = {}
+        shared_raw: Dict[str, torch.Tensor] = {}
+        private_raw: Dict[str, torch.Tensor] = {}
         for name, h in backbone.items():
             if self.unify:
-                s = self.proj_shared[name](h)
-                p = self.proj_private[name](h)
+                s_raw = self.proj_shared[name](h)
+                p_raw = self.proj_private[name](h)
             else:
-                s = h
-                p = h.new_zeros(h.size(0), 0)
+                s_raw = h
+                p_raw = h.new_zeros(h.size(0), 0)
             if normalize:
-                s = F.normalize(s, dim=-1)
-                if p.numel() > 0:
-                    p = F.normalize(p, dim=-1)
-            # Missing rows stay exactly zero (do not L2-normalize zero vectors to NaN).
+                s = F.normalize(s_raw, dim=-1)
+                p = F.normalize(p_raw, dim=-1) if p_raw.numel() > 0 else p_raw
+            else:
+                s, p = s_raw, p_raw
+            # Missing rows stay exactly zero (do not leave normalized noise).
             if present_mask is not None:
                 col = self.MODALITY_ORDER.index(name)
                 keep = (present_mask[:, col] > 0.5).unsqueeze(-1).to(dtype=s.dtype)
                 s = s * keep
+                s_raw = s_raw * keep
                 if p.numel() > 0:
                     p = p * keep
+                    p_raw = p_raw * keep
             shared[name] = s
             private[name] = p
+            shared_raw[name] = s_raw
+            private_raw[name] = p_raw
+        if return_raw:
+            return shared, private, shared_raw, private_raw  # type: ignore[return-value]
         return shared, private
 
     def encode(
@@ -469,6 +522,9 @@ class MultiModalSleepFM(nn.Module):
 
         if mode == "sample":
             # Per-row: keep a random non-empty subset of originally present modalities.
+            # When K>=2, exclude the full set so p is an actual corruption probability
+            # (drawing among 2^K-1 non-empty subsets would leave the full set with
+            # probability 1/(2^K-1), understating effective dropout).
             new_mask = original.clone()
             for i in range(batch_size):
                 if torch.rand((), device=device) >= p:
@@ -476,9 +532,12 @@ class MultiModalSleepFM(nn.Module):
                 present_idx = (original[i] > 0.5).nonzero(as_tuple=False).view(-1)
                 if present_idx.numel() == 0:
                     continue
-                # 2^K - 1 non-empty subsets; sample uniformly among them.
                 k = int(present_idx.numel())
-                choice = int(torch.randint(1, 2**k, (1,), device=device).item())
+                if k >= 2:
+                    # Uniform over 2^k - 2 non-empty proper subsets (exclude full = 2^k-1).
+                    choice = int(torch.randint(1, 2**k - 1, (1,), device=device).item())
+                else:
+                    choice = 1  # only the singleton subset
                 keep = torch.zeros(len(self.MODALITY_ORDER), device=device)
                 for bit, col in enumerate(present_idx.tolist()):
                     if choice & (1 << bit):
@@ -503,8 +562,14 @@ class MultiModalSleepFM(nn.Module):
         private: Dict[str, torch.Tensor],
         present_mask: Optional[torch.Tensor],
         eps: float = 1e-4,
+        std_target: float = 1.0,
+        cov_weight: float = 0.0,
     ) -> torch.Tensor:
-        """VICReg-style variance hinge on private embeddings (anti-collapse)."""
+        """VICReg-style variance (+ optional covariance) on **raw** private embeddings.
+
+        Must NOT be applied to L2-normalized unit vectors: after row-normalize,
+        per-dim std is bounded by ~1/sqrt(D) and a std_target of 1 is unreachable.
+        """
         ref = next(iter(private.values()))
         total = ref.new_zeros(())
         n = 0
@@ -519,8 +584,19 @@ class MultiModalSleepFM(nn.Module):
                 p = p[keep]
             if p.size(0) < 2:
                 continue
-            std = torch.sqrt(p.var(dim=0, unbiased=False) + 1e-4)
-            total = total + F.relu(1.0 - std).mean()
+            # Center for cov; variance hinge uses per-dim std over the batch.
+            p_c = p - p.mean(dim=0, keepdim=True)
+            std = torch.sqrt(p_c.var(dim=0, unbiased=False) + eps)
+            var_loss = F.relu(float(std_target) - std).mean()
+            term = var_loss
+            if cov_weight > 0 and p.size(-1) > 1:
+                # Off-diagonal covariance penalty (VICReg).
+                n_samp = p_c.size(0)
+                cov = (p_c.T @ p_c) / max(n_samp - 1, 1)
+                off = cov - torch.diag(torch.diag(cov))
+                cov_loss = off.pow(2).sum() / p.size(-1)
+                term = term + float(cov_weight) * cov_loss
+            total = total + term
             n += 1
         if n == 0:
             return ref.new_zeros(())
@@ -573,11 +649,15 @@ class MultiModalSleepFM(nn.Module):
 
         # Encode with *original* presence so dropout teachers stay real and BN skips
         # only naturally missing rows. Contrastive / LOO use post-dropout ``present_mask``.
+        # Shared for InfoNCE is L2-normalized; private VICReg uses **raw** projections.
         enc_in = dict(flat)
         if "channel_mask" in batch:
             enc_in["channel_mask"] = batch["channel_mask"]
-        shared, private = self.encode_factorized(
-            enc_in, normalize=True, present_mask=original_present_mask
+        shared, private, _shared_raw, private_raw = self.encode_factorized(
+            enc_in,
+            normalize=True,
+            present_mask=original_present_mask,
+            return_raw=True,
         )
 
         logs: dict = {
@@ -668,7 +748,13 @@ class MultiModalSleepFM(nn.Module):
             total = total + weights["orth"] * orth
 
         if self.unify and weights.get("private", 0) > 0:
-            priv = self._private_variance_loss(private, present_mask)
+            # VICReg on raw private (pre-L2); mask with original presence.
+            cov_w = float(weights.get("private_cov", 0.0))
+            priv = self._private_variance_loss(
+                private_raw,
+                original_present_mask,
+                cov_weight=cov_w,
+            )
             logs["loss_private"] = float(priv.detach().item())
             total = total + weights["private"] * priv
 
@@ -676,12 +762,17 @@ class MultiModalSleepFM(nn.Module):
             from sleepfm.models.temporal import temporal_losses
 
             b, l = seq_shape
-            parts = []
-            for name in self.MODALITY_ORDER:
-                if name in shared:
-                    parts.append(shared[name].view(b, l, -1))
-            if parts:
-                seq = torch.stack(parts, dim=0).mean(dim=0)
+            # Post-dropout mask so dropped modalities do not dilute the mean.
+            pm = present_mask
+            if pm is not None and pm.ndim == 2:
+                pm = pm.view(b, l, -1)
+            shared_seq = {
+                name: shared[name].view(b, l, -1)
+                for name in self.MODALITY_ORDER
+                if name in shared
+            }
+            if shared_seq:
+                seq = masked_modality_mean(shared_seq, pm, self.MODALITY_ORDER)
                 t_loss, t_logs = temporal_losses(
                     temporal_encoder,
                     seq,

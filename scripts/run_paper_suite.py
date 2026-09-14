@@ -303,7 +303,7 @@ def _retrieval(
     model = MultiModalSleepFM.from_checkpoint(checkpoint, device=str(device))
     model.to(device).eval()
     ds = SleepEpochDataset(data_dir, split=split)
-    embeddings = encode_retrieval_embeddings(
+    embeddings, present_mask = encode_retrieval_embeddings(
         model,
         ds,
         device,
@@ -312,15 +312,28 @@ def _retrieval(
         gallery_seed=gallery_seed,
         gallery_mode=gallery_mode,
     )
-    metrics = modality_retrieval_metrics(embeddings, k=k)
+    metrics = modality_retrieval_metrics(
+        embeddings,
+        k=k,
+        present_mask=present_mask,
+        modality_order=model.MODALITY_ORDER,
+    )
     n = next(iter(embeddings.values())).size(0)
+    # Macro pair baseline: average of per-pair k/N_pair when available.
+    pair_bases = [v for key, v in metrics.items() if key.startswith("random_baseline_")]
+    baseline = (
+        float(sum(pair_bases) / len(pair_bases))
+        if pair_bases
+        else random_recall_baseline(n, k=k)
+    )
     return {
         "n": n,
         "k": k,
-        "random_baseline": random_recall_baseline(n, k=k),
+        "random_baseline": baseline,
         "metrics": metrics,
         "gallery_mode": gallery_mode,
         "gallery_seed": gallery_seed,
+        "co_presence_filtered": present_mask is not None,
     }
 
 
@@ -437,10 +450,7 @@ def _night(
             staging_keys=("staging_epoch_kappa",),
             apnea_keys=(),
             night_ahi_keys=(
-                "apnea_positive_epoch_rate_bin",
                 "apnea_positive_epoch_rate",
-                "ahi_bin_auroc",
-                "ahi_bin",
                 "ahi",
             ),
         )

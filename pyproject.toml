@@ -22,15 +22,16 @@ dependencies = [
 [project.scripts]
 sleepfm-pretrain = "scripts.pretrain:main"
 sleepfm-eval = "scripts.evaluate_downstream:main"
-fourdvarnet-generate = "scripts.fourdvarnet_generate_data:main"
-fourdvarnet-train = "scripts.fourdvarnet_train:main"
-fourdvarnet-eval = "scripts.fourdvarnet_eval:main"
-fourdvarnet-infer = "scripts.fourdvarnet_infer:main"
-fourdvarnet-smoke = "scripts.fourdvarnet_smoke_test:main"
+
+[project.optional-dependencies]
+# Legacy FourDVarNet research tree (not installed by default).
+fourdvarnet = []
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["sleepfm*", "fourdvarnet*", "scripts*"]
+include = ["sleepfm*", "scripts*"]
+# fourdvarnet/ remains in-tree for archival reference but is excluded from
+# the default sleepfm install / package discovery.
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

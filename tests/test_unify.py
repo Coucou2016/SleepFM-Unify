@@ -150,6 +150,85 @@ def test_private_variance_loss_runs():
     )
     assert math.isfinite(float(loss.item()))
     assert "loss_private" in logs
+    # After raw-private fix, non-collapsed init should not sit near the old ~0.94 floor.
+    assert float(logs["loss_private"]) < 0.9
+
+
+def test_private_variance_uses_raw_not_normalized():
+    """Raw non-collapsed private can drive variance near 0; unit vectors must not be the input."""
+    torch.manual_seed(0)
+    channels = {"bas": 4, "ecg": 2, "respiratory": 3}
+    model = MultiModalSleepFM(
+        channels=channels, embedding_dim=16, unify=True, shared_dim=8, private_dim=8
+    )
+    # Synthetic raw private with per-dim std >> 1 → hinge ≈ 0
+    raw = {
+        "bas": torch.randn(64, 8) * 3.0,
+        "ecg": torch.randn(64, 8) * 3.0,
+        "respiratory": torch.randn(64, 8) * 3.0,
+    }
+    mask = torch.ones(64, 3)
+    loss_raw = model._private_variance_loss(raw, mask, std_target=1.0)
+    assert float(loss_raw.item()) < 0.05
+
+    # L2-normalized unit vectors: with dim=8, mean per-dim std ≲ 1/sqrt(8) ≈ 0.35
+    # so hinge with std_target=1 stays large — proving normalized inputs are wrong.
+    unit = {k: torch.nn.functional.normalize(v, dim=-1) for k, v in raw.items()}
+    loss_unit = model._private_variance_loss(unit, mask, std_target=1.0)
+    assert float(loss_unit.item()) > 0.5
+
+    # encode_factorized return_raw: private_raw differs from normalized private
+    batch = _batch(16, 48, channels)
+    shared, private, shared_raw, private_raw = model.encode_factorized(
+        batch, normalize=True, return_raw=True
+    )
+    assert shared["bas"].shape == shared_raw["bas"].shape
+    # Normalized rows have unit norm (present); raw generally do not.
+    norms = private["bas"].norm(dim=-1)
+    assert torch.allclose(norms, torch.ones_like(norms), atol=1e-4)
+    raw_norms = private_raw["bas"].norm(dim=-1)
+    assert not torch.allclose(raw_norms, torch.ones_like(raw_norms), atol=1e-3)
+
+
+def test_sample_wise_modality_dropout_excludes_full_set():
+    """When K>=2 and p=1, every corrupted row must drop at least one modality."""
+    torch.manual_seed(0)
+    channels = {"bas": 4, "ecg": 2, "respiratory": 3}
+    model = MultiModalSleepFM(
+        channels=channels, embedding_dim=16, unify=True, shared_dim=8, private_dim=8
+    )
+    model.train()
+    bs = 64
+    present = torch.ones(bs, 3)
+    new_mask, dropped, original = model._apply_modality_dropout(
+        present, bs, torch.device("cpu"), p=1.0, mode="sample"
+    )
+    assert dropped == "sample_wise"
+    # Every row should have strictly fewer than 3 modalities after corruption.
+    assert (new_mask.sum(dim=1) < 3).all()
+    assert (new_mask.sum(dim=1) >= 1).all()
+    assert torch.equal(original, present)
+
+
+def test_masked_modality_mean_ignores_absent():
+    from sleepfm.models.sleepfm import masked_modality_mean
+
+    bas = torch.ones(4, 3)
+    ecg = torch.ones(4, 3) * 10
+    mask = torch.tensor(
+        [
+            [1.0, 0.0, 0.0],
+            [1.0, 1.0, 0.0],
+            [0.0, 1.0, 0.0],
+            [1.0, 1.0, 1.0],
+        ]
+    )
+    out = masked_modality_mean(
+        {"bas": bas, "ecg": ecg}, mask, ["bas", "ecg", "respiratory"]
+    )
+    assert torch.allclose(out[0], torch.ones(3))  # bas only
+    assert torch.allclose(out[1], torch.ones(3) * 5.5)  # (1+10)/2
+    assert torch.allclose(out[2], torch.ones(3) * 10)  # ecg only
 
 
 def test_sample_wise_modality_dropout():

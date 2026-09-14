@@ -90,10 +90,7 @@ def main():
             staging_keys=("staging_epoch_kappa",),
             apnea_keys=(),
             night_ahi_keys=(
-                "apnea_positive_epoch_rate_bin",
                 "apnea_positive_epoch_rate",
-                "ahi_bin_auroc",
-                "ahi_bin",
                 "ahi",
             ),
         )

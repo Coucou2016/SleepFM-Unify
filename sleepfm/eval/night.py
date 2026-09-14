@@ -1,8 +1,9 @@
 """Night-level labels and linear probes.
 
-Night severity uses ``apnea_positive_epoch_rate`` (and bins thereof) — **not**
-clinical AASM AHI. Deprecated aliases ``ahi`` / ``ahi_bin`` remain for probes.
-Sleep-efficiency is stage-based (non-Wake fraction), also a coarse placeholder.
+Night severity uses continuous ``apnea_positive_epoch_rate`` — **not**
+clinical AASM AHI and **not** 5/15/30 severity bins. Deprecated alias ``ahi``
+remains for probes. Sleep-efficiency is stage-based (non-Wake fraction),
+also a coarse placeholder.
 """
 
 from __future__ import annotations
@@ -11,14 +12,14 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 import torch
-from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.metrics import accuracy_score, cohen_kappa_score, r2_score, roc_auc_score
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import accuracy_score, cohen_kappa_score, r2_score
 from torch.utils.data import DataLoader
 
 from sleepfm.data.dataset import SleepEpochDataset, collate_multimodal
 from sleepfm.data.night_dataset import group_entries_by_night, night_summary_from_entries
 from sleepfm.eval.downstream import train_logistic_regression
-from sleepfm.models.sleepfm import MultiModalSleepFM
+from sleepfm.models.sleepfm import MultiModalSleepFM, masked_modality_mean
 from sleepfm.models.temporal import NightTemporalEncoder, contextualize_sequence
 
 
@@ -79,19 +80,29 @@ def encode_epoch_features(
             batch = _batch_to_device(batch, device)
             z = model.encode(batch, space=space)
             mask = batch.get("present_mask")
-            parts = []
-            for i, m in enumerate(model.MODALITY_ORDER):
-                if m not in z:
-                    continue
-                vec = z[m]
-                if mask is not None and i < mask.size(-1):
-                    vec = vec * mask[:, i : i + 1].to(dtype=vec.dtype)
-                parts.append(vec)
-            if not parts:
-                continue
             if reduce == "mean":
-                combined = torch.stack(parts, dim=0).mean(dim=0)
+                z_masked = {}
+                for i, m in enumerate(model.MODALITY_ORDER):
+                    if m not in z:
+                        continue
+                    vec = z[m]
+                    if mask is not None and i < mask.size(-1):
+                        vec = vec * mask[:, i : i + 1].to(dtype=vec.dtype)
+                    z_masked[m] = vec
+                if not z_masked:
+                    continue
+                combined = masked_modality_mean(z_masked, mask, model.MODALITY_ORDER)
             else:
+                parts = []
+                for i, m in enumerate(model.MODALITY_ORDER):
+                    if m not in z:
+                        continue
+                    vec = z[m]
+                    if mask is not None and i < mask.size(-1):
+                        vec = vec * mask[:, i : i + 1].to(dtype=vec.dtype)
+                    parts.append(vec)
+                if not parts:
+                    continue
                 combined = torch.cat(parts, dim=-1)
             emb_chunks.append(combined.cpu().numpy())
             labels_stage.extend(lab["stage_id"].tolist())
@@ -247,49 +258,46 @@ def probe_night_tasks(
     X_test: np.ndarray,
     summaries_test: Sequence[dict],
 ) -> Dict[str, dict]:
-    def _rate_bin(s: dict) -> int:
-        if "apnea_positive_epoch_rate_bin" in s:
-            return int(s["apnea_positive_epoch_rate_bin"])
-        return int(s.get("ahi_bin", -1))
+    def _rate(s: dict) -> float:
+        if "apnea_positive_epoch_rate" in s:
+            return float(s["apnea_positive_epoch_rate"])
+        return float(s.get("ahi", float("nan")))
 
-    y_bin_tr = np.array([_rate_bin(s) for s in summaries_train], dtype=np.int64)
-    y_bin_te = np.array([_rate_bin(s) for s in summaries_test], dtype=np.int64)
+    y_rate_tr = np.array([_rate(s) for s in summaries_train], dtype=np.float64)
+    y_rate_te = np.array([_rate(s) for s in summaries_test], dtype=np.float64)
     y_se_tr = np.array([s["sleep_efficiency"] for s in summaries_train], dtype=np.float64)
     y_se_te = np.array([s["sleep_efficiency"] for s in summaries_test], dtype=np.float64)
     out: Dict[str, dict] = {
         "n_train_nights": int(len(summaries_train)),
         "n_test_nights": int(len(summaries_test)),
         "apnea_positive_epoch_rate_note": (
-            "Bins use coarse rate cut-points (<5 / <15 / <30 / >=30 positive-epochs/hour); "
-            "NOT clinical AASM AHI (events per hour of sleep)."
+            "Continuous apnea-positive epochs/hour of recording (regression). "
+            "NOT clinical AASM AHI; 5/15/30 severity bins intentionally removed."
         ),
     }
-    bin_key = "apnea_positive_epoch_rate_bin"
-    if len(np.unique(y_bin_tr)) >= 2 and len(X_train) >= 2:
+    rate_key = "apnea_positive_epoch_rate"
+    finite_tr = np.isfinite(y_rate_tr)
+    finite_te = np.isfinite(y_rate_te)
+    if int(finite_tr.sum()) >= 2 and len(X_train) >= 2:
         try:
-            clf = LogisticRegression(max_iter=2000, class_weight="balanced")
-            clf.fit(X_train, y_bin_tr)
-            pred = clf.predict(X_test)
-            bin_metrics = {
-                "accuracy": float(accuracy_score(y_bin_te, pred)),
-                "n_classes_train": int(len(np.unique(y_bin_tr))),
-                "label": "apnea_positive_epoch_rate_bin_placeholder",
+            reg = LinearRegression()
+            reg.fit(X_train[finite_tr], y_rate_tr[finite_tr])
+            pred = reg.predict(X_test[finite_te] if finite_te.any() else X_test)
+            y_true = y_rate_te[finite_te] if finite_te.any() else y_rate_te
+            rate_metrics = {
+                "r2": float(r2_score(y_true, pred)) if len(y_true) > 1 else float("nan"),
+                "mae": float(np.mean(np.abs(pred - y_true))) if len(y_true) else float("nan"),
+                "label": "apnea_positive_epoch_rate_continuous",
             }
-            if len(np.unique(y_bin_te)) >= 2 and hasattr(clf, "predict_proba"):
-                proba = clf.predict_proba(X_test)
-                if proba.shape[1] == 2:
-                    bin_metrics["auroc"] = float(roc_auc_score(y_bin_te, proba[:, 1]))
-            out[bin_key] = bin_metrics
-            out["ahi_bin"] = bin_metrics  # deprecated alias
+            out[rate_key] = rate_metrics
+            out["ahi"] = rate_metrics  # deprecated alias (still not clinical AHI)
         except Exception as exc:
-            out[bin_key] = {"error": str(exc)}
-            out["ahi_bin"] = out[bin_key]
+            out[rate_key] = {"error": str(exc)}
+            out["ahi"] = out[rate_key]
     else:
-        note = {
-            "note": "need >=2 apnea_positive_epoch_rate bins in train nights (placeholder)"
-        }
-        out[bin_key] = note
-        out["ahi_bin"] = note
+        note = {"note": "need >=2 nights with finite apnea_positive_epoch_rate"}
+        out[rate_key] = note
+        out["ahi"] = note
 
     if len(X_train) >= 2:
         reg = LinearRegression()

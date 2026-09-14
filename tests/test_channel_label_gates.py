@@ -129,3 +129,38 @@ def test_paper_suite_help_has_temporal_flags():
     assert "--train-temporal" in r.stdout
     assert "--temporal-checkpoint" in r.stdout
     assert "--allow-channel-mismatch" in r.stdout
+
+def test_malformed_channel_mask_raises(tmp_path):
+    from sleepfm.data.dataset import SleepEpochDataset
+    from sleepfm.data.synthetic import write_synthetic_dataset
+
+    channels = {"bas": 4, "ecg": 2, "respiratory": 3}
+    data = tmp_path / "cm"
+    write_synthetic_dataset(
+        data,
+        channels,
+        clip_length=32,
+        splits={"pretrain": 4, "valid": 2, "train": 4, "test": 2},
+        seed=0,
+        num_participants=4,
+        epochs_per_participant=2,
+    )
+    import json
+    index_path = data / "index.json"
+    payload = json.loads(index_path.read_text(encoding="utf-8"))
+    payload["splits"]["pretrain"][0]["channel_mask"] = {"bas": [1.0, 1.0]}  # wrong length
+    index_path.write_text(json.dumps(payload), encoding="utf-8")
+    ds = SleepEpochDataset(data, split="pretrain")
+    with pytest.raises(ValueError, match="channel_mask"):
+        _ = ds[0]
+
+
+def test_channel_aware_pool_stub():
+    from sleepfm.models.channel_pool import ChannelAwareMaskedPool
+
+    pool = ChannelAwareMaskedPool(in_channels=4)
+    x = torch.randn(2, 4, 16)
+    mask = torch.ones(2, 4)
+    mask[:, 3] = 0
+    y = pool(x, mask)
+    assert y.shape == (2, 16)

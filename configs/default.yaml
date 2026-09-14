@@ -55,7 +55,8 @@ unify:
     orth: 0.1
     temporal: 0.0
     miss: 0.5
-    private: 0.1  # VICReg-style variance hinge on private (anti-collapse)
+    private: 0.1  # VICReg variance hinge on **raw** private (pre-L2); not unit vectors
+    # private_cov: 0.0  # optional VICReg covariance weight (off by default)
 
 # Optional night-level temporal context (P3)
 temporal:

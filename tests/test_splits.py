@@ -70,6 +70,29 @@ def test_train_test_participant_leak_fails(tmp_path):
         assert_paper_isolation(data_dir, strict=True)
 
 
+def test_strict_missing_participant_id_fail_closed(tmp_path):
+    """Strict mode must raise when participant_id fields are absent (not silent True)."""
+    channels = {"bas": 4, "ecg": 2, "respiratory": 3}
+    data_dir = tmp_path / "no_pid"
+    write_synthetic_dataset(
+        data_dir,
+        channels,
+        clip_length=32,
+        splits={"pretrain": 8, "valid": 4, "train": 8, "test": 4},
+        seed=0,
+        num_participants=8,
+        epochs_per_participant=2,
+    )
+    index_path = data_dir / "index.json"
+    payload = json.loads(index_path.read_text(encoding="utf-8"))
+    for split in payload["splits"].values():
+        for entry in split:
+            entry.pop("participant_id", None)
+    index_path.write_text(json.dumps(payload), encoding="utf-8")
+    with pytest.raises(RuntimeError, match="participant_id|fail-closed|isolation"):
+        assert_paper_isolation(data_dir, strict=True)
+
+
 def test_pretrain_train_no_overlap_integration():
     """Regression: downstream LR must not see pretrain epoch files."""
     channels = {"bas": 4, "ecg": 2, "respiratory": 3}

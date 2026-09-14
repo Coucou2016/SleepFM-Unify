@@ -54,7 +54,7 @@ def main():
     model.eval()
 
     ds = SleepEpochDataset(args.data_dir or cfg["data_dir"], split=args.split)
-    embeddings = encode_retrieval_embeddings(
+    embeddings, present_mask = encode_retrieval_embeddings(
         model,
         ds,
         device,
@@ -64,11 +64,28 @@ def main():
         gallery_mode=args.gallery_mode,
     )
 
-    metrics = modality_retrieval_metrics(embeddings, k=args.k)
-    n = next(iter(embeddings.values())).size(0)
-    baseline = random_recall_baseline(n, k=args.k)
-    print(f"Split={args.split} N={n} random Recall@{args.k}≈{baseline:.4f}")
+    metrics = modality_retrieval_metrics(
+        embeddings,
+        k=args.k,
+        present_mask=present_mask,
+        modality_order=model.MODALITY_ORDER,
+    )
+    # Prefer per-pair baselines when co-presence filtering is active.
+    pair_baselines = {k: v for k, v in metrics.items() if k.startswith("random_baseline_")}
+    if pair_baselines:
+        print(f"Split={args.split} co-presence filtered (per-pair N / baseline):")
+        for key, base in sorted(pair_baselines.items()):
+            pair = key.replace("random_baseline_", "")
+            n_key = f"n_pair_{pair}"
+            n_pair = int(metrics.get(n_key, 0))
+            print(f"  {pair}: N_pair={n_pair} random Recall@{args.k}≈{base:.4f}")
+    else:
+        n = next(iter(embeddings.values())).size(0)
+        baseline = random_recall_baseline(n, k=args.k)
+        print(f"Split={args.split} N={n} random Recall@{args.k}≈{baseline:.4f}")
     for k, v in sorted(metrics.items()):
+        if k.startswith("random_baseline_") or k.startswith("n_pair_"):
+            continue
         print(f"  {k}: {v:.4f}")
 
 

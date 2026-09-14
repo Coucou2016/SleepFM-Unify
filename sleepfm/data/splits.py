@@ -114,11 +114,17 @@ def split_overlap(
     split_a: str,
     split_b: str,
     by: str = "path",
+    *,
+    require_ids: bool = False,
 ) -> Tuple[bool, Set[str]]:
     """
     Return (has_overlap, overlapping_ids) between two splits.
 
     by: "path", "participant_id", or "night_id" (night_id/recording_id composite).
+
+    When ``require_ids=True`` and ``by == "participant_id"``, empty / missing
+    participant_id sets on a non-empty split raise ``RuntimeError`` (fail-closed)
+    instead of silently reporting no overlap.
     """
     payload = load_index(data_dir)
     splits = payload["splits"]
@@ -129,9 +135,35 @@ def split_overlap(
         a = entry_paths(splits[split_a])
         b = entry_paths(splits[split_b])
     elif by == "participant_id":
-        a = entry_participant_ids(splits[split_a])
-        b = entry_participant_ids(splits[split_b])
-        if not a or not b:
+        entries_a = splits[split_a]
+        entries_b = splits[split_b]
+        a = entry_participant_ids(entries_a)
+        b = entry_participant_ids(entries_b)
+        if require_ids:
+            if entries_a and not a:
+                raise RuntimeError(
+                    f"Strict isolation: split {split_a!r} has {len(entries_a)} entries "
+                    "but no participant_id fields (fail-closed)"
+                )
+            if entries_b and not b:
+                raise RuntimeError(
+                    f"Strict isolation: split {split_b!r} has {len(entries_b)} entries "
+                    "but no participant_id fields (fail-closed)"
+                )
+            # Also fail if some entries are missing participant_id while others have it.
+            missing_a = sum(1 for e in entries_a if e.get("participant_id") is None)
+            missing_b = sum(1 for e in entries_b if e.get("participant_id") is None)
+            if missing_a:
+                raise RuntimeError(
+                    f"Strict isolation: split {split_a!r} has {missing_a} entries "
+                    "missing participant_id (fail-closed)"
+                )
+            if missing_b:
+                raise RuntimeError(
+                    f"Strict isolation: split {split_b!r} has {missing_b} entries "
+                    "missing participant_id (fail-closed)"
+                )
+        elif not a or not b:
             return False, set()
     elif by == "night_id":
         a = entry_night_ids(splits[split_a])
@@ -149,9 +181,13 @@ def assert_disjoint_splits(
     data_dir: str | Path,
     pairs: List[Tuple[str, str]],
     by: str = "path",
+    *,
+    require_ids: bool = False,
 ) -> None:
     for sa, sb in pairs:
-        has, overlap = split_overlap(data_dir, sa, sb, by=by)
+        has, overlap = split_overlap(
+            data_dir, sa, sb, by=by, require_ids=require_ids and by == "participant_id"
+        )
         if has:
             sample = sorted(overlap)[:5]
             raise AssertionError(
@@ -165,17 +201,35 @@ def _existing_pairs(data_dir: str | Path, pairs: List[Tuple[str, str]]) -> List[
     return [(a, b) for a, b in pairs if a in splits and b in splits]
 
 
-def downstream_isolation_ok(data_dir: str | Path) -> Dict[str, bool]:
-    """Full cohort separation across pretrain/valid/train/test (paths + participants + nights)."""
+def downstream_isolation_ok(
+    data_dir: str | Path,
+    *,
+    strict_participant_ids: bool = False,
+) -> Dict[str, bool]:
+    """Full cohort separation across pretrain/valid/train/test (paths + participants + nights).
+
+    When ``strict_participant_ids=True``, missing ``participant_id`` fails the
+    corresponding check (and ``assert_paper_isolation`` raises).
+    """
     checks: Dict[str, bool] = {}
     pairs = _existing_pairs(data_dir, PAPER_SPLIT_PAIRS)
     for sa, sb in pairs:
         for by in ("path", "participant_id", "night_id"):
             key = f"{sa}_vs_{sb}_{by}"
             try:
-                has, _ = split_overlap(data_dir, sa, sb, by=by)
-                # night_id: no overlap only matters when both sides have night ids
+                has, _ = split_overlap(
+                    data_dir,
+                    sa,
+                    sb,
+                    by=by,
+                    require_ids=strict_participant_ids and by == "participant_id",
+                )
                 checks[key] = not has
+            except RuntimeError:
+                if strict_participant_ids and by == "participant_id":
+                    checks[key] = False
+                else:
+                    raise
             except KeyError:
                 checks[key] = True
     return checks
@@ -190,30 +244,17 @@ def assert_paper_isolation(
     Verify path / participant / night isolation for all paper split pairs.
 
     When ``strict=True`` (paper / evaluate / paper-suite mode), raise
-    ``RuntimeError`` on any leak instead of warning-and-continue.
+    ``RuntimeError`` on any leak **or** missing participant_id fields
+    instead of warning-and-continue / silent True.
     """
-    checks = downstream_isolation_ok(data_dir)
+    checks = downstream_isolation_ok(data_dir, strict_participant_ids=strict)
     failed = [k for k, v in checks.items() if not v]
     if failed and strict:
         details = []
         for key in failed:
-            # key like "train_vs_test_participant_id"
-            parts = key.rsplit("_", 2)
-            if len(parts) >= 3 and parts[-1] in ("path", "id") and parts[-2] in (
-                "participant",
-                "night",
-            ):
-                by = f"{parts[-2]}_{parts[-1]}" if parts[-1] == "id" else parts[-1]
-                # Reconstruct pair from PAPER_SPLIT_PAIRS match
-                by = "participant_id" if "participant" in key else (
-                    "night_id" if "night" in key else "path"
-                )
-            else:
-                by = "path"
-            # Parse "a_vs_b_by"
+            by = "path"
             try:
                 left, rest = key.split("_vs_", 1)
-                # rest ends with _path / _participant_id / _night_id
                 for suffix in ("_participant_id", "_night_id", "_path"):
                     if rest.endswith(suffix):
                         right = rest[: -len(suffix)]
@@ -221,9 +262,20 @@ def assert_paper_isolation(
                         break
                 else:
                     right = rest
-                has, overlap = split_overlap(data_dir, left, right, by=by)
-                sample = sorted(overlap)[:5]
-                details.append(f"{left} vs {right} ({by}): {len(overlap)} e.g. {sample}")
+                try:
+                    has, overlap = split_overlap(
+                        data_dir,
+                        left,
+                        right,
+                        by=by,
+                        require_ids=by == "participant_id",
+                    )
+                    sample = sorted(overlap)[:5]
+                    details.append(
+                        f"{left} vs {right} ({by}): {len(overlap)} e.g. {sample}"
+                    )
+                except RuntimeError as exc:
+                    details.append(f"{left} vs {right} ({by}): {exc}")
             except Exception as exc:
                 details.append(f"{key}: {exc}")
         raise RuntimeError(

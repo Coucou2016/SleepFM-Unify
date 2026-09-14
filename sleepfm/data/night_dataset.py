@@ -52,7 +52,9 @@ def night_summary_from_entries(
     ``apnea_positive_epoch_rate`` is apnea-positive **epochs per hour of recording**
     (binary apnea flags / hours). It is **not** clinical AHI (events/hour with
     AASM scoring). Deprecated aliases: ``apnea_epoch_rate``, ``ahi``.
-    Bins are coarse rate cut-points — not clinical AHI severity classes.
+
+    Clinical-looking 5/15/30 severity bins were removed — they are not AHI classes.
+    Downstream night probes use the continuous rate (regression) only.
     """
     n = len(entries)
     if n == 0:
@@ -62,8 +64,6 @@ def night_summary_from_entries(
             "apnea_epoch_rate": float("nan"),
             "ahi": float("nan"),
             "sleep_efficiency": float("nan"),
-            "apnea_positive_epoch_rate_bin": -1,
-            "ahi_bin": -1,
             "ahi_definition": "placeholder_apnea_positive_epoch_rate_not_clinical_ahi",
         }
     stages = [int(e.get("stage_id", 0)) for e in entries]
@@ -71,23 +71,12 @@ def night_summary_from_entries(
     hours = max(n * float(epoch_seconds) / 3600.0, 1e-6)
     rate = float(sum(apneas) / hours)
     sleep_eff = float(sum(s != 0 for s in stages) / n)
-    # Coarse rate bins (same numeric cut-points as common AHI tables, but NOT AHI).
-    if rate < 5:
-        rate_bin = 0
-    elif rate < 15:
-        rate_bin = 1
-    elif rate < 30:
-        rate_bin = 2
-    else:
-        rate_bin = 3
     return {
         "n_epochs": n,
         "apnea_positive_epoch_rate": rate,
         "apnea_epoch_rate": rate,  # alias
         "ahi": rate,  # deprecated alias — not clinical AHI
         "sleep_efficiency": sleep_eff,
-        "apnea_positive_epoch_rate_bin": rate_bin,
-        "ahi_bin": rate_bin,  # deprecated alias
         "ahi_definition": "placeholder_apnea_positive_epoch_rate_not_clinical_ahi",
         "participant_id": entries[0].get("participant_id"),
         "night_id": night_key(entries[0])[1],
