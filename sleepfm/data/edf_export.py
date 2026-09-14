@@ -664,6 +664,14 @@ def discover_recordings(input_dir: str | Path, dataset: str) -> List[Path]:
         found.extend(sorted(input_dir.rglob("*.edf")))
         found.extend(sorted(input_dir.rglob("*.EDF")))
         found.extend(sorted(input_dir.rglob("*.npz")))
+    # CinC ships companion ``*-arousal.mat`` (sample-wise targets); those are not
+    # signal records — annotations come from WFDB ``.arousal`` via load_annotations.
+    found = [
+        p
+        for p in found
+        if not p.name.lower().endswith("-arousal.mat")
+        and not p.stem.lower().endswith("-arousal")
+    ]
     # Prefer unique stems (mat over edf over npz if duplicates).
     by_stem: Dict[str, Path] = {}
     rank = {".mat": 0, ".edf": 1, ".EDF": 1, ".npz": 2}

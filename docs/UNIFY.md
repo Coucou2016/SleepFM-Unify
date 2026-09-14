@@ -50,7 +50,8 @@ Optional `channel_mask` per modality (dataset → collate → encode) zeros padd
 | Emit masks from index / missing slots; collate stacks them | **Done** |
 | Zero padded leads in `encode_backbone` (no fake signal into BN/conv) | **Done** |
 | Fixed montage schema 10/2/7 with documented pads | **Done** |
-| True variable-channel encoders / mask-aware channel attention or pooling that resizes the channel axis | **TODO** (`ChannelAwareMaskedPool` stub only) |
+| Mask-aware soft channel attention (`ChannelAwareMaskedPool`, reweight mode) | **Done** (optional; `channel_aware_pool: true` in `configs/unify.yaml`) |
+| True variable-channel encoders that **resize** the channel axis | **TODO** (future) |
 
 Downstream default: concatenate shared\(\|\)private per modality (`downstream_space: concat`). Probe helpers / CLIs support `space=shared|private|concat` (`scripts/eval_space_probe.py`, `evaluate_downstream.py --space`, paper suite `--space-probe`). Retrieval uses **shared** embeddings from the **same checkpoint**.
 

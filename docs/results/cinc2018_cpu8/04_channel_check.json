@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "model_channels": {
+    "bas": 10,
+    "ecg": 2,
+    "respiratory": 7
+  },
+  "data_channels": {
+    "bas": 10,
+    "ecg": 2,
+    "respiratory": 7
+  },
+  "messages": [
+    "checkpoint=outputs/unify_cinc_cpu/best.pt: model channels=10/2/7 (paper clinic)",
+    "checkpoint=outputs/unify_cinc_cpu/best.pt: OK vs data meta 10/2/7 (paper clinic)"
+  ],
+  "allow_mismatch": false
+}

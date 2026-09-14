@@ -1,0 +1,12 @@
+# Reduced real-data protocol for CPU hosts (measured CinC subset).
+# Still uses real PhysioNet Challenge-2018 signals — not synthetic.
+_base: configs/default.yaml
+data_dir: data/cinc2018
+output_dir: outputs/pretrain_cinc_cpu
+batch_size: 8
+epochs: 5
+num_workers: 0
+early_stopping_patience: 3
+lr: 0.001
+clip_seconds: 30
+sample_rate: 256

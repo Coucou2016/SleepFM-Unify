@@ -107,38 +107,43 @@ Participant-level $k$-shot linear probes with **≥10 repeats** in paper mode; r
 |---------|------|----------------------------|
 | Synthetic demo | Engineering smoke | Released with code |
 | CinC 2018 fixture | Schema export test | Released with code |
-| PhysioNet CinC 2018 | Paper pretrain/eval | Pending user download |
-| NSRR SHHS / MESA | Transfer / night labels | Pending DUA download |
+| PhysioNet CinC 2018 | Paper pretrain/eval | **Measured** on open training subset (8 subjects; CPU stride protocol); see `docs/results/cinc2018_cpu8/` |
+| NSRR SHHS / MESA | Transfer / night labels | **Blocked** — NSRR DUA / `NSRR_TOKEN` not available on this machine |
 
-### Protocol (when data land)
+### Protocol (executed)
 
-1. Export and validate with strict split isolation.
-2. Pretrain LOO baseline vs Unify.
-3. Downstream staging / apnea probes (concat / shared / private), co-presence retrieval, modality ablation, few-shot (≥10 repeats), night-level probes.
-4. Optional temporal night head.
-5. Multi-seed uncertainty on real data (planned).
+1. Open-access CinC 2018 training subset via `scripts/download_cinc2018_subset.py` (S3 `physionet-open`, no login).
+2. Export + validate with strict participant isolation (`claim_staging` / `claim_apnea` gates **pass** on WFDB `.arousal` stages + respiratory events).
+3. CPU protocol: stride-subsample epochs (670 indexed / 7304 full-export epochs), batch 8, 5 pretrain epochs, device=CPU.
+4. Pretrain LOO (`configs/cinc_cpu.yaml`) and Unify + `channel_aware_pool` (`configs/unify_cinc_cpu.yaml`) **after** P0 VICReg/co-presence fixes.
+5. Paper suite: staging, apnea, co-presence retrieval, 7-subset modality ablation, few-shot ≥10 repeats, space probes, night κ (mean-pool fallback).
+6. Supervised baselines: EffNetSupervised + SeqStagingBaseline on the same index.
 
-### Experiment matrix (planned)
+### Experiment matrix (measured CinC CPU-8)
 
-| Experiment | Baseline | Unify | Metric | Status |
-|------------|----------|-------|--------|--------|
-| Staging (macro AUROC/AUPRC) | LOO | Full | Macro AUROC | Pending real data |
-| SDB / apnea probe | LOO | Full | AUROC | Pending real data |
-| Retrieval Recall@1/@5 | LOO | Shared | Directed Recall@$k$ | Pending real data |
-| Modality dropout robustness | LOO | Full ± miss | ΔAUROC | Pending real data |
-| Space probe (concat / shared / private) | — | Unify | Macro AUROC | Pending real data |
-| Ablation −orth / −miss / +temporal | — | Variants | Same | Pending real data |
-| Few-shot (k∈{1,2,4}, ≥10 repeats) | LOO | Full | Macro AUROC mean±95% CI | Pending real data |
-| Night κ / apnea-positive epoch rate | LOO pool | +temporal | κ, R²/MAE | Pending real data |
+Source: `docs/results/cinc2018_cpu8/measured_compact.json` (and full `summary.json`). Values are **measured**, not invented. Scale is intentionally small (CPU); do not treat as clinic-scale SleepFM numbers.
+
+| Experiment | LOO | Unify | Metric | Measured |
+|------------|-----|-------|--------|----------|
+| Staging (macro AUROC/AUPRC) | 0.454 / 0.289 | 0.495 / 0.235 | Macro AUROC / AUPRC | Yes (n_test=60 epochs, 1 participant) |
+| SDB / apnea probe | **0.662** / 0.454 | 0.436 / 0.189 | AUROC / AUPRC | Yes (label gate pass) |
+| Retrieval Recall@10 (macro) | — | 0.0198 (rand≈0.020) | Directed co-presence R@10 | Yes (gallery 500) |
+| Modality subsets (7) | — | bas 0.514 … full 0.495 | Staging macro AUROC | Yes |
+| Space probe (concat / shared / private) | — | 0.495 / 0.510 / 0.499 | Staging macro AUROC | Yes |
+| Few-shot (k∈{1,2,4}, 10 repeats) | — | 0.4955±0.0000 | Macro AUROC mean±95% CI | Yes (degenerate: only 1 train participant) |
+| Night staging κ | — | κ=−0.087 (acc 0.367) | Cohen κ | Yes (mean-pool; apnea-epoch-rate N/A: &lt;2 nights/split) |
+| Supervised EffNet | 0.393 macro AUROC | — | Staging | Yes |
+| SeqStagingBaseline (CNN+GRU) | 0.518 macro AUROC | — | Staging | Yes |
+
+FOCAL / CIMSleepNet / OSF-SleepBench: **external citation only** (not installed/run here).
 
 ### Results
 
-Synthetic demos produce near-chance staging AUROC and are reported only as engineering verification. Real CinC / SHHS / MESA numbers are not filled in this draft. Formal Unify checkpoints used for any future real-data narrative must be trained after the raw-private VICReg and retrieval co-presence correctness fixes described in the method notes.
+CPU-8 CinC numbers above are real exports of PhysioNet Challenge 2018 signals with AASM-stage and respiratory labels from WFDB `.arousal` files. Staging AUROCs remain near chance under this short CPU schedule — reported honestly as scale-limited measured values, not clinic SOTA. LOO apnea AUROC (0.662) exceeds Unify on this tiny split; larger subject counts / GPU schedules are required before comparing methods. SHHS/MESA cells remain empty (DUA). Synthetic demos remain engineering-only.
 
-#### Ablations (planned)
+#### Ablations (measured modality subsets + space probes)
 
-LOO baseline; Unify full; Unify − orth; Unify − miss; Unify + temporal; space probes; modality dropout robustness.
-
+Unify modality-ablation staging macro AUROC: bas 0.514; ecg 0.401; respiratory 0.500; bas+ecg 0.496; bas+respiratory 0.513; ecg+respiratory 0.401; all three 0.495. Space probe: concat 0.495, shared 0.510, private 0.499. Loss-weight ablations (−orth / −miss / +temporal) not re-swept on this CPU pass.
 ---
 
 ## Discussion
@@ -147,7 +152,7 @@ Unify keeps SleepFM’s LOO retrieval semantics in the shared space while retain
 
 **Failure modes.** (i) Montage mismatch without override → load fails by design. (ii) CinC staging claims without coverage → gate blocks. (iii) Interpreting synthetic near-chance AUROC as a positive result → rejected by caption policy. (iv) Calling night apnea-epoch-rate “AHI” → wording violation. (v) Claiming novel shared–private factorization → rejected by Related work positioning.
 
-**Limitations.** No real CinC/SHHS numbers in this draft; channel-aware pooling beyond lead zeroing is incomplete; night severity uses continuous apnea-epoch-rate (not clinical AHI); transfer claims are bounded to evaluated montages once data exist; strong public baselines (CIMSleepNet, FOCAL ports, full SleepBench) are not yet run locally.
+**Limitations.** Measured CinC CPU-8 results are scale-limited (8 subjects, stride-subsampled epochs, 5 CPU epochs); staging remains near chance and few-shot collapses to a single train participant. SHHS/MESA are still DUA-blocked. Night apnea-positive epoch rate needs ≥2 nights per split (N/A here). Channel-aware soft pooling is implemented and enabled for Unify; encoders that *resize* the channel axis remain future work. FOCAL/CIMSleepNet/OSF are external citations only. Transfer claims are bounded to evaluated montages.
 
 ---
 
@@ -168,8 +173,8 @@ Public code/docs: [https://github.com/Coucou2016/SleepFM-Unify](https://github.c
 ## Figures
 
 - **Fig. 1** Architecture (missing-PSG stack + shared–private tool heads). Schematic; no clinical metrics.
-- **Fig. 2** Synthetic Unify pretrain loss curves (demo only).
-- **Fig. 3** Ablation schematic with chance baseline (demo numbers only).
+- **Fig. 2** Unify pretrain loss on real CinC CPU-8 protocol (measured; not synthetic demo).
+- **Fig. 3** Measured modality-ablation / baseline bars from `docs/results/cinc2018_cpu8/` (CPU-8 scale).
 - **Fig. 4** Shared×private Gram diagnostic (demo forward pass).
 - **Fig. 5** Modality-dropout robustness schematic (demo).
 - **Fig. 6** Experiment pipeline from raw PSG to LOO vs Unify evaluation.

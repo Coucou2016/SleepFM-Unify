@@ -1,0 +1,21 @@
+{
+  "staging": {
+    "accuracy": 0.3,
+    "macro_f1": 0.1288888888888889,
+    "cohen_kappa": -0.12500000000000022,
+    "macro_auroc": 0.4954862778983469,
+    "macro_auprc": 0.23475073513404418
+  },
+  "apnea": {
+    "auroc": 0.436,
+    "auprc": 0.18908937247247615
+  },
+  "label_gate": {
+    "claim_staging": true,
+    "claim_apnea": true,
+    "claim_night_ahi": true,
+    "claim_night_staging_kappa": true,
+    "messages": [],
+    "skipped": []
+  }
+}

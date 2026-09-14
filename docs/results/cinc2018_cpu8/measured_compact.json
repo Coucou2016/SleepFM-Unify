@@ -1,0 +1,146 @@
+{
+  "protocol": {
+    "dataset": "PhysioNet CinC 2018 (challenge-2018) open training subset",
+    "n_subjects_raw": 8,
+    "n_epochs_cpu_index": 670,
+    "n_epochs_full_export": 7304,
+    "device": "cpu",
+    "pretrain_epochs": 5,
+    "batch_size": 8,
+    "channel_aware_pool_unify": true,
+    "note": "CPU stride-subsampled real PSG; not synthetic. SHHS/MESA not run (NSRR DUA missing)."
+  },
+  "loo_downstream": {
+    "staging": {
+      "accuracy": 0.65,
+      "macro_f1": 0.15757575757575756,
+      "cohen_kappa": 0.0,
+      "macro_auroc": 0.4543782987127815,
+      "macro_auprc": 0.2893776567790428
+    },
+    "apnea": {
+      "auroc": 0.662,
+      "auprc": 0.45364797291129144
+    },
+    "label_gate": {
+      "claim_staging": true,
+      "claim_apnea": true,
+      "claim_night_ahi": true,
+      "claim_night_staging_kappa": true,
+      "messages": [],
+      "skipped": []
+    }
+  },
+  "unify_downstream": {
+    "staging": {
+      "accuracy": 0.3,
+      "macro_f1": 0.1288888888888889,
+      "cohen_kappa": -0.12500000000000022,
+      "macro_auroc": 0.4954862778983469,
+      "macro_auprc": 0.23475073513404418
+    },
+    "apnea": {
+      "auroc": 0.436,
+      "auprc": 0.18908937247247615
+    },
+    "label_gate": {
+      "claim_staging": true,
+      "claim_apnea": true,
+      "claim_night_ahi": true,
+      "claim_night_staging_kappa": true,
+      "messages": [],
+      "skipped": []
+    }
+  },
+  "retrieval_unify": {
+    "n": 500,
+    "k": 10,
+    "random_baseline": 0.020189317106152807,
+    "metrics": {
+      "recall@10_bas_to_ecg": 0.016227180138230324,
+      "recall@10_ecg_to_bas": 0.018255578354001045,
+      "recall@10_bas_ecg_avg": 0.017241379246115685,
+      "recall@10_bas_to_ecg_bidir": 0.017241379246115685,
+      "n_pair_bas_ecg": 493.0,
+      "random_baseline_bas_ecg": 0.02028397565922921,
+      "recall@10_bas_to_respiratory": 0.020283976569771767,
+      "recall@10_respiratory_to_bas": 0.018255578354001045,
+      "recall@10_bas_respiratory_avg": 0.019269777461886406,
+      "recall@10_bas_to_respiratory_bidir": 0.019269777461886406,
+      "n_pair_bas_respiratory": 493.0,
+      "random_baseline_bas_respiratory": 0.02028397565922921,
+      "recall@10_ecg_to_respiratory": 0.02199999988079071,
+      "recall@10_respiratory_to_ecg": 0.024000000208616257,
+      "recall@10_ecg_respiratory_avg": 0.023000000044703484,
+      "recall@10_ecg_to_respiratory_bidir": 0.023000000044703484,
+      "n_pair_ecg_respiratory": 500.0,
+      "random_baseline_ecg_respiratory": 0.02,
+      "recall@10_macro_avg": 0.01983705225090186
+    },
+    "gallery_mode": "rng",
+    "gallery_seed": 42,
+    "co_presence_filtered": true
+  },
+  "modality_ablation_staging_macro_auroc": {
+    "bas": 0.5141891728960695,
+    "ecg": 0.4011246716884648,
+    "respiratory": 0.5,
+    "bas+ecg": 0.4960420776541466,
+    "bas+respiratory": 0.5132963157532123,
+    "ecg+respiratory": 0.4011246716884648,
+    "bas+ecg+respiratory": 0.4954862778983469
+  },
+  "fewshot_k1_staging": "0.4955\u00b10.0000",
+  "space_probe_staging_macro_auroc": {
+    "concat": 0.4954862778983469,
+    "shared": 0.5095086647069406,
+    "private": 0.49936948090223954
+  },
+  "night": {
+    "n_train_nights": 1,
+    "n_test_nights": 1,
+    "apnea_positive_epoch_rate_note": "Continuous apnea-positive epochs/hour of recording (regression). NOT clinical AASM AHI; 5/15/30 severity bins intentionally removed.",
+    "apnea_positive_epoch_rate": {
+      "note": "need >=2 nights with finite apnea_positive_epoch_rate"
+    },
+    "ahi": {
+      "note": "need >=2 nights with finite apnea_positive_epoch_rate"
+    },
+    "sleep_efficiency": {
+      "note": "not enough nights"
+    },
+    "temporal_head": "mean_pool_fallback",
+    "staging_epoch_kappa": {
+      "cohen_kappa": -0.0867492850333651,
+      "accuracy": 0.36666666666666664,
+      "cohen_kappa_linear": -0.17508258612553074
+    },
+    "train_n_nights": 1,
+    "test_n_nights": 1,
+    "label_gate": {
+      "claim_staging": true,
+      "claim_apnea": true,
+      "claim_night_ahi": true,
+      "claim_night_staging_kappa": true,
+      "messages": [],
+      "skipped": []
+    }
+  },
+  "baselines": {
+    "supervised_effnet_metrics.json": {
+      "model": "effnet",
+      "test": {
+        "macro_auroc": 0.3925158810538121,
+        "macro_auprc": 0.18718732603280275
+      }
+    },
+    "seq_staging_baseline_metrics.json": {
+      "model": "SeqStagingBaseline",
+      "test": {
+        "macro_auroc": 0.5178357221815887,
+        "macro_auprc": 0.2984864774455826
+      }
+    }
+  },
+  "retrieval_loo_macro_r10": 0.0209
+}

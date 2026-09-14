@@ -42,8 +42,10 @@ notes: |
   respiratory-event XML is often absent; unmatched epochs get stage_id=0 and
   apnea=0 unless a sidecar annotation file is provided (.xml / .csv / .json).
   Signals are typically 200 Hz in WFDB .mat+.hea; the exporter resamples to 256 Hz.
+# Access: open data (ODC-By); no login required for training set files.
+# Prefer: python scripts/download_cinc2018_subset.py --max-subjects N
+# Full ~135GB: aws s3 sync --no-sign-request s3://physionet-open/challenge-2018/1.0.0/ ...
 access: |
-  1. Create a PhysioNet account: https://physionet.org/
-  2. Download https://physionet.org/content/challenge-2018/1.0.0/ (training/)
-  3. Export:
-     python scripts/export_edf.py --dataset cinc2018 --input-dir data/raw/cinc2018 --output-dir data/cinc2018
+  1. Training set is open-access (ODC-By) at https://physionet.org/content/challenge-2018/1.0.0/
+  2. Subset download (recommended): python scripts/download_cinc2018_subset.py --max-subjects 24
+  3. Export: python scripts/export_edf.py --dataset cinc2018 --input-dir data/raw/cinc2018 --output-dir data/cinc2018 --validate

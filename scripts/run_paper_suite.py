@@ -138,6 +138,7 @@ def _pretrain(
         shared_dim=unify_cfg.get("shared_dim"),
         private_dim=unify_cfg.get("private_dim"),
         downstream_space=unify_cfg.get("downstream_space", "concat"),
+        channel_aware_pool=bool(local.get("channel_aware_pool", False)),
     )
     temporal_encoder = None
     if temporal_cfg.get("enabled"):

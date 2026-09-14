@@ -181,6 +181,7 @@ class PretrainTrainer:
             "shared_dim": self.model.shared_dim,
             "private_dim": self.model.private_dim,
             "downstream_space": self.model.downstream_space,
+            "channel_aware_pool": self.model.channel_aware_pool,
             "loss_weights": self.loss_weights,
             "modality_dropout": self.modality_dropout,
             "modality_dropout_mode": self.modality_dropout_mode,

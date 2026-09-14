@@ -24,6 +24,9 @@ lr_step_period: 5
 lr_gamma: 0.1
 temperature_init: 0.0
 embedding_dim: 512
+# Soft mask-aware channel attention before EffNet (ChannelAwareMaskedPool).
+# Off for paper-aligned LOO baseline; Unify enables it via configs/unify.yaml.
+channel_aware_pool: false
 
 # Downstream logistic regression (paper Table 8; train split != pretrain cohort)
 downstream:

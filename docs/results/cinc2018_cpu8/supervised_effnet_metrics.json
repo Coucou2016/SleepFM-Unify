@@ -1,0 +1,7 @@
+{
+  "model": "effnet",
+  "test": {
+    "macro_auroc": 0.3925158810538121,
+    "macro_auprc": 0.18718732603280275
+  }
+}

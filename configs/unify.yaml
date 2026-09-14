@@ -1,5 +1,8 @@
 _base: configs/default.yaml
 output_dir: outputs/unify
+# Soft attention over present leads (padded slots stay ~0). Optional path;
+# LOO baseline keeps channel_aware_pool: false for paper-aligned comparison.
+channel_aware_pool: true
 
 unify:
   enabled: true

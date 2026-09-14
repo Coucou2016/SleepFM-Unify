@@ -155,12 +155,52 @@ def test_malformed_channel_mask_raises(tmp_path):
         _ = ds[0]
 
 
-def test_channel_aware_pool_stub():
+def test_channel_aware_pool_reweight_and_pool():
     from sleepfm.models.channel_pool import ChannelAwareMaskedPool
 
-    pool = ChannelAwareMaskedPool(in_channels=4)
     x = torch.randn(2, 4, 16)
     mask = torch.ones(2, 4)
     mask[:, 3] = 0
-    y = pool(x, mask)
-    assert y.shape == (2, 16)
+
+    reweight = ChannelAwareMaskedPool(in_channels=4, mode="reweight")
+    y = reweight(x, mask)
+    assert y.shape == (2, 4, 16)
+    # Absent channel should be near-zero after reweight.
+    assert float(y[:, 3].detach().abs().max()) < 1e-5
+
+    pool = ChannelAwareMaskedPool(in_channels=4, mode="pool")
+    z = pool(x, mask)
+    assert z.shape == (2, 16)
+    assert torch.isfinite(z).all()
+
+
+def test_channel_aware_pool_wired_in_model():
+    from sleepfm.models.sleepfm import MultiModalSleepFM
+
+    model = MultiModalSleepFM(
+        channels={"bas": 4, "ecg": 2, "respiratory": 3},
+        embedding_dim=32,
+        unify=True,
+        shared_dim=16,
+        private_dim=16,
+        channel_aware_pool=True,
+    )
+    assert model.channel_pools is not None
+    b = 3
+    batch = {
+        "bas": torch.randn(b, 4, 64),
+        "ecg": torch.randn(b, 2, 64),
+        "respiratory": torch.randn(b, 3, 64),
+        "channel_mask": {
+            "bas": torch.tensor([[1, 1, 1, 0]] * b, dtype=torch.float32),
+            "ecg": torch.ones(b, 2),
+            "respiratory": torch.tensor([[1, 1, 0]] * b, dtype=torch.float32),
+        },
+        "present_mask": torch.ones(b, 3),
+    }
+    out = model.encode_backbone(batch)
+    assert set(out) == {"bas", "ecg", "respiratory"}
+    for v in out.values():
+        assert v.shape == (b, 32)
+        assert torch.isfinite(v).all()
+

@@ -8,6 +8,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from sleepfm.models.channel_pool import ChannelAwareMaskedPool
 from sleepfm.models.encoders import EffNet
 
 ModalityName = Literal["bas", "ecg", "respiratory"]
@@ -154,6 +155,7 @@ class MultiModalSleepFM(nn.Module):
         shared_dim: Optional[int] = None,
         private_dim: Optional[int] = None,
         downstream_space: DownstreamSpace = "concat",
+        channel_aware_pool: bool = False,
     ):
         super().__init__()
         self.channels = channels
@@ -162,6 +164,7 @@ class MultiModalSleepFM(nn.Module):
         self.shared_dim = int(shared_dim if shared_dim is not None else (256 if self.unify else embedding_dim))
         self.private_dim = int(private_dim if private_dim is not None else (256 if self.unify else 0))
         self.downstream_space: DownstreamSpace = downstream_space
+        self.channel_aware_pool = bool(channel_aware_pool)
         self.temperature = nn.Parameter(torch.tensor(temperature_init, dtype=torch.float32))
 
         self.encoders = nn.ModuleDict(
@@ -171,6 +174,18 @@ class MultiModalSleepFM(nn.Module):
                 if name in channels
             }
         )
+        if self.channel_aware_pool:
+            self.channel_pools = nn.ModuleDict(
+                {
+                    name: ChannelAwareMaskedPool(
+                        in_channels=int(channels[name]),
+                        mode="reweight",
+                    )
+                    for name in self.encoders
+                }
+            )
+        else:
+            self.channel_pools = None
         if self.unify:
             self.proj_shared = nn.ModuleDict(
                 {
@@ -252,12 +267,12 @@ class MultiModalSleepFM(nn.Module):
             if name not in flat:
                 continue
             x = flat[name]
-            # Channel mask (DONE vs TODO):
-            # DONE — dataset/collate emit per-lead masks; here we zero padded/absent
-            #   leads before the 1D CNN so BatchNorm/conv do not treat pad as signal.
-            # STUB — ``ChannelAwareMaskedPool`` (see sleepfm.models.channel_pool) for
-            #   mask-aware channel attention; not wired into the default forward yet.
-            # TODO — true variable-channel encoders that resize the channel axis.
+            # Channel mask:
+            # - Always apply hard zeroing for absent/padded leads (BN hygiene).
+            # - Optional ``ChannelAwareMaskedPool`` (config ``channel_aware_pool``)
+            #   learns soft attention over *present* leads before EffNet.
+            # True variable-C encoders that resize the channel axis remain future work.
+            cm = None
             if isinstance(channel_mask, dict) and name in channel_mask:
                 cm = channel_mask[name]
                 if seq_shape is not None and cm.ndim == 2 and cm.size(0) == seq_shape[0]:
@@ -265,6 +280,10 @@ class MultiModalSleepFM(nn.Module):
                     cm = cm.reshape(seq_shape[0] * seq_shape[1], cm.size(-1))
                 if cm.ndim == 2 and x.ndim == 3 and cm.size(0) == x.size(0):
                     x = x * cm.unsqueeze(-1).to(dtype=x.dtype)
+                else:
+                    cm = None
+            if self.channel_pools is not None and name in self.channel_pools:
+                x = self.channel_pools[name](x, cm)
             bsz = x.size(0)
             dim = self.embedding_dim
             if present_mask is None:
@@ -901,6 +920,9 @@ class MultiModalSleepFM(nn.Module):
             w = state.get("proj_private.bas.weight")
             if w is not None:
                 private_dim = int(w.shape[0])
+        channel_aware_pool = ckpt.get("channel_aware_pool")
+        if channel_aware_pool is None:
+            channel_aware_pool = any(k.startswith("channel_pools.") for k in state)
         model = cls(
             channels=ch,
             embedding_dim=ckpt.get("embedding_dim", 512),
@@ -908,6 +930,7 @@ class MultiModalSleepFM(nn.Module):
             shared_dim=shared_dim,
             private_dim=private_dim,
             downstream_space=ckpt.get("downstream_space", "concat"),
+            channel_aware_pool=bool(channel_aware_pool),
         )
         model.load_state_dict(state, strict=True)
         if "temperature" in ckpt:

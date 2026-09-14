@@ -4,11 +4,11 @@
 
 本报告对应公开仓库 [SleepFM-Unify](https://github.com/Coucou2016/SleepFM-Unify) 中的工作：**异构 / 任意缺失 PSG 下的 SleepFM 兼容鲁棒预训练**（共享–私有头是实现工具，**不是**新颖性主张；FOCAL 等已有 shared/private）。配套混合对比损失、模态丢弃、导联 mask、导出校验、标签门控与论文实验套件。
 
-- **报告性质：** 工程实现 + 论文框架 + 合成演示验证；**不是**已完成真实 CinC/SHHS 数值的终稿论文。
+- **报告性质：** 工程实现 + 论文框架 + **真实 CinC 2018（开放训练集子集）CPU-8 实测**；SHHS/MESA 仍缺 NSRR DUA。
 - **公开仓库：** [https://github.com/Coucou2016/SleepFM-Unify](https://github.com/Coucou2016/SleepFM-Unify)（`main`；不含大体积 `data/` / `outputs/`）。
 - **图表风格：** SciencePlots + Times New Roman；中文用 SimHei 渲染。
-- **诚实约束：** 合成 AUROC≈0.5 仅标为 demo；缺失真实指标一律写 **待补充**；不编造 CinC/SHHS 结果。
-- **本轮重点：** P0/P1 正确性修复后继续：新颖性改写、few-shot ≥10 + mean±95% CI、严格 split isolation、shared/private/concat probe、LICENSE/CITATION。
+- **诚实约束：** 合成 AUROC≈0.5 仅标为 demo；CinC 表内数字来自 `docs/results/cinc2018_cpu8/` 实测 JSON；**不编造** SHHS/MESA。
+- **本轮重点：** ChannelAwareMaskedPool 接线、CinC 开放下载/导出/重训、paper suite + 监督基线、文档填表。
 
 <!--FIGURES-->
 
@@ -20,7 +20,7 @@
 
 **方法：** SleepFM-Unify 在 SleepFM 编码器上增加 **缺失/异构 PSG 训练栈**（样本级模态丢弃、`present_mask` 感知编码、按原始在场门控的 $\mathcal{L}_{\mathrm{miss}}$、可选 `channel_mask` 导联清零），并以共享–私有头作为工具（对比只看共享；下游可 probe concat/shared/private）。**不主张“发明了 shared-private”。**
 
-**证据状态：** 代码、配置、测试与合成演示已跑通；**PhysioNet CinC 2018 / NSRR SHHS / MESA 的定量结果待补充**（需用户完成数据使用协议下载；本机截至 2026-09-14 仍无真实 raw PSG / 凭证）。
+**证据状态：** CinC 2018 开放训练子集已下载/导出；LOO+Unify 在 **P0 修复后**于 CPU-8 协议重训并跑通 paper suite（见 `docs/results/cinc2018_cpu8/`）。**SHHS/MESA 仍待 NSRR DUA**（本机无 `NSRR_TOKEN`）。分期 AUROC 在短 CPU 日程下接近随机——按实测如实填表，不当作 clinic SOTA。
 
 **边界：** 本报告不主张 Unify 在真实 PSG 上已超越 LOO；夜级 `ahi` 使用 **apnea_epoch_rate** 占位，**不是**临床 AASM AHI。
 
@@ -52,24 +52,25 @@
 
 ## 数据与方法
 
-### 数据（本机盘点，2026-09-14）
+### 数据（本机盘点，2026-09-15）
 
 | 数据 | 含义 | 本机状态 |
 |------|------|----------|
 | `data/synthetic` | 合成 epoch，CI/演示 | 已有 |
 | `data/cinc2018_fixture` | 无 DUA 的 schema 夹具 | 已有 |
-| `data/raw/cinc2018` 等 | 真实原始 PSG | **无** |
-| CinC 2018 / SHHS / MESA 导出 | 论文预训练评测 | **待补充** |
-| PhysioNet / NSRR 凭证 | 环境变量 / netrc | **未设置** |
+| `data/raw/cinc2018` | 真实 CinC 开放训练子集 | **有**（24 例 S3） |
+| `data/cinc2018` 导出 | CPU-8 实测协议 | **有**（670 epoch 索引 / 7304 全量导出） |
+| SHHS / MESA | NSRR | **无**（需 DUA） |
+| 实测指标 JSON | `docs/results/cinc2018_cpu8/` | **有** |
 
 完整下载步骤见 `docs/DATA_ACCESS.md`。协议自检：`python scripts/protocol_checklist.py`。
 
 ### 方法要点
 
 1. **编码器：** 每模态 1D EffNet → 512 维骨干。
-2. **缺失栈：** sample-wise dropout；mask-aware BN skip；$\mathcal{L}_{\mathrm{miss}}$；`channel_mask` 导联清零（**Done**）；可变通道注意力/池化（**TODO**）。
+2. **缺失栈：** sample-wise dropout；mask-aware BN skip；$\mathcal{L}_{\mathrm{miss}}$；`channel_mask` 导联清零（**Done**）；`ChannelAwareMaskedPool` 软注意力（Unify 默认开，**Done**）；轴长可变编码器仍为未来工作。
 3. **Unify 头（工具）：** `z_shared` / `z_private`；下游默认拼接；CLI 可 probe shared/private。
-4. **Few-shot：** 论文模式 ≥10 次受试者级重复，报告 mean±95% CI；`--demo` 可保持 2 次。
+4. **Few-shot：** 论文模式 ≥10 次受试者级重复，报告 mean±95% CI；本机 CinC 仅 1 个 train 受试者 → CI 退化为常数（如实记录）。
 5. **诚实门控：** 通道元数据；CinC 标签覆盖；AHI 措辞；`assert_paper_isolation` 泄漏即 `RuntimeError`。
 
 ---
@@ -96,15 +97,27 @@
 
 ## 结果
 
-### 合成演示（非论文主张）
+### CinC 2018 CPU-8 实测（真实信号；非合成）
+
+来源：`docs/results/cinc2018_cpu8/measured_compact.json`。设备 CPU；8 受试者；stride 子采样 670 epochs；预训练 5 epoch。
+
+| 项目 | LOO | Unify | 备注 |
+|------|-----|-------|------|
+| Staging macro AUROC / AUPRC | 0.454 / 0.289 | 0.495 / 0.235 | n_test=60；近 chance |
+| Apnea AUROC / AUPRC | **0.662** / 0.454 | 0.436 / 0.189 | 标签门控通过 |
+| Retrieval R@10 macro | — | 0.0198≈rand 0.020 | co-presence |
+| Few-shot k=1 staging | — | 0.4955±0.0000 | 仅 1 个 train 受试者 |
+| Space probe concat/shared/private | — | 0.495 / 0.510 / 0.499 | staging AUROC |
+| EffNet supervised | 0.393 | — | 同索引 |
+| SeqStagingBaseline | 0.518 | — | CNN+GRU；非 U-Sleep |
+| SHHS / MESA | — | — | **DUA 阻塞，空白** |
+
+### 合成演示（工程冒烟，非论文主张）
 
 | 项目 | 结果 |
 |------|------|
-| 少 epoch Unify 合成预训练 | 损失可记录（图2）；波动大 |
-| 下游 AUROC（合成标签） | 约 chance（≈0.5），图3/图5 示意 |
-| Gram 诊断 | 图4 前向可视化 |
-| CinC / SHHS 指标 | **待补充** |
-| Few-shot / space probe | 协议已接线；真实数字 **待补充** |
+| 少 epoch Unify 合成预训练 | 损失可记录；仅 CI |
+| 下游 AUROC（合成标签） | 约 chance（≈0.5） |
 
 ### 工程验证
 
@@ -122,21 +135,21 @@
 
 ## 结论
 
-1. SleepFM-Unify 的方法与工程接口已在本仓库落地；主张改为 **异构/缺失 PSG 鲁棒性**。  
-2. 论文框架已再成熟一版；真实数据数字 **待补充**。  
-3. 协议硬化：few-shot ≥10 + CI、isolation RuntimeError、space probe、LICENSE/CITATION。  
+1. SleepFM-Unify 方法与工程接口已落地；主张为 **异构/缺失 PSG 鲁棒性**。  
+2. CinC 开放子集已完成下载→导出→P0 后重训→paper suite；数字见 `docs/results/cinc2018_cpu8/`。  
+3. SHHS/MESA 仍缺用户 NSRR DUA；GPU/全量日程可扩展规模。  
 4. 评价链路强调不夸大：标签门控、通道门控、AHI 措辞、RNG gallery。  
 
 ---
 
 ## 局限性
 
-- 无真实 CinC/SHHS/MESA 训练与评测数字。  
-- 强外部基线（CIMSleepNet、FOCAL port、SleepBench）尚未本地跑通。  
-- `channel_mask` 仅为导联清零；可变通道注意力仍为 TODO。  
-- 合成指标接近随机，不可写入摘要作为主结果。  
-- 夜级 AHI 为占位定义。  
-- 大体积数据与 checkpoint 未入库（故意排除）。  
+- CinC CPU-8 为小规模实测，分期近随机；不可当作 clinic SOTA。  
+- SHHS/MESA 无 DUA，表内空白。  
+- 强外部基线（CIMSleepNet、FOCAL port、SleepBench）仍为引用对照，未本地安装运行。  
+- `ChannelAwareMaskedPool` 已接线；轴长可变编码器仍为未来工作。  
+- 夜级 apnea-positive epoch rate 因每 split 夜数不足记为 N/A。  
+- 大体积 raw / `.npy` / checkpoint 未入库（故意排除）。  
 
 ---
 

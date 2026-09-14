@@ -43,6 +43,7 @@ fourdvarnet = []
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["sleepfm*", "scripts*"]
+exclude = ["fourdvarnet*", "tests*", "docs*", "outputs*", "data*"]
 # fourdvarnet/ remains in-tree for archival reference but is excluded from
 # the default sleepfm install / package discovery.
 

@@ -1,0 +1,29 @@
+{
+  "n": 500,
+  "k": 10,
+  "random_baseline": 0.020189317106152807,
+  "metrics": {
+    "recall@10_bas_to_ecg": 0.016227180138230324,
+    "recall@10_ecg_to_bas": 0.018255578354001045,
+    "recall@10_bas_ecg_avg": 0.017241379246115685,
+    "recall@10_bas_to_ecg_bidir": 0.017241379246115685,
+    "n_pair_bas_ecg": 493.0,
+    "random_baseline_bas_ecg": 0.02028397565922921,
+    "recall@10_bas_to_respiratory": 0.020283976569771767,
+    "recall@10_respiratory_to_bas": 0.018255578354001045,
+    "recall@10_bas_respiratory_avg": 0.019269777461886406,
+    "recall@10_bas_to_respiratory_bidir": 0.019269777461886406,
+    "n_pair_bas_respiratory": 493.0,
+    "random_baseline_bas_respiratory": 0.02028397565922921,
+    "recall@10_ecg_to_respiratory": 0.02199999988079071,
+    "recall@10_respiratory_to_ecg": 0.024000000208616257,
+    "recall@10_ecg_respiratory_avg": 0.023000000044703484,
+    "recall@10_ecg_to_respiratory_bidir": 0.023000000044703484,
+    "n_pair_ecg_respiratory": 500.0,
+    "random_baseline_ecg_respiratory": 0.02,
+    "recall@10_macro_avg": 0.01983705225090186
+  },
+  "gallery_mode": "rng",
+  "gallery_seed": 42,
+  "co_presence_filtered": true
+}

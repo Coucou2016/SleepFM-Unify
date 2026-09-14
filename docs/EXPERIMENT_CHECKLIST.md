@@ -7,38 +7,49 @@ Operational gates for SleepFM-Unify. Manuscript narrative lives in
 
 | Gate | Status |
 |------|--------|
-| VICReg / private variance on **raw** private (not L2 unit vectors) | Required |
-| Optional \(\lambda_{\mathrm{cov}}\) (`private_cov`) off-diagonal term | Optional config |
-| Retrieval co-presence: pair A↔B only where both present; directed A→B / B→A; baseline \(k/N_{\mathrm{pair}}\) | Required |
-| `unify.enabled: false` LOO baseline path unchanged | Required |
-| No fabricated CinC / SHHS / MESA metrics | Required |
+| VICReg / private variance on **raw** private (not L2 unit vectors) | **Done** (code + CinC retrain) |
+| Optional \(\lambda_{\mathrm{cov}}\) (`private_cov`) off-diagonal term | **Done** (Unify config `0.01`) |
+| Retrieval co-presence: pair A↔B only where both present; directed A→B / B→A; baseline \(k/N_{\mathrm{pair}}\) | **Done** |
+| `unify.enabled: false` LOO baseline path unchanged | **Done** |
+| No fabricated CinC / SHHS / MESA metrics | **Done** (CinC measured JSON only; SHHS/MESA empty) |
 
-**Policy:** Do not publish formal real-data final tables from checkpoints trained
-*before* the raw-private VICReg + retrieval co-presence fixes. Retrain Unify
-(and re-evaluate retrieval) after those fixes. Synthetic demos / unit tests are fine.
+**Policy:** Formal real-data tables use checkpoints trained **after** the raw-private
+VICReg + retrieval co-presence fixes. CinC CPU-8 results: `docs/results/cinc2018_cpu8/`.
 
 ## Data readiness
 
-1. PhysioNet / NSRR account + DUA as needed (`docs/DATA_ACCESS.md`).
-2. `check_data_ready.py --stage raw` → export → `--stage pretrain`.
-3. `validate_data.py --strict-participants` / `assert_paper_isolation`
-   (missing `participant_id` → fail-closed; missing `night_id` → **N/A**, not silent PASS).
-4. Label coverage gate for CinC (no staging/SDB claims on arousal-only).
+| Step | CinC 2018 | SHHS / MESA |
+|------|-----------|-------------|
+| Credentials / DUA | Open training (ODC-By); no login | **Blocked** — need NSRR DUA + `NSRR_TOKEN` |
+| Raw on disk | Yes (`data/raw/cinc2018/`, 24 subjects pulled) | No |
+| Export + validate | Yes (8-subject measured protocol; 24-subject export expanding) | No |
+| Label coverage gate | Pass (full AASM + respiratory from `.arousal`) | — |
+| Strict participant isolation | Pass | — |
 
-## Train / eval matrix (fill only after P0 retrain)
+```powershell
+python scripts/download_cinc2018_subset.py --max-subjects 24
+python scripts/check_data_ready.py --path data/raw/cinc2018 --dataset cinc2018 --stage raw
+python scripts/export_edf.py --dataset cinc2018 --input-dir data/raw/cinc2018 --output-dir data/cinc2018 --validate
+python scripts/run_paper_suite.py --config configs/cinc_cpu.yaml --unify-config configs/unify_cinc_cpu.yaml --data-dir data/cinc2018 --space-probe --fewshot-repeats 10
+```
 
-| Experiment | Config | Notes |
-|------------|--------|-------|
-| LOO baseline | `configs/default.yaml` | Paper-aligned; do not disable |
-| Unify full | `configs/unify.yaml` | After P0 retrain |
-| Unify + temporal | `configs/unify_temporal.yaml` | Optional night head |
-| Retrieval | `scripts/eval_retrieval.py` | Co-presence metrics |
-| Downstream / space probe | concat / shared / private | Same checkpoint |
-| Few-shot | ≥10 repeats, mean±95% CI | Paper mode |
-| Night | continuous `apnea_positive_epoch_rate` | Not clinical AHI; no 5/15/30 bins |
+## Train / eval matrix (filled from measured CinC CPU-8)
+
+| Experiment | Config / script | Status |
+|------------|-----------------|--------|
+| LOO baseline | `configs/cinc_cpu.yaml` | **Done** — staging AUROC 0.454; apnea 0.662 |
+| Unify full | `configs/unify_cinc_cpu.yaml` (`channel_aware_pool: true`) | **Done** — staging 0.495; apnea 0.436 |
+| Retrieval | `scripts/eval_retrieval.py` / paper suite | **Done** — Unify R@10 macro 0.0198≈chance |
+| Downstream / space probe | concat / shared / private | **Done** |
+| Few-shot | ≥10 repeats | **Done** (degenerate: 1 train participant) |
+| Modality ablation | 7 subsets | **Done** |
+| Night | continuous apnea-positive epoch rate | κ measured; rate **N/A** (&lt;2 nights/split) |
+| SeqStagingBaseline + EffNet supervised | `scripts/train_supervised.py` | **Done** (0.518 / 0.393 macro AUROC) |
+| FOCAL / CIMSleepNet / OSF | external | Citation only |
 
 ## Honesty reminders
 
+- CinC CPU-8 ≠ clinic-scale SleepFM; report sample size with every table.
 - Synthetic AUROC≈0.5 = smoke only.
 - Night severity = apnea-positive epoch rate, not AASM AHI.
 - Official clinical / NC weights: see `THIRD_PARTY_NOTICES.md` (not redistributed).
