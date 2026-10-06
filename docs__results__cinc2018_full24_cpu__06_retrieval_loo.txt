@@ -1,0 +1,18 @@
+Loaded checkpoint channels=10/2/7 (paper clinic)
+Split=pretrain co-presence filtered (per-pair N / baseline):
+  bas_ecg: N_pair=499 random Recall@10≈0.0200
+  bas_respiratory: N_pair=499 random Recall@10≈0.0200
+  ecg_respiratory: N_pair=500 random Recall@10≈0.0200
+  recall@10_bas_ecg_avg: 0.0190
+  recall@10_bas_respiratory_avg: 0.0251
+  recall@10_bas_to_ecg: 0.0180
+  recall@10_bas_to_ecg_bidir: 0.0190
+  recall@10_bas_to_respiratory: 0.0220
+  recall@10_bas_to_respiratory_bidir: 0.0251
+  recall@10_ecg_respiratory_avg: 0.0200
+  recall@10_ecg_to_bas: 0.0200
+  recall@10_ecg_to_respiratory: 0.0200
+  recall@10_ecg_to_respiratory_bidir: 0.0200
+  recall@10_macro_avg: 0.0214
+  recall@10_respiratory_to_bas: 0.0281
+  recall@10_respiratory_to_ecg: 0.0200

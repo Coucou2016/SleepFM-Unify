@@ -1,0 +1,1128 @@
+{
+  "generated": "2026-10-06T15:20:45.764814+00:00",
+  "source_commit": "caaaa4906cefbb8855945e0c8764f60ac27db34b",
+  "branch": "flat",
+  "count": 224,
+  "files": [
+    {
+      "source": ".gitignore",
+      "flat": ".gitignore",
+      "bytes": 865
+    },
+    {
+      "source": "CITATION.cff",
+      "flat": "CITATION.cff",
+      "bytes": 1546
+    },
+    {
+      "source": "LICENSE",
+      "flat": "LICENSE",
+      "bytes": 1586
+    },
+    {
+      "source": "README.md",
+      "flat": "README.md",
+      "bytes": 7769
+    },
+    {
+      "source": "THIRD_PARTY_NOTICES.md",
+      "flat": "THIRD_PARTY_NOTICES.md",
+      "bytes": 1864
+    },
+    {
+      "source": "configs/channels/cinc2018.yaml",
+      "flat": "configs__channels__cinc2018.yaml",
+      "bytes": 2404
+    },
+    {
+      "source": "configs/channels/mesa.yaml",
+      "flat": "configs__channels__mesa.yaml",
+      "bytes": 1718
+    },
+    {
+      "source": "configs/channels/shhs.yaml",
+      "flat": "configs__channels__shhs.yaml",
+      "bytes": 1886
+    },
+    {
+      "source": "configs/cinc_cpu.yaml",
+      "flat": "configs__cinc_cpu.yaml",
+      "bytes": 349
+    },
+    {
+      "source": "configs/cinc_full24_cpu.yaml",
+      "flat": "configs__cinc_full24_cpu.yaml",
+      "bytes": 369
+    },
+    {
+      "source": "configs/default.yaml",
+      "flat": "configs__default.yaml",
+      "bytes": 2199
+    },
+    {
+      "source": "configs/fourdvarnet.yaml",
+      "flat": "configs__fourdvarnet.yaml",
+      "bytes": 1089
+    },
+    {
+      "source": "configs/unify.yaml",
+      "flat": "configs__unify.yaml",
+      "bytes": 607
+    },
+    {
+      "source": "configs/unify_cinc_cpu.yaml",
+      "flat": "configs__unify_cinc_cpu.yaml",
+      "bytes": 242
+    },
+    {
+      "source": "configs/unify_cinc_full24_cpu.yaml",
+      "flat": "configs__unify_cinc_full24_cpu.yaml",
+      "bytes": 272
+    },
+    {
+      "source": "configs/unify_temporal.yaml",
+      "flat": "configs__unify_temporal.yaml",
+      "bytes": 308
+    },
+    {
+      "source": "data/cinc2018/cpu_protocol.json",
+      "flat": "data__cinc2018__cpu_protocol.json",
+      "bytes": 2348
+    },
+    {
+      "source": "data/cinc2018/index.json",
+      "flat": "data__cinc2018__index.json",
+      "bytes": 183441
+    },
+    {
+      "source": "data/cinc2018/index_full.json",
+      "flat": "data__cinc2018__index_full.json",
+      "bytes": 1330313
+    },
+    {
+      "source": "data/cinc2018_fixture/index.json",
+      "flat": "data__cinc2018_fixture__index.json",
+      "bytes": 4143
+    },
+    {
+      "source": "data/cinc2018_full24/cpu_protocol.json",
+      "flat": "data__cinc2018_full24__cpu_protocol.json",
+      "bytes": 2365
+    },
+    {
+      "source": "data/cinc2018_full24/index.json",
+      "flat": "data__cinc2018_full24__index.json",
+      "bytes": 570057
+    },
+    {
+      "source": "data/synthetic/index.json",
+      "flat": "data__synthetic__index.json",
+      "bytes": 16425
+    },
+    {
+      "source": "docs/DATA_ACCESS.md",
+      "flat": "docs__DATA_ACCESS.md",
+      "bytes": 4054
+    },
+    {
+      "source": "docs/DATA_SCHEMA.md",
+      "flat": "docs__DATA_SCHEMA.md",
+      "bytes": 2127
+    },
+    {
+      "source": "docs/DEVELOPMENT_STATUS.md",
+      "flat": "docs__DEVELOPMENT_STATUS.md",
+      "bytes": 2790
+    },
+    {
+      "source": "docs/EXPERIMENT_CHECKLIST.md",
+      "flat": "docs__EXPERIMENT_CHECKLIST.md",
+      "bytes": 3263
+    },
+    {
+      "source": "docs/MATERIALS.md",
+      "flat": "docs__MATERIALS.md",
+      "bytes": 3988
+    },
+    {
+      "source": "docs/UNIFY.md",
+      "flat": "docs__UNIFY.md",
+      "bytes": 15565
+    },
+    {
+      "source": "docs/figures/fig01_architecture.png",
+      "flat": "docs__figures__fig01_architecture.png",
+      "bytes": 180007
+    },
+    {
+      "source": "docs/figures/fig01_architecture.svg",
+      "flat": "docs__figures__fig01_architecture.svg",
+      "bytes": 119545
+    },
+    {
+      "source": "docs/figures/fig02_cinc_cpu8_loss_bars.png",
+      "flat": "docs__figures__fig02_cinc_cpu8_loss_bars.png",
+      "bytes": 108538
+    },
+    {
+      "source": "docs/figures/fig02_cinc_cpu8_loss_bars.svg",
+      "flat": "docs__figures__fig02_cinc_cpu8_loss_bars.svg",
+      "bytes": 91223
+    },
+    {
+      "source": "docs/figures/fig02_loss_curves.png",
+      "flat": "docs__figures__fig02_loss_curves.png",
+      "bytes": 121443
+    },
+    {
+      "source": "docs/figures/fig02_loss_curves.svg",
+      "flat": "docs__figures__fig02_loss_curves.svg",
+      "bytes": 102769
+    },
+    {
+      "source": "docs/figures/fig02_loss_history.json",
+      "flat": "docs__figures__fig02_loss_history.json",
+      "bytes": 293
+    },
+    {
+      "source": "docs/figures/fig03_ablation_schematic.png",
+      "flat": "docs__figures__fig03_ablation_schematic.png",
+      "bytes": 121695
+    },
+    {
+      "source": "docs/figures/fig03_ablation_schematic.svg",
+      "flat": "docs__figures__fig03_ablation_schematic.svg",
+      "bytes": 94040
+    },
+    {
+      "source": "docs/figures/fig03_cinc_modality_ablation.png",
+      "flat": "docs__figures__fig03_cinc_modality_ablation.png",
+      "bytes": 79670
+    },
+    {
+      "source": "docs/figures/fig03_cinc_modality_ablation.svg",
+      "flat": "docs__figures__fig03_cinc_modality_ablation.svg",
+      "bytes": 67343
+    },
+    {
+      "source": "docs/figures/fig04_orthogonality.png",
+      "flat": "docs__figures__fig04_orthogonality.png",
+      "bytes": 123411
+    },
+    {
+      "source": "docs/figures/fig04_orthogonality.svg",
+      "flat": "docs__figures__fig04_orthogonality.svg",
+      "bytes": 118823
+    },
+    {
+      "source": "docs/figures/fig05_modality_dropout.png",
+      "flat": "docs__figures__fig05_modality_dropout.png",
+      "bytes": 103456
+    },
+    {
+      "source": "docs/figures/fig05_modality_dropout.svg",
+      "flat": "docs__figures__fig05_modality_dropout.svg",
+      "bytes": 83796
+    },
+    {
+      "source": "docs/figures/fig06_pipeline.png",
+      "flat": "docs__figures__fig06_pipeline.png",
+      "bytes": 65473
+    },
+    {
+      "source": "docs/figures/fig06_pipeline.svg",
+      "flat": "docs__figures__fig06_pipeline.svg",
+      "bytes": 55111
+    },
+    {
+      "source": "docs/paper/paper.html",
+      "flat": "docs__paper__paper.html",
+      "bytes": 983383
+    },
+    {
+      "source": "docs/paper/paper.md",
+      "flat": "docs__paper__paper.md",
+      "bytes": 17579
+    },
+    {
+      "source": "docs/paper/paper.pdf",
+      "flat": "docs__paper__paper.pdf",
+      "bytes": 868620
+    },
+    {
+      "source": "docs/reports/2026-08-15-unify-continue.md",
+      "flat": "docs__reports__2026-08-15-unify-continue.md",
+      "bytes": 6338
+    },
+    {
+      "source": "docs/reports/2026-08-15-unify-p1-close.md",
+      "flat": "docs__reports__2026-08-15-unify-p1-close.md",
+      "bytes": 2373
+    },
+    {
+      "source": "docs/reports/chatgpt-consultation-2026-08-16.md",
+      "flat": "docs__reports__chatgpt-consultation-2026-08-16.md",
+      "bytes": 1845
+    },
+    {
+      "source": "docs/reports/chatgpt-paste-brief-2026-08-16.md",
+      "flat": "docs__reports__chatgpt-paste-brief-2026-08-16.md",
+      "bytes": 2828
+    },
+    {
+      "source": "docs/reports/report.html",
+      "flat": "docs__reports__report.html",
+      "bytes": 978196
+    },
+    {
+      "source": "docs/reports/report.md",
+      "flat": "docs__reports__report.md",
+      "bytes": 11681
+    },
+    {
+      "source": "docs/reports/report.pdf",
+      "flat": "docs__reports__report.pdf",
+      "bytes": 949669
+    },
+    {
+      "source": "docs/reports/rounds/round-01-literature-2026-08-16.md",
+      "flat": "docs__reports__rounds__round-01-literature-2026-08-16.md",
+      "bytes": 1420
+    },
+    {
+      "source": "docs/reports/rounds/round-02-nmi-outline-2026-08-16.md",
+      "flat": "docs__reports__rounds__round-02-nmi-outline-2026-08-16.md",
+      "bytes": 1399
+    },
+    {
+      "source": "docs/reports/rounds/round-03-code-audit-2026-08-16.md",
+      "flat": "docs__reports__rounds__round-03-code-audit-2026-08-16.md",
+      "bytes": 1782
+    },
+    {
+      "source": "docs/reports/rounds/round-04-paper-methods-2026-08-16.md",
+      "flat": "docs__reports__rounds__round-04-paper-methods-2026-08-16.md",
+      "bytes": 1095
+    },
+    {
+      "source": "docs/reports/rounds/round-05-honesty-acceptance-2026-08-16.md",
+      "flat": "docs__reports__rounds__round-05-honesty-acceptance-2026-08-16.md",
+      "bytes": 922
+    },
+    {
+      "source": "docs/reports/section-19-final-20260816.md",
+      "flat": "docs__reports__section-19-final-20260816.md",
+      "bytes": 5725
+    },
+    {
+      "source": "docs/reports/section-19-final.md",
+      "flat": "docs__reports__section-19-final.md",
+      "bytes": 5651
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/01_validate.json",
+      "flat": "docs__results__cinc2018_cpu8__01_validate.json",
+      "bytes": 117
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/01b_label_coverage.json",
+      "flat": "docs__results__cinc2018_cpu8__01b_label_coverage.json",
+      "bytes": 1794
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/04_channel_check.json",
+      "flat": "docs__results__cinc2018_cpu8__04_channel_check.json",
+      "bytes": 408
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/05_downstream.json",
+      "flat": "docs__results__cinc2018_cpu8__05_downstream.json",
+      "bytes": 470
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/06_retrieval.json",
+      "flat": "docs__results__cinc2018_cpu8__06_retrieval.json",
+      "bytes": 1186
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/06_retrieval_loo.txt",
+      "flat": "docs__results__cinc2018_cpu8__06_retrieval_loo.txt",
+      "bytes": 775
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/07_modality_ablation.json",
+      "flat": "docs__results__cinc2018_cpu8__07_modality_ablation.json",
+      "bytes": 2754
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/08_fewshot.json",
+      "flat": "docs__results__cinc2018_cpu8__08_fewshot.json",
+      "bytes": 19792
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/08b_space_probe.json",
+      "flat": "docs__results__cinc2018_cpu8__08b_space_probe.json",
+      "bytes": 1296
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/09_night.json",
+      "flat": "docs__results__cinc2018_cpu8__09_night.json",
+      "bytes": 922
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/README.md",
+      "flat": "docs__results__cinc2018_cpu8__README.md",
+      "bytes": 779
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/fig02_loss_history.json",
+      "flat": "docs__results__cinc2018_cpu8__fig02_loss_history.json",
+      "bytes": 293
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/measured_compact.json",
+      "flat": "docs__results__cinc2018_cpu8__measured_compact.json",
+      "bytes": 4682
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/seq_staging_baseline_metrics.json",
+      "flat": "docs__results__cinc2018_cpu8__seq_staging_baseline_metrics.json",
+      "bytes": 135
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/summary.json",
+      "flat": "docs__results__cinc2018_cpu8__summary.json",
+      "bytes": 34572
+    },
+    {
+      "source": "docs/results/cinc2018_cpu8/supervised_effnet_metrics.json",
+      "flat": "docs__results__cinc2018_cpu8__supervised_effnet_metrics.json",
+      "bytes": 124
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/01_validate.json",
+      "flat": "docs__results__cinc2018_full24_cpu__01_validate.json",
+      "bytes": 117
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/01b_label_coverage.json",
+      "flat": "docs__results__cinc2018_full24_cpu__01b_label_coverage.json",
+      "bytes": 1839
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/04_channel_check.json",
+      "flat": "docs__results__cinc2018_full24_cpu__04_channel_check.json",
+      "bytes": 422
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/05_downstream.json",
+      "flat": "docs__results__cinc2018_full24_cpu__05_downstream.json",
+      "bytes": 483
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/05_downstream_loo.json",
+      "flat": "docs__results__cinc2018_full24_cpu__05_downstream_loo.json",
+      "bytes": 499
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/05_downstream_unify.json",
+      "flat": "docs__results__cinc2018_full24_cpu__05_downstream_unify.json",
+      "bytes": 483
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/06_retrieval.json",
+      "flat": "docs__results__cinc2018_full24_cpu__06_retrieval.json",
+      "bytes": 1185
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/06_retrieval_loo.txt",
+      "flat": "docs__results__cinc2018_full24_cpu__06_retrieval_loo.txt",
+      "bytes": 775
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/07_modality_ablation.json",
+      "flat": "docs__results__cinc2018_full24_cpu__07_modality_ablation.json",
+      "bytes": 2900
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/08_fewshot.json",
+      "flat": "docs__results__cinc2018_full24_cpu__08_fewshot.json",
+      "bytes": 8630
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/08b_space_probe.json",
+      "flat": "docs__results__cinc2018_full24_cpu__08b_space_probe.json",
+      "bytes": 1344
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/09_night.json",
+      "flat": "docs__results__cinc2018_full24_cpu__09_night.json",
+      "bytes": 1051
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/README.md",
+      "flat": "docs__results__cinc2018_full24_cpu__README.md",
+      "bytes": 982
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/fig02_loss_history.json",
+      "flat": "docs__results__cinc2018_full24_cpu__fig02_loss_history.json",
+      "bytes": 658
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/measured_compact.json",
+      "flat": "docs__results__cinc2018_full24_cpu__measured_compact.json",
+      "bytes": 17931
+    },
+    {
+      "source": "docs/results/cinc2018_full24_cpu/summary.json",
+      "flat": "docs__results__cinc2018_full24_cpu__summary.json",
+      "bytes": 22168
+    },
+    {
+      "source": "fourdvarnet/__init__.py",
+      "flat": "fourdvarnet____init__.py",
+      "bytes": 198
+    },
+    {
+      "source": "fourdvarnet/data/__init__.py",
+      "flat": "fourdvarnet__data____init__.py",
+      "bytes": 243
+    },
+    {
+      "source": "fourdvarnet/data/dataset.py",
+      "flat": "fourdvarnet__data__dataset.py",
+      "bytes": 1410
+    },
+    {
+      "source": "fourdvarnet/data/natl60.py",
+      "flat": "fourdvarnet__data__natl60.py",
+      "bytes": 1281
+    },
+    {
+      "source": "fourdvarnet/data/normalize.py",
+      "flat": "fourdvarnet__data__normalize.py",
+      "bytes": 2901
+    },
+    {
+      "source": "fourdvarnet/data/synthetic_osse.py",
+      "flat": "fourdvarnet__data__synthetic_osse.py",
+      "bytes": 9017
+    },
+    {
+      "source": "fourdvarnet/eval/__init__.py",
+      "flat": "fourdvarnet__eval____init__.py",
+      "bytes": 139
+    },
+    {
+      "source": "fourdvarnet/eval/metrics.py",
+      "flat": "fourdvarnet__eval__metrics.py",
+      "bytes": 3178
+    },
+    {
+      "source": "fourdvarnet/models/__init__.py",
+      "flat": "fourdvarnet__models____init__.py",
+      "bytes": 181
+    },
+    {
+      "source": "fourdvarnet/models/blocks.py",
+      "flat": "fourdvarnet__models__blocks.py",
+      "bytes": 2383
+    },
+    {
+      "source": "fourdvarnet/models/conv_lstm.py",
+      "flat": "fourdvarnet__models__conv_lstm.py",
+      "bytes": 1178
+    },
+    {
+      "source": "fourdvarnet/models/fourdvarnet.py",
+      "flat": "fourdvarnet__models__fourdvarnet.py",
+      "bytes": 7932
+    },
+    {
+      "source": "fourdvarnet/ops/__init__.py",
+      "flat": "fourdvarnet__ops____init__.py",
+      "bytes": 156
+    },
+    {
+      "source": "fourdvarnet/ops/physics.py",
+      "flat": "fourdvarnet__ops__physics.py",
+      "bytes": 1611
+    },
+    {
+      "source": "fourdvarnet/training/__init__.py",
+      "flat": "fourdvarnet__training____init__.py",
+      "bytes": 113
+    },
+    {
+      "source": "fourdvarnet/training/trainer.py",
+      "flat": "fourdvarnet__training__trainer.py",
+      "bytes": 5679
+    },
+    {
+      "source": "outputs/baseline_effnet.log",
+      "flat": "outputs__baseline_effnet.log",
+      "bytes": 403
+    },
+    {
+      "source": "outputs/baseline_effnet_cinc/supervised_effnet_metrics.json",
+      "flat": "outputs__baseline_effnet_cinc__supervised_effnet_metrics.json",
+      "bytes": 124
+    },
+    {
+      "source": "outputs/baseline_seq.log",
+      "flat": "outputs__baseline_seq.log",
+      "bytes": 414
+    },
+    {
+      "source": "outputs/baseline_seq_cinc/seq_staging_baseline_metrics.json",
+      "flat": "outputs__baseline_seq_cinc__seq_staging_baseline_metrics.json",
+      "bytes": 135
+    },
+    {
+      "source": "outputs/download_cinc_more.log",
+      "flat": "outputs__download_cinc_more.log",
+      "bytes": 1055
+    },
+    {
+      "source": "outputs/download_cinc_stderr.log",
+      "flat": "outputs__download_cinc_stderr.log",
+      "bytes": 0
+    },
+    {
+      "source": "outputs/download_cinc_stdout.log",
+      "flat": "outputs__download_cinc_stdout.log",
+      "bytes": 560
+    },
+    {
+      "source": "outputs/export_cinc.log",
+      "flat": "outputs__export_cinc.log",
+      "bytes": 2377
+    },
+    {
+      "source": "outputs/export_cinc24.log",
+      "flat": "outputs__export_cinc24.log",
+      "bytes": 2409
+    },
+    {
+      "source": "outputs/paper_suite_cinc.log",
+      "flat": "outputs__paper_suite_cinc.log",
+      "bytes": 1062
+    },
+    {
+      "source": "outputs/paper_suite_cinc/20260914_184730/01_validate.json",
+      "flat": "outputs__paper_suite_cinc__20260914_184730__01_validate.json",
+      "bytes": 117
+    },
+    {
+      "source": "outputs/paper_suite_cinc/20260914_184730/01b_label_coverage.json",
+      "flat": "outputs__paper_suite_cinc__20260914_184730__01b_label_coverage.json",
+      "bytes": 1794
+    },
+    {
+      "source": "outputs/paper_suite_cinc/20260914_184730/04_channel_check.json",
+      "flat": "outputs__paper_suite_cinc__20260914_184730__04_channel_check.json",
+      "bytes": 408
+    },
+    {
+      "source": "outputs/paper_suite_cinc/20260914_184730/05_downstream.json",
+      "flat": "outputs__paper_suite_cinc__20260914_184730__05_downstream.json",
+      "bytes": 470
+    },
+    {
+      "source": "outputs/paper_suite_cinc/20260914_184730/06_retrieval.json",
+      "flat": "outputs__paper_suite_cinc__20260914_184730__06_retrieval.json",
+      "bytes": 1186
+    },
+    {
+      "source": "outputs/paper_suite_cinc/20260914_184730/07_modality_ablation.json",
+      "flat": "outputs__paper_suite_cinc__20260914_184730__07_modality_ablation.json",
+      "bytes": 2754
+    },
+    {
+      "source": "outputs/paper_suite_cinc/20260914_184730/08_fewshot.json",
+      "flat": "outputs__paper_suite_cinc__20260914_184730__08_fewshot.json",
+      "bytes": 19792
+    },
+    {
+      "source": "outputs/paper_suite_cinc/20260914_184730/08b_space_probe.json",
+      "flat": "outputs__paper_suite_cinc__20260914_184730__08b_space_probe.json",
+      "bytes": 1296
+    },
+    {
+      "source": "outputs/paper_suite_cinc/20260914_184730/09_night.json",
+      "flat": "outputs__paper_suite_cinc__20260914_184730__09_night.json",
+      "bytes": 922
+    },
+    {
+      "source": "outputs/paper_suite_cinc/20260914_184730/summary.json",
+      "flat": "outputs__paper_suite_cinc__20260914_184730__summary.json",
+      "bytes": 34572
+    },
+    {
+      "source": "outputs/paper_suite_cinc_full24.log",
+      "flat": "outputs__paper_suite_cinc_full24.log",
+      "bytes": 1083
+    },
+    {
+      "source": "outputs/paper_suite_cinc_full24/20260914_213259/01_validate.json",
+      "flat": "outputs__paper_suite_cinc_full24__20260914_213259__01_validate.json",
+      "bytes": 117
+    },
+    {
+      "source": "outputs/paper_suite_cinc_full24/20260914_213259/01b_label_coverage.json",
+      "flat": "outputs__paper_suite_cinc_full24__20260914_213259__01b_label_coverage.json",
+      "bytes": 1839
+    },
+    {
+      "source": "outputs/paper_suite_cinc_full24/20260914_213259/04_channel_check.json",
+      "flat": "outputs__paper_suite_cinc_full24__20260914_213259__04_channel_check.json",
+      "bytes": 422
+    },
+    {
+      "source": "outputs/paper_suite_cinc_full24/20260914_213259/05_downstream.json",
+      "flat": "outputs__paper_suite_cinc_full24__20260914_213259__05_downstream.json",
+      "bytes": 483
+    },
+    {
+      "source": "outputs/paper_suite_cinc_full24/20260914_213259/06_retrieval.json",
+      "flat": "outputs__paper_suite_cinc_full24__20260914_213259__06_retrieval.json",
+      "bytes": 1185
+    },
+    {
+      "source": "outputs/paper_suite_cinc_full24/20260914_213259/07_modality_ablation.json",
+      "flat": "outputs__paper_suite_cinc_full24__20260914_213259__07_modality_ablation.json",
+      "bytes": 2900
+    },
+    {
+      "source": "outputs/paper_suite_cinc_full24/20260914_213259/08_fewshot.json",
+      "flat": "outputs__paper_suite_cinc_full24__20260914_213259__08_fewshot.json",
+      "bytes": 8630
+    },
+    {
+      "source": "outputs/paper_suite_cinc_full24/20260914_213259/08b_space_probe.json",
+      "flat": "outputs__paper_suite_cinc_full24__20260914_213259__08b_space_probe.json",
+      "bytes": 1344
+    },
+    {
+      "source": "outputs/paper_suite_cinc_full24/20260914_213259/09_night.json",
+      "flat": "outputs__paper_suite_cinc_full24__20260914_213259__09_night.json",
+      "bytes": 1051
+    },
+    {
+      "source": "outputs/paper_suite_cinc_full24/20260914_213259/summary.json",
+      "flat": "outputs__paper_suite_cinc_full24__20260914_213259__summary.json",
+      "bytes": 22168
+    },
+    {
+      "source": "outputs/paper_suite_demo/20260816_060859_demo/01_validate.json",
+      "flat": "outputs__paper_suite_demo__20260816_060859_demo__01_validate.json",
+      "bytes": 75
+    },
+    {
+      "source": "outputs/paper_suite_demo/20260816_060859_demo/01b_label_coverage.json",
+      "flat": "outputs__paper_suite_demo__20260816_060859_demo__01b_label_coverage.json",
+      "bytes": 1769
+    },
+    {
+      "source": "outputs/pretrain_loo_cinc.log",
+      "flat": "outputs__pretrain_loo_cinc.log",
+      "bytes": 24313
+    },
+    {
+      "source": "outputs/pretrain_loo_cinc_full24.log",
+      "flat": "outputs__pretrain_loo_cinc_full24.log",
+      "bytes": 78041
+    },
+    {
+      "source": "outputs/pretrain_unify_cinc.log",
+      "flat": "outputs__pretrain_unify_cinc.log",
+      "bytes": 24309
+    },
+    {
+      "source": "outputs/pretrain_unify_cinc_full24.log",
+      "flat": "outputs__pretrain_unify_cinc_full24.log",
+      "bytes": 77986
+    },
+    {
+      "source": "pyproject.toml",
+      "flat": "pyproject.toml",
+      "bytes": 1511
+    },
+    {
+      "source": "requirements.txt",
+      "flat": "requirements.txt",
+      "bytes": 250
+    },
+    {
+      "source": "scripts/__init__.py",
+      "flat": "scripts____init__.py",
+      "bytes": 31
+    },
+    {
+      "source": "scripts/build_docs_bundle.py",
+      "flat": "scripts__build_docs_bundle.py",
+      "bytes": 18931
+    },
+    {
+      "source": "scripts/build_flat_upload.py",
+      "flat": "scripts__build_flat_upload.py",
+      "bytes": 14626
+    },
+    {
+      "source": "scripts/check_data_ready.py",
+      "flat": "scripts__check_data_ready.py",
+      "bytes": 8778
+    },
+    {
+      "source": "scripts/download_checkpoint.py",
+      "flat": "scripts__download_checkpoint.py",
+      "bytes": 3348
+    },
+    {
+      "source": "scripts/download_cinc2018_subset.py",
+      "flat": "scripts__download_cinc2018_subset.py",
+      "bytes": 6303
+    },
+    {
+      "source": "scripts/eval_fewshot.py",
+      "flat": "scripts__eval_fewshot.py",
+      "bytes": 2550
+    },
+    {
+      "source": "scripts/eval_modality_ablation.py",
+      "flat": "scripts__eval_modality_ablation.py",
+      "bytes": 1230
+    },
+    {
+      "source": "scripts/eval_retrieval.py",
+      "flat": "scripts__eval_retrieval.py",
+      "bytes": 3486
+    },
+    {
+      "source": "scripts/eval_space_probe.py",
+      "flat": "scripts__eval_space_probe.py",
+      "bytes": 3086
+    },
+    {
+      "source": "scripts/eval_transfer.py",
+      "flat": "scripts__eval_transfer.py",
+      "bytes": 1384
+    },
+    {
+      "source": "scripts/evaluate_downstream.py",
+      "flat": "scripts__evaluate_downstream.py",
+      "bytes": 6340
+    },
+    {
+      "source": "scripts/evaluate_night.py",
+      "flat": "scripts__evaluate_night.py",
+      "bytes": 4319
+    },
+    {
+      "source": "scripts/export_edf.py",
+      "flat": "scripts__export_edf.py",
+      "bytes": 3506
+    },
+    {
+      "source": "scripts/export_nsrr.py",
+      "flat": "scripts__export_nsrr.py",
+      "bytes": 1751
+    },
+    {
+      "source": "scripts/fourdvarnet_eval.py",
+      "flat": "scripts__fourdvarnet_eval.py",
+      "bytes": 2936
+    },
+    {
+      "source": "scripts/fourdvarnet_generate_data.py",
+      "flat": "scripts__fourdvarnet_generate_data.py",
+      "bytes": 1492
+    },
+    {
+      "source": "scripts/fourdvarnet_infer.py",
+      "flat": "scripts__fourdvarnet_infer.py",
+      "bytes": 2403
+    },
+    {
+      "source": "scripts/fourdvarnet_smoke_test.py",
+      "flat": "scripts__fourdvarnet_smoke_test.py",
+      "bytes": 1223
+    },
+    {
+      "source": "scripts/fourdvarnet_train.py",
+      "flat": "scripts__fourdvarnet_train.py",
+      "bytes": 1208
+    },
+    {
+      "source": "scripts/generate_synthetic_data.py",
+      "flat": "scripts__generate_synthetic_data.py",
+      "bytes": 1760
+    },
+    {
+      "source": "scripts/inference.py",
+      "flat": "scripts__inference.py",
+      "bytes": 1879
+    },
+    {
+      "source": "scripts/load_official_checkpoint.py",
+      "flat": "scripts__load_official_checkpoint.py",
+      "bytes": 4638
+    },
+    {
+      "source": "scripts/plot_unify_figures.py",
+      "flat": "scripts__plot_unify_figures.py",
+      "bytes": 17779
+    },
+    {
+      "source": "scripts/pretrain.py",
+      "flat": "scripts__pretrain.py",
+      "bytes": 5674
+    },
+    {
+      "source": "scripts/protocol_checklist.py",
+      "flat": "scripts__protocol_checklist.py",
+      "bytes": 3391
+    },
+    {
+      "source": "scripts/push_flat_branch.py",
+      "flat": "scripts__push_flat_branch.py",
+      "bytes": 7842
+    },
+    {
+      "source": "scripts/push_git_tree_via_api.py",
+      "flat": "scripts__push_git_tree_via_api.py",
+      "bytes": 5019
+    },
+    {
+      "source": "scripts/push_via_github_api.py",
+      "flat": "scripts__push_via_github_api.py",
+      "bytes": 7121
+    },
+    {
+      "source": "scripts/run_paper_suite.py",
+      "flat": "scripts__run_paper_suite.py",
+      "bytes": 28516
+    },
+    {
+      "source": "scripts/run_tests.py",
+      "flat": "scripts__run_tests.py",
+      "bytes": 417
+    },
+    {
+      "source": "scripts/smoke_test.py",
+      "flat": "scripts__smoke_test.py",
+      "bytes": 5585
+    },
+    {
+      "source": "scripts/train_supervised.py",
+      "flat": "scripts__train_supervised.py",
+      "bytes": 9932
+    },
+    {
+      "source": "scripts/validate_data.py",
+      "flat": "scripts__validate_data.py",
+      "bytes": 740
+    },
+    {
+      "source": "sleepfm/__init__.py",
+      "flat": "sleepfm____init__.py",
+      "bytes": 93
+    },
+    {
+      "source": "sleepfm/data/__init__.py",
+      "flat": "sleepfm__data____init__.py",
+      "bytes": 384
+    },
+    {
+      "source": "sleepfm/data/channel_map.py",
+      "flat": "sleepfm__data__channel_map.py",
+      "bytes": 5797
+    },
+    {
+      "source": "sleepfm/data/dataset.py",
+      "flat": "sleepfm__data__dataset.py",
+      "bytes": 4683
+    },
+    {
+      "source": "sleepfm/data/edf_export.py",
+      "flat": "sleepfm__data__edf_export.py",
+      "bytes": 33144
+    },
+    {
+      "source": "sleepfm/data/label_coverage.py",
+      "flat": "sleepfm__data__label_coverage.py",
+      "bytes": 8805
+    },
+    {
+      "source": "sleepfm/data/night_dataset.py",
+      "flat": "sleepfm__data__night_dataset.py",
+      "bytes": 7947
+    },
+    {
+      "source": "sleepfm/data/splits.py",
+      "flat": "sleepfm__data__splits.py",
+      "bytes": 10857
+    },
+    {
+      "source": "sleepfm/data/synthetic.py",
+      "flat": "sleepfm__data__synthetic.py",
+      "bytes": 11275
+    },
+    {
+      "source": "sleepfm/data/validate.py",
+      "flat": "sleepfm__data__validate.py",
+      "bytes": 3900
+    },
+    {
+      "source": "sleepfm/eval/__init__.py",
+      "flat": "sleepfm__eval____init__.py",
+      "bytes": 425
+    },
+    {
+      "source": "sleepfm/eval/downstream.py",
+      "flat": "sleepfm__eval__downstream.py",
+      "bytes": 8806
+    },
+    {
+      "source": "sleepfm/eval/experiments.py",
+      "flat": "sleepfm__eval__experiments.py",
+      "bytes": 8664
+    },
+    {
+      "source": "sleepfm/eval/night.py",
+      "flat": "sleepfm__eval__night.py",
+      "bytes": 12156
+    },
+    {
+      "source": "sleepfm/eval/retrieval.py",
+      "flat": "sleepfm__eval__retrieval.py",
+      "bytes": 8898
+    },
+    {
+      "source": "sleepfm/models/__init__.py",
+      "flat": "sleepfm__models____init__.py",
+      "bytes": 429
+    },
+    {
+      "source": "sleepfm/models/channel_meta.py",
+      "flat": "sleepfm__models__channel_meta.py",
+      "bytes": 7648
+    },
+    {
+      "source": "sleepfm/models/channel_pool.py",
+      "flat": "sleepfm__models__channel_pool.py",
+      "bytes": 4268
+    },
+    {
+      "source": "sleepfm/models/encoders.py",
+      "flat": "sleepfm__models__encoders.py",
+      "bytes": 11199
+    },
+    {
+      "source": "sleepfm/models/official_adapter.py",
+      "flat": "sleepfm__models__official_adapter.py",
+      "bytes": 15416
+    },
+    {
+      "source": "sleepfm/models/sleepfm.py",
+      "flat": "sleepfm__models__sleepfm.py",
+      "bytes": 40824
+    },
+    {
+      "source": "sleepfm/models/temporal.py",
+      "flat": "sleepfm__models__temporal.py",
+      "bytes": 9039
+    },
+    {
+      "source": "sleepfm/training/__init__.py",
+      "flat": "sleepfm__training____init__.py",
+      "bytes": 87
+    },
+    {
+      "source": "sleepfm/training/trainer.py",
+      "flat": "sleepfm__training__trainer.py",
+      "bytes": 8164
+    },
+    {
+      "source": "sleepfm/utils/__init__.py",
+      "flat": "sleepfm__utils____init__.py",
+      "bytes": 128
+    },
+    {
+      "source": "sleepfm/utils/config.py",
+      "flat": "sleepfm__utils__config.py",
+      "bytes": 1502
+    },
+    {
+      "source": "sleepfm/utils/seed.py",
+      "flat": "sleepfm__utils__seed.py",
+      "bytes": 687
+    },
+    {
+      "source": "tests/conftest.py",
+      "flat": "tests__conftest.py",
+      "bytes": 724
+    },
+    {
+      "source": "tests/test_channel_label_gates.py",
+      "flat": "tests__test_channel_label_gates.py",
+      "bytes": 6780
+    },
+    {
+      "source": "tests/test_check_data_ready.py",
+      "flat": "tests__test_check_data_ready.py",
+      "bytes": 1006
+    },
+    {
+      "source": "tests/test_downstream.py",
+      "flat": "tests__test_downstream.py",
+      "bytes": 4824
+    },
+    {
+      "source": "tests/test_edf_export.py",
+      "flat": "tests__test_edf_export.py",
+      "bytes": 5016
+    },
+    {
+      "source": "tests/test_experiments.py",
+      "flat": "tests__test_experiments.py",
+      "bytes": 1996
+    },
+    {
+      "source": "tests/test_model.py",
+      "flat": "tests__test_model.py",
+      "bytes": 2455
+    },
+    {
+      "source": "tests/test_night.py",
+      "flat": "tests__test_night.py",
+      "bytes": 5789
+    },
+    {
+      "source": "tests/test_official_adapter.py",
+      "flat": "tests__test_official_adapter.py",
+      "bytes": 4866
+    },
+    {
+      "source": "tests/test_paper_suite.py",
+      "flat": "tests__test_paper_suite.py",
+      "bytes": 4714
+    },
+    {
+      "source": "tests/test_retrieval.py",
+      "flat": "tests__test_retrieval.py",
+      "bytes": 4779
+    },
+    {
+      "source": "tests/test_splits.py",
+      "flat": "tests__test_splits.py",
+      "bytes": 5162
+    },
+    {
+      "source": "tests/test_unify.py",
+      "flat": "tests__test_unify.py",
+      "bytes": 15641
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+# 4DVarNet SST-SSH sea surface current inversion (Fablet et al., JAMES 2024)
+seed: 42
+data_dir: data/fourdvarnet_osse
+output_dir: outputs/fourdvarnet
+device: cpu
+
+# OSSE grid (paper: 10° box, 1/20°; demo uses smaller grid)
+osse:
+  n_lat: 48
+  n_lon: 48
+  n_days: 90
+  n_tracks: 4
+  window: 7
+  seed: 42
+
+# Model (paper: 5-15 iterations, 20-d multimodal features, ~1.4M params at full scale)
+n_iter: 8
+n_features: 20
+lstm_hidden: 64
+lambda_obs: 1.0
+lambda_sst: 0.5
+lambda_prior: 0.1
+
+# Training (paper: Adam 1e-3, 200+200 epochs; demo shortened)
+batch_size: 4
+num_workers: 0
+epochs: 5
+lr: 0.001
+window: 7
+
+# Paper-scale weights (4DVarNet-SSH-SST hydra xp); fields are z-score normalized
+loss_weights:
+  ssh: 50.0
+  grad_ssh: 1000.0
+  uv: 50.0
+  uv_geo: 25.0
+  div: 10.0
+  phi: 1.0
+
+grad_clip_norm: 1.0
+residual_geo: true
+alpha_uv_geo: 0.05
+
+demo:
+  n_lat: 24
+  n_lon: 24
+  n_days: 30
+  epochs: 2
+  batch_size: 2
+  n_iter: 4
+  loss_weights:
+    ssh: 50.0
+    grad_ssh: 100.0
+    uv: 50.0
+    uv_geo: 25.0
+    div: 10.0
+    phi: 1.0

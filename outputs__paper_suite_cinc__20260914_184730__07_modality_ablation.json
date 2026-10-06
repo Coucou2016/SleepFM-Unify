@@ -1,0 +1,114 @@
+{
+  "bas": {
+    "staging": {
+      "accuracy": 0.2833333333333333,
+      "macro_f1": 0.11871227364185111,
+      "cohen_kappa": -0.16111611161116124,
+      "macro_auroc": 0.5141891728960695,
+      "macro_auprc": 0.2662957490853345
+    },
+    "apnea": {
+      "auroc": 0.356,
+      "auprc": 0.15673985348941638
+    },
+    "n_train": 60,
+    "n_test": 60,
+    "n_train_participants": 1
+  },
+  "ecg": {
+    "staging": {
+      "accuracy": 0.15,
+      "macro_f1": 0.07416413373860183,
+      "cohen_kappa": 0.01098901098901095,
+      "macro_auroc": 0.4011246716884648,
+      "macro_auprc": 0.22871614786531738
+    },
+    "apnea": {
+      "auroc": 0.622,
+      "auprc": 0.23445314494904299
+    },
+    "n_train": 60,
+    "n_test": 60,
+    "n_train_participants": 1
+  },
+  "respiratory": {
+    "staging": {
+      "accuracy": 0.65,
+      "macro_f1": 0.15757575757575756,
+      "cohen_kappa": 0.0,
+      "macro_auroc": 0.5,
+      "macro_auprc": 0.2
+    },
+    "apnea": {
+      "auroc": 0.5,
+      "auprc": 0.16666666666666666
+    },
+    "n_train": 60,
+    "n_test": 60,
+    "n_train_participants": 1
+  },
+  "bas+ecg": {
+    "staging": {
+      "accuracy": 0.3,
+      "macro_f1": 0.1288888888888889,
+      "cohen_kappa": -0.12500000000000022,
+      "macro_auroc": 0.4960420776541466,
+      "macro_auprc": 0.23363806597183942
+    },
+    "apnea": {
+      "auroc": 0.434,
+      "auprc": 0.188804877451139
+    },
+    "n_train": 60,
+    "n_test": 60,
+    "n_train_participants": 1
+  },
+  "bas+respiratory": {
+    "staging": {
+      "accuracy": 0.2833333333333333,
+      "macro_f1": 0.11871227364185111,
+      "cohen_kappa": -0.16111611161116124,
+      "macro_auroc": 0.5132963157532123,
+      "macro_auprc": 0.26624205072013235
+    },
+    "apnea": {
+      "auroc": 0.356,
+      "auprc": 0.15673985348941638
+    },
+    "n_train": 60,
+    "n_test": 60,
+    "n_train_participants": 1
+  },
+  "ecg+respiratory": {
+    "staging": {
+      "accuracy": 0.15,
+      "macro_f1": 0.07416413373860183,
+      "cohen_kappa": 0.01098901098901095,
+      "macro_auroc": 0.4011246716884648,
+      "macro_auprc": 0.22871614786531738
+    },
+    "apnea": {
+      "auroc": 0.622,
+      "auprc": 0.23445314494904299
+    },
+    "n_train": 60,
+    "n_test": 60,
+    "n_train_participants": 1
+  },
+  "bas+ecg+respiratory": {
+    "staging": {
+      "accuracy": 0.3,
+      "macro_f1": 0.1288888888888889,
+      "cohen_kappa": -0.12500000000000022,
+      "macro_auroc": 0.4954862778983469,
+      "macro_auprc": 0.23475073513404418
+    },
+    "apnea": {
+      "auroc": 0.436,
+      "auprc": 0.18908937247247615
+    },
+    "n_train": 60,
+    "n_test": 60,
+    "n_train_participants": 1
+  }
+}

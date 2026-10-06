@@ -1,0 +1,110 @@
+{
+  "stats": {
+    "pretrain": {
+      "n": 500,
+      "recordings": 5,
+      "participants": 5
+    },
+    "valid": {
+      "n": 50,
+      "recordings": 1,
+      "participants": 1
+    },
+    "train": {
+      "n": 60,
+      "recordings": 1,
+      "participants": 1
+    },
+    "test": {
+      "n": 60,
+      "recordings": 1,
+      "participants": 1
+    }
+  },
+  "meta": {
+    "channels": {
+      "bas": 10,
+      "ecg": 2,
+      "respiratory": 7
+    },
+    "clip_length": 7680,
+    "channel_order": [
+      "bas",
+      "ecg",
+      "respiratory"
+    ],
+    "channel_slices": {
+      "bas": [
+        0,
+        10
+      ],
+      "ecg": [
+        10,
+        12
+      ],
+      "respiratory": [
+        12,
+        19
+      ]
+    },
+    "synthetic": false,
+    "dataset": "cinc2018",
+    "sample_rate": 256,
+    "clip_seconds": 30,
+    "num_participants": 8,
+    "participant_level_splits": true,
+    "missing_channels": {
+      "bas": [
+        "clinic EEG/EMG extras (slots 9\u201310)",
+        "zero-padded slot indices [8, 9]"
+      ],
+      "ecg": [
+        "second ECG lead",
+        "zero-padded slot indices [1]"
+      ],
+      "respiratory": [
+        "nasal pressure",
+        "snore",
+        "extra effort channel",
+        "zero-padded slot indices [4, 5, 6]"
+      ]
+    },
+    "label_coverage": {
+      "n_epochs": 7304,
+      "stage_counts": {
+        "0": 4357,
+        "1": 666,
+        "2": 1313,
+        "3": 555,
+        "4": 413
+      },
+      "stage_n_unique": 5,
+      "apnea_n_positive": 2042,
+      "apnea_positive_rate": 0.2795728368017525,
+      "has_aasm_staging": true,
+      "has_full_aasm_staging": true,
+      "has_respiratory_events": true,
+      "dataset": "cinc2018",
+      "notes": [],
+      "by_split": {}
+    },
+    "label_gate": {
+      "claim_staging": true,
+      "claim_apnea": true,
+      "claim_night_ahi": true,
+      "claim_night_staging_kappa": true,
+      "messages": [],
+      "skipped": []
+    },
+    "cpu_protocol": true,
+    "cpu_max_per_recording": {
+      "pretrain": 100,
+      "valid": 50,
+      "train": 60,
+      "test": 60
+    },
+    "cpu_note": "Stride-subsampled epochs from full CinC export; real PhysioNet signals only.",
+    "n_epochs_full": 7304,
+    "n_epochs_cpu": 670
+  }
+}

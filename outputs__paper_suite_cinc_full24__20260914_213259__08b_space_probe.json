@@ -1,0 +1,53 @@
+{
+  "concat": {
+    "staging": {
+      "accuracy": 0.1,
+      "macro_f1": 0.1022751058465344,
+      "cohen_kappa": 0.001369863013698458,
+      "macro_auroc": 0.5574736027601643,
+      "macro_auprc": 0.23132978860542774
+    },
+    "apnea": {
+      "auroc": 0.32640332640332637,
+      "auprc": 0.1538822837557187
+    },
+    "n_train": 120,
+    "n_test": 180,
+    "n_train_participants": 2,
+    "requested_space": "concat"
+  },
+  "shared": {
+    "staging": {
+      "accuracy": 0.09444444444444444,
+      "macro_f1": 0.09248618581682669,
+      "cohen_kappa": -0.0021518598217031837,
+      "macro_auroc": 0.5617006407098977,
+      "macro_auprc": 0.2460335017056295
+    },
+    "apnea": {
+      "auroc": 0.30958230958230953,
+      "auprc": 0.15926929460005818
+    },
+    "n_train": 120,
+    "n_test": 180,
+    "n_train_participants": 2,
+    "requested_space": "shared"
+  },
+  "private": {
+    "staging": {
+      "accuracy": 0.1,
+      "macro_f1": 0.10420601076251394,
+      "cohen_kappa": 0.0006169031462059937,
+      "macro_auroc": 0.560556912374304,
+      "macro_auprc": 0.2351927042920839
+    },
+    "apnea": {
+      "auroc": 0.3377433377433377,
+      "auprc": 0.15595583861274082
+    },
+    "n_train": 120,
+    "n_test": 180,
+    "n_train_participants": 2,
+    "requested_space": "private"
+  }
+}

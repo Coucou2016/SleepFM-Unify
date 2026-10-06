@@ -1,0 +1,82 @@
+{
+  "coverage": {
+    "n_epochs": 2100,
+    "stage_counts": {
+      "0": 1210,
+      "1": 166,
+      "2": 416,
+      "3": 193,
+      "4": 115
+    },
+    "stage_n_unique": 5,
+    "apnea_n_positive": 655,
+    "apnea_positive_rate": 0.3119047619047619,
+    "has_aasm_staging": true,
+    "has_full_aasm_staging": true,
+    "has_respiratory_events": true,
+    "dataset": "cinc2018",
+    "notes": [],
+    "by_split": {
+      "pretrain": {
+        "n_epochs": 1700,
+        "stage_counts": {
+          "0": 991,
+          "1": 127,
+          "2": 331,
+          "3": 153,
+          "4": 98
+        },
+        "stage_n_unique": 5,
+        "apnea_n_positive": 551,
+        "apnea_positive_rate": 0.3241176470588235
+      },
+      "valid": {
+        "n_epochs": 100,
+        "stage_counts": {
+          "0": 46,
+          "1": 6,
+          "2": 33,
+          "3": 7,
+          "4": 8
+        },
+        "stage_n_unique": 5,
+        "apnea_n_positive": 5,
+        "apnea_positive_rate": 0.05
+      },
+      "train": {
+        "n_epochs": 120,
+        "stage_counts": {
+          "0": 76,
+          "1": 17,
+          "2": 13,
+          "3": 8,
+          "4": 6
+        },
+        "stage_n_unique": 5,
+        "apnea_n_positive": 62,
+        "apnea_positive_rate": 0.5166666666666667
+      },
+      "test": {
+        "n_epochs": 180,
+        "stage_counts": {
+          "0": 97,
+          "1": 16,
+          "2": 39,
+          "3": 25,
+          "4": 3
+        },
+        "stage_n_unique": 5,
+        "apnea_n_positive": 37,
+        "apnea_positive_rate": 0.20555555555555555
+      }
+    }
+  },
+  "gate": {
+    "claim_staging": true,
+    "claim_apnea": true,
+    "claim_night_ahi": true,
+    "claim_night_staging_kappa": true,
+    "messages": [],
+    "skipped": []
+  }
+}

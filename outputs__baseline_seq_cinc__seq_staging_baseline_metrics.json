@@ -1,0 +1,7 @@
+{
+  "model": "SeqStagingBaseline",
+  "test": {
+    "macro_auroc": 0.5178357221815887,
+    "macro_auprc": 0.2984864774455826
+  }
+}

@@ -1,0 +1,76 @@
+Dataset=cinc2018  table=cinc2018  fs=256  clip=30s
+Documented missing channels: {'bas': ['clinic EEG/EMG extras (slots 9–10)'], 'ecg': ['second ECG lead'], 'respiratory': ['nasal pressure', 'snore', 'extra effort channel']}
+--- access ---
+1. Training set is open-access (ODC-By) at https://physionet.org/content/challenge-2018/1.0.0/
+2. Subset download (recommended): python scripts/download_cinc2018_subset.py --max-subjects 24
+3. Export: python scripts/export_edf.py --dataset cinc2018 --input-dir data/raw/cinc2018 --output-dir data/cinc2018 --validate
+--------------
+{
+  "n_recordings": 24,
+  "n_epochs": 21532,
+  "n_participants": 24,
+  "split_counts": {
+    "pretrain": 14984,
+    "valid": 1867,
+    "train": 1954,
+    "test": 2727
+  },
+  "warnings": [],
+  "n_warnings": 0,
+  "missing_channels": {
+    "bas": [
+      "clinic EEG/EMG extras (slots 9\u201310)",
+      "zero-padded slot indices [8, 9]"
+    ],
+    "ecg": [
+      "second ECG lead",
+      "zero-padded slot indices [1]"
+    ],
+    "respiratory": [
+      "nasal pressure",
+      "snore",
+      "extra effort channel",
+      "zero-padded slot indices [4, 5, 6]"
+    ]
+  },
+  "label_coverage": {
+    "n_epochs": 21532,
+    "stage_counts": {
+      "0": 12463,
+      "1": 1677,
+      "2": 4324,
+      "3": 1865,
+      "4": 1203
+    },
+    "stage_n_unique": 5,
+    "apnea_n_positive": 6329,
+    "apnea_positive_rate": 0.29393460895411483,
+    "has_aasm_staging": true,
+    "has_full_aasm_staging": true,
+    "has_respiratory_events": true,
+    "dataset": "cinc2018",
+    "notes": [],
+    "by_split": {}
+  },
+  "label_gate": {
+    "claim_staging": true,
+    "claim_apnea": true,
+    "claim_night_ahi": true,
+    "claim_night_staging_kappa": true,
+    "messages": [],
+    "skipped": []
+  },
+  "dry_run": false,
+  "output_dir": "data\\cinc2018_full24",
+  "index": "data\\cinc2018_full24\\index.json",
+  "n_discovered": 24,
+  "load_errors": [],
+  "n_load_errors": 0,
+  "input_dir": "data/raw/cinc2018",
+  "dataset": "cinc2018",
+  "channel_table": "cinc2018"
+}
+notes: CinC 2018 is primarily an *arousal* challenge. Full AASM sleep-stage and
+respiratory-event XML is often absent; unmatched epochs get stage_id=0 and
+apnea=0 unless a sidecar annotation file is provided (.xml / .csv / .json).
+Signals are typically 200 Hz in WFDB .mat+.hea; the exporter resamples to 256 Hz.

@@ -1,0 +1,181 @@
+{
+  "meta": {
+    "channels": {
+      "bas": 10,
+      "ecg": 2,
+      "respiratory": 7
+    },
+    "clip_length": 7680,
+    "channel_order": [
+      "bas",
+      "ecg",
+      "respiratory"
+    ],
+    "channel_slices": {
+      "bas": [
+        0,
+        10
+      ],
+      "ecg": [
+        10,
+        12
+      ],
+      "respiratory": [
+        12,
+        19
+      ]
+    },
+    "synthetic": false,
+    "dataset": "cinc2018_fixture",
+    "sample_rate": 256,
+    "clip_seconds": 30,
+    "num_participants": 4,
+    "participant_level_splits": true,
+    "missing_channels": {
+      "bas": [
+        "clinic EEG/EMG extras (slots 9\u201310)",
+        "zero-padded slot indices [8, 9]"
+      ],
+      "ecg": [
+        "second ECG lead",
+        "zero-padded slot indices [1]"
+      ],
+      "respiratory": [
+        "nasal pressure",
+        "snore",
+        "extra effort channel",
+        "zero-padded slot indices [4, 5, 6]"
+      ]
+    }
+  },
+  "splits": {
+    "pretrain": [
+      {
+        "path": "pretrain_000000.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "S004",
+        "recording_id": "rec_d",
+        "night_id": "rec_d",
+        "epoch_index": 0
+      },
+      {
+        "path": "pretrain_000001.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "S004",
+        "recording_id": "rec_d",
+        "night_id": "rec_d",
+        "epoch_index": 1
+      },
+      {
+        "path": "pretrain_000002.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "S004",
+        "recording_id": "rec_d",
+        "night_id": "rec_d",
+        "epoch_index": 2
+      }
+    ],
+    "valid": [
+      {
+        "path": "valid_000000.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "S003",
+        "recording_id": "rec_c",
+        "night_id": "rec_c",
+        "epoch_index": 0
+      },
+      {
+        "path": "valid_000001.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "S003",
+        "recording_id": "rec_c",
+        "night_id": "rec_c",
+        "epoch_index": 1
+      },
+      {
+        "path": "valid_000002.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "S003",
+        "recording_id": "rec_c",
+        "night_id": "rec_c",
+        "epoch_index": 2
+      }
+    ],
+    "train": [
+      {
+        "path": "train_000000.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "S002",
+        "recording_id": "rec_b",
+        "night_id": "rec_b",
+        "epoch_index": 0
+      },
+      {
+        "path": "train_000001.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "S002",
+        "recording_id": "rec_b",
+        "night_id": "rec_b",
+        "epoch_index": 1
+      },
+      {
+        "path": "train_000002.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "S002",
+        "recording_id": "rec_b",
+        "night_id": "rec_b",
+        "epoch_index": 2
+      }
+    ],
+    "test": [
+      {
+        "path": "test_000000.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "S001",
+        "recording_id": "rec_a",
+        "night_id": "rec_a",
+        "epoch_index": 0
+      },
+      {
+        "path": "test_000001.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "S001",
+        "recording_id": "rec_a",
+        "night_id": "rec_a",
+        "epoch_index": 1
+      },
+      {
+        "path": "test_000002.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "S001",
+        "recording_id": "rec_a",
+        "night_id": "rec_a",
+        "epoch_index": 2
+      }
+    ]
+  }
+}

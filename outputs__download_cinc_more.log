@@ -1,0 +1,35 @@
+Using unsigned S3 physionet-open
+Found 994 training subjects
+[1/16] start tr03-0087
+[2/16] start tr03-0092
+[3/16] start tr03-0100
+[4/16] start tr03-0103
+[4/16] done tr03-0103 (134.0 MB)
+[5/16] start tr03-0134
+[1/16] done tr03-0087 (134.6 MB)
+[6/16] start tr03-0135
+[3/16] done tr03-0100 (129.7 MB)
+[7/16] start tr03-0141
+[2/16] done tr03-0092 (135.8 MB)
+[8/16] start tr03-0146
+[5/16] done tr03-0134 (120.5 MB)
+[9/16] start tr03-0152
+[6/16] done tr03-0135 (167.9 MB)
+[10/16] start tr03-0166
+[7/16] done tr03-0141 (128.5 MB)
+[11/16] start tr03-0167
+[8/16] done tr03-0146 (145.6 MB)
+[12/16] start tr03-0179
+[9/16] done tr03-0152 (139.7 MB)
+[13/16] start tr03-0184
+[10/16] done tr03-0166 (145.2 MB)
+[14/16] start tr03-0187
+[11/16] done tr03-0167 (129.1 MB)
+[15/16] start tr03-0198
+[12/16] done tr03-0179 (147.8 MB)
+[16/16] start tr03-0212
+[13/16] done tr03-0184 (148.1 MB)
+[14/16] done tr03-0187 (153.7 MB)
+[16/16] done tr03-0212 (132.3 MB)
+[15/16] done tr03-0198 (136.1 MB)
+Done. 16 subjects, 2.23 GB → data\raw\cinc2018

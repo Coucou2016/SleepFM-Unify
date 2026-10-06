@@ -1,0 +1,6819 @@
+{
+  "meta": {
+    "channels": {
+      "bas": 10,
+      "ecg": 2,
+      "respiratory": 7
+    },
+    "clip_length": 7680,
+    "channel_order": [
+      "bas",
+      "ecg",
+      "respiratory"
+    ],
+    "channel_slices": {
+      "bas": [
+        0,
+        10
+      ],
+      "ecg": [
+        10,
+        12
+      ],
+      "respiratory": [
+        12,
+        19
+      ]
+    },
+    "synthetic": false,
+    "dataset": "cinc2018",
+    "sample_rate": 256,
+    "clip_seconds": 30,
+    "num_participants": 8,
+    "participant_level_splits": true,
+    "missing_channels": {
+      "bas": [
+        "clinic EEG/EMG extras (slots 9\u201310)",
+        "zero-padded slot indices [8, 9]"
+      ],
+      "ecg": [
+        "second ECG lead",
+        "zero-padded slot indices [1]"
+      ],
+      "respiratory": [
+        "nasal pressure",
+        "snore",
+        "extra effort channel",
+        "zero-padded slot indices [4, 5, 6]"
+      ]
+    },
+    "label_coverage": {
+      "n_epochs": 7304,
+      "stage_counts": {
+        "0": 4357,
+        "1": 666,
+        "2": 1313,
+        "3": 555,
+        "4": 413
+      },
+      "stage_n_unique": 5,
+      "apnea_n_positive": 2042,
+      "apnea_positive_rate": 0.2795728368017525,
+      "has_aasm_staging": true,
+      "has_full_aasm_staging": true,
+      "has_respiratory_events": true,
+      "dataset": "cinc2018",
+      "notes": [],
+      "by_split": {}
+    },
+    "label_gate": {
+      "claim_staging": true,
+      "claim_apnea": true,
+      "claim_night_ahi": true,
+      "claim_night_staging_kappa": true,
+      "messages": [],
+      "skipped": []
+    },
+    "cpu_protocol": true,
+    "cpu_max_per_recording": {
+      "pretrain": 100,
+      "valid": 50,
+      "train": 60,
+      "test": 60
+    },
+    "cpu_note": "Stride-subsampled epochs from full CinC export; real PhysioNet signals only.",
+    "n_epochs_full": 7304,
+    "n_epochs_cpu": 670
+  },
+  "splits": {
+    "pretrain": [
+      {
+        "path": "pretrain_000000.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 0
+      },
+      {
+        "path": "pretrain_000009.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 9
+      },
+      {
+        "path": "pretrain_000018.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 18
+      },
+      {
+        "path": "pretrain_000027.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 27
+      },
+      {
+        "path": "pretrain_000036.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 36
+      },
+      {
+        "path": "pretrain_000045.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 45
+      },
+      {
+        "path": "pretrain_000054.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 54
+      },
+      {
+        "path": "pretrain_000063.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 63
+      },
+      {
+        "path": "pretrain_000072.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 72
+      },
+      {
+        "path": "pretrain_000081.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 81
+      },
+      {
+        "path": "pretrain_000090.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 90
+      },
+      {
+        "path": "pretrain_000099.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 99
+      },
+      {
+        "path": "pretrain_000108.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 108
+      },
+      {
+        "path": "pretrain_000117.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 117
+      },
+      {
+        "path": "pretrain_000126.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 126
+      },
+      {
+        "path": "pretrain_000135.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 135
+      },
+      {
+        "path": "pretrain_000144.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 144
+      },
+      {
+        "path": "pretrain_000153.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 153
+      },
+      {
+        "path": "pretrain_000162.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 162
+      },
+      {
+        "path": "pretrain_000171.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 171
+      },
+      {
+        "path": "pretrain_000180.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 180
+      },
+      {
+        "path": "pretrain_000189.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 189
+      },
+      {
+        "path": "pretrain_000198.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 198
+      },
+      {
+        "path": "pretrain_000207.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 207
+      },
+      {
+        "path": "pretrain_000216.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 216
+      },
+      {
+        "path": "pretrain_000225.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 225
+      },
+      {
+        "path": "pretrain_000234.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 234
+      },
+      {
+        "path": "pretrain_000243.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 243
+      },
+      {
+        "path": "pretrain_000252.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 252
+      },
+      {
+        "path": "pretrain_000261.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 261
+      },
+      {
+        "path": "pretrain_000270.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 270
+      },
+      {
+        "path": "pretrain_000279.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 279
+      },
+      {
+        "path": "pretrain_000288.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 288
+      },
+      {
+        "path": "pretrain_000297.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 297
+      },
+      {
+        "path": "pretrain_000306.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 306
+      },
+      {
+        "path": "pretrain_000315.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 315
+      },
+      {
+        "path": "pretrain_000324.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 324
+      },
+      {
+        "path": "pretrain_000333.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 333
+      },
+      {
+        "path": "pretrain_000342.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 342
+      },
+      {
+        "path": "pretrain_000351.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 351
+      },
+      {
+        "path": "pretrain_000360.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 360
+      },
+      {
+        "path": "pretrain_000369.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 369
+      },
+      {
+        "path": "pretrain_000378.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 378
+      },
+      {
+        "path": "pretrain_000387.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 387
+      },
+      {
+        "path": "pretrain_000396.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 396
+      },
+      {
+        "path": "pretrain_000405.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 405
+      },
+      {
+        "path": "pretrain_000414.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 414
+      },
+      {
+        "path": "pretrain_000423.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 423
+      },
+      {
+        "path": "pretrain_000432.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 432
+      },
+      {
+        "path": "pretrain_000441.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 441
+      },
+      {
+        "path": "pretrain_000450.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 450
+      },
+      {
+        "path": "pretrain_000459.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 459
+      },
+      {
+        "path": "pretrain_000468.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 468
+      },
+      {
+        "path": "pretrain_000477.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 477
+      },
+      {
+        "path": "pretrain_000486.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 486
+      },
+      {
+        "path": "pretrain_000495.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 495
+      },
+      {
+        "path": "pretrain_000504.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 504
+      },
+      {
+        "path": "pretrain_000513.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 513
+      },
+      {
+        "path": "pretrain_000522.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 522
+      },
+      {
+        "path": "pretrain_000531.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 531
+      },
+      {
+        "path": "pretrain_000540.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 540
+      },
+      {
+        "path": "pretrain_000549.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 549
+      },
+      {
+        "path": "pretrain_000558.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 558
+      },
+      {
+        "path": "pretrain_000567.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 567
+      },
+      {
+        "path": "pretrain_000576.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 576
+      },
+      {
+        "path": "pretrain_000585.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 585
+      },
+      {
+        "path": "pretrain_000594.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 594
+      },
+      {
+        "path": "pretrain_000603.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 603
+      },
+      {
+        "path": "pretrain_000612.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 612
+      },
+      {
+        "path": "pretrain_000621.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 621
+      },
+      {
+        "path": "pretrain_000630.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 630
+      },
+      {
+        "path": "pretrain_000639.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 639
+      },
+      {
+        "path": "pretrain_000648.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 648
+      },
+      {
+        "path": "pretrain_000657.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 657
+      },
+      {
+        "path": "pretrain_000666.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 666
+      },
+      {
+        "path": "pretrain_000675.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 675
+      },
+      {
+        "path": "pretrain_000684.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 684
+      },
+      {
+        "path": "pretrain_000693.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 693
+      },
+      {
+        "path": "pretrain_000702.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 702
+      },
+      {
+        "path": "pretrain_000711.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 711
+      },
+      {
+        "path": "pretrain_000720.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 720
+      },
+      {
+        "path": "pretrain_000729.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 729
+      },
+      {
+        "path": "pretrain_000738.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 738
+      },
+      {
+        "path": "pretrain_000747.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 747
+      },
+      {
+        "path": "pretrain_000756.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 756
+      },
+      {
+        "path": "pretrain_000765.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 765
+      },
+      {
+        "path": "pretrain_000774.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 774
+      },
+      {
+        "path": "pretrain_000783.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 783
+      },
+      {
+        "path": "pretrain_000792.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 792
+      },
+      {
+        "path": "pretrain_000801.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 801
+      },
+      {
+        "path": "pretrain_000810.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 810
+      },
+      {
+        "path": "pretrain_000819.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 819
+      },
+      {
+        "path": "pretrain_000828.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 828
+      },
+      {
+        "path": "pretrain_000837.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 837
+      },
+      {
+        "path": "pretrain_000846.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 846
+      },
+      {
+        "path": "pretrain_000855.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 855
+      },
+      {
+        "path": "pretrain_000864.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 864
+      },
+      {
+        "path": "pretrain_000873.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 873
+      },
+      {
+        "path": "pretrain_000882.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 882
+      },
+      {
+        "path": "pretrain_000891.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0052",
+        "recording_id": "tr03-0052",
+        "night_id": "tr03-0052",
+        "epoch_index": 891
+      },
+      {
+        "path": "pretrain_000998.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 0
+      },
+      {
+        "path": "pretrain_001006.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 8
+      },
+      {
+        "path": "pretrain_001014.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 16
+      },
+      {
+        "path": "pretrain_001022.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 24
+      },
+      {
+        "path": "pretrain_001030.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 32
+      },
+      {
+        "path": "pretrain_001038.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 40
+      },
+      {
+        "path": "pretrain_001046.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 48
+      },
+      {
+        "path": "pretrain_001054.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 56
+      },
+      {
+        "path": "pretrain_001062.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 64
+      },
+      {
+        "path": "pretrain_001070.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 72
+      },
+      {
+        "path": "pretrain_001078.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 80
+      },
+      {
+        "path": "pretrain_001086.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 88
+      },
+      {
+        "path": "pretrain_001094.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 96
+      },
+      {
+        "path": "pretrain_001102.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 104
+      },
+      {
+        "path": "pretrain_001110.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 112
+      },
+      {
+        "path": "pretrain_001118.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 120
+      },
+      {
+        "path": "pretrain_001126.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 128
+      },
+      {
+        "path": "pretrain_001134.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 136
+      },
+      {
+        "path": "pretrain_001142.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 144
+      },
+      {
+        "path": "pretrain_001150.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 152
+      },
+      {
+        "path": "pretrain_001158.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 160
+      },
+      {
+        "path": "pretrain_001166.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 168
+      },
+      {
+        "path": "pretrain_001174.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 176
+      },
+      {
+        "path": "pretrain_001182.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 184
+      },
+      {
+        "path": "pretrain_001190.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 192
+      },
+      {
+        "path": "pretrain_001198.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 200
+      },
+      {
+        "path": "pretrain_001206.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 208
+      },
+      {
+        "path": "pretrain_001214.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 216
+      },
+      {
+        "path": "pretrain_001222.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 224
+      },
+      {
+        "path": "pretrain_001230.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 232
+      },
+      {
+        "path": "pretrain_001238.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 240
+      },
+      {
+        "path": "pretrain_001246.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 248
+      },
+      {
+        "path": "pretrain_001254.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 256
+      },
+      {
+        "path": "pretrain_001262.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 264
+      },
+      {
+        "path": "pretrain_001270.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 272
+      },
+      {
+        "path": "pretrain_001278.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 280
+      },
+      {
+        "path": "pretrain_001286.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 288
+      },
+      {
+        "path": "pretrain_001294.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 296
+      },
+      {
+        "path": "pretrain_001302.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 304
+      },
+      {
+        "path": "pretrain_001310.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 312
+      },
+      {
+        "path": "pretrain_001318.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 320
+      },
+      {
+        "path": "pretrain_001326.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 328
+      },
+      {
+        "path": "pretrain_001334.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 336
+      },
+      {
+        "path": "pretrain_001342.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 344
+      },
+      {
+        "path": "pretrain_001350.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 352
+      },
+      {
+        "path": "pretrain_001358.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 360
+      },
+      {
+        "path": "pretrain_001366.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 368
+      },
+      {
+        "path": "pretrain_001374.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 376
+      },
+      {
+        "path": "pretrain_001382.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 384
+      },
+      {
+        "path": "pretrain_001390.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 392
+      },
+      {
+        "path": "pretrain_001398.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 400
+      },
+      {
+        "path": "pretrain_001406.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 408
+      },
+      {
+        "path": "pretrain_001414.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 416
+      },
+      {
+        "path": "pretrain_001422.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 424
+      },
+      {
+        "path": "pretrain_001430.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 432
+      },
+      {
+        "path": "pretrain_001438.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 440
+      },
+      {
+        "path": "pretrain_001446.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 448
+      },
+      {
+        "path": "pretrain_001454.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 456
+      },
+      {
+        "path": "pretrain_001462.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 464
+      },
+      {
+        "path": "pretrain_001470.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 472
+      },
+      {
+        "path": "pretrain_001478.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 480
+      },
+      {
+        "path": "pretrain_001486.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 488
+      },
+      {
+        "path": "pretrain_001494.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 496
+      },
+      {
+        "path": "pretrain_001502.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 504
+      },
+      {
+        "path": "pretrain_001510.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 512
+      },
+      {
+        "path": "pretrain_001518.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 520
+      },
+      {
+        "path": "pretrain_001526.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 528
+      },
+      {
+        "path": "pretrain_001534.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 536
+      },
+      {
+        "path": "pretrain_001542.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 544
+      },
+      {
+        "path": "pretrain_001550.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 552
+      },
+      {
+        "path": "pretrain_001558.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 560
+      },
+      {
+        "path": "pretrain_001566.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 568
+      },
+      {
+        "path": "pretrain_001574.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 576
+      },
+      {
+        "path": "pretrain_001582.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 584
+      },
+      {
+        "path": "pretrain_001590.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 592
+      },
+      {
+        "path": "pretrain_001598.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 600
+      },
+      {
+        "path": "pretrain_001606.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 608
+      },
+      {
+        "path": "pretrain_001614.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 616
+      },
+      {
+        "path": "pretrain_001622.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 624
+      },
+      {
+        "path": "pretrain_001630.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 632
+      },
+      {
+        "path": "pretrain_001638.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 640
+      },
+      {
+        "path": "pretrain_001646.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 648
+      },
+      {
+        "path": "pretrain_001654.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 656
+      },
+      {
+        "path": "pretrain_001662.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 664
+      },
+      {
+        "path": "pretrain_001670.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 672
+      },
+      {
+        "path": "pretrain_001678.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 680
+      },
+      {
+        "path": "pretrain_001686.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 688
+      },
+      {
+        "path": "pretrain_001694.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 696
+      },
+      {
+        "path": "pretrain_001702.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 704
+      },
+      {
+        "path": "pretrain_001710.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 712
+      },
+      {
+        "path": "pretrain_001718.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 720
+      },
+      {
+        "path": "pretrain_001726.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 728
+      },
+      {
+        "path": "pretrain_001734.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 736
+      },
+      {
+        "path": "pretrain_001742.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 744
+      },
+      {
+        "path": "pretrain_001750.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 752
+      },
+      {
+        "path": "pretrain_001758.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 760
+      },
+      {
+        "path": "pretrain_001766.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 768
+      },
+      {
+        "path": "pretrain_001774.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 776
+      },
+      {
+        "path": "pretrain_001782.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 784
+      },
+      {
+        "path": "pretrain_001790.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0061",
+        "recording_id": "tr03-0061",
+        "night_id": "tr03-0061",
+        "epoch_index": 792
+      },
+      {
+        "path": "pretrain_001870.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 0
+      },
+      {
+        "path": "pretrain_001879.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 9
+      },
+      {
+        "path": "pretrain_001888.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 18
+      },
+      {
+        "path": "pretrain_001897.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 27
+      },
+      {
+        "path": "pretrain_001906.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 36
+      },
+      {
+        "path": "pretrain_001915.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 45
+      },
+      {
+        "path": "pretrain_001924.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 54
+      },
+      {
+        "path": "pretrain_001933.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 63
+      },
+      {
+        "path": "pretrain_001942.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 72
+      },
+      {
+        "path": "pretrain_001951.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 81
+      },
+      {
+        "path": "pretrain_001960.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 90
+      },
+      {
+        "path": "pretrain_001969.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 99
+      },
+      {
+        "path": "pretrain_001978.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 108
+      },
+      {
+        "path": "pretrain_001987.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 117
+      },
+      {
+        "path": "pretrain_001996.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 126
+      },
+      {
+        "path": "pretrain_002005.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 135
+      },
+      {
+        "path": "pretrain_002014.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 144
+      },
+      {
+        "path": "pretrain_002023.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 153
+      },
+      {
+        "path": "pretrain_002032.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 162
+      },
+      {
+        "path": "pretrain_002041.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 171
+      },
+      {
+        "path": "pretrain_002050.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 180
+      },
+      {
+        "path": "pretrain_002059.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 189
+      },
+      {
+        "path": "pretrain_002068.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 198
+      },
+      {
+        "path": "pretrain_002077.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 207
+      },
+      {
+        "path": "pretrain_002086.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 216
+      },
+      {
+        "path": "pretrain_002095.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 225
+      },
+      {
+        "path": "pretrain_002104.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 234
+      },
+      {
+        "path": "pretrain_002113.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 243
+      },
+      {
+        "path": "pretrain_002122.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 252
+      },
+      {
+        "path": "pretrain_002131.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 261
+      },
+      {
+        "path": "pretrain_002140.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 270
+      },
+      {
+        "path": "pretrain_002149.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 279
+      },
+      {
+        "path": "pretrain_002158.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 288
+      },
+      {
+        "path": "pretrain_002167.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 297
+      },
+      {
+        "path": "pretrain_002176.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 306
+      },
+      {
+        "path": "pretrain_002185.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 315
+      },
+      {
+        "path": "pretrain_002194.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 324
+      },
+      {
+        "path": "pretrain_002203.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 333
+      },
+      {
+        "path": "pretrain_002212.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 342
+      },
+      {
+        "path": "pretrain_002221.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 351
+      },
+      {
+        "path": "pretrain_002230.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 360
+      },
+      {
+        "path": "pretrain_002239.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 369
+      },
+      {
+        "path": "pretrain_002248.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 378
+      },
+      {
+        "path": "pretrain_002257.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 387
+      },
+      {
+        "path": "pretrain_002266.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 396
+      },
+      {
+        "path": "pretrain_002275.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 405
+      },
+      {
+        "path": "pretrain_002284.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 414
+      },
+      {
+        "path": "pretrain_002293.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 423
+      },
+      {
+        "path": "pretrain_002302.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 432
+      },
+      {
+        "path": "pretrain_002311.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 441
+      },
+      {
+        "path": "pretrain_002320.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 450
+      },
+      {
+        "path": "pretrain_002329.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 459
+      },
+      {
+        "path": "pretrain_002338.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 468
+      },
+      {
+        "path": "pretrain_002347.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 477
+      },
+      {
+        "path": "pretrain_002356.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 486
+      },
+      {
+        "path": "pretrain_002365.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 495
+      },
+      {
+        "path": "pretrain_002374.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 504
+      },
+      {
+        "path": "pretrain_002383.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 513
+      },
+      {
+        "path": "pretrain_002392.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 522
+      },
+      {
+        "path": "pretrain_002401.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 531
+      },
+      {
+        "path": "pretrain_002410.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 540
+      },
+      {
+        "path": "pretrain_002419.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 549
+      },
+      {
+        "path": "pretrain_002428.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 558
+      },
+      {
+        "path": "pretrain_002437.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 567
+      },
+      {
+        "path": "pretrain_002446.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 576
+      },
+      {
+        "path": "pretrain_002455.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 585
+      },
+      {
+        "path": "pretrain_002464.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 594
+      },
+      {
+        "path": "pretrain_002473.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 603
+      },
+      {
+        "path": "pretrain_002482.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 612
+      },
+      {
+        "path": "pretrain_002491.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 621
+      },
+      {
+        "path": "pretrain_002500.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 630
+      },
+      {
+        "path": "pretrain_002509.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 639
+      },
+      {
+        "path": "pretrain_002518.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 648
+      },
+      {
+        "path": "pretrain_002527.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 657
+      },
+      {
+        "path": "pretrain_002536.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 666
+      },
+      {
+        "path": "pretrain_002545.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 675
+      },
+      {
+        "path": "pretrain_002554.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 684
+      },
+      {
+        "path": "pretrain_002563.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 693
+      },
+      {
+        "path": "pretrain_002572.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 702
+      },
+      {
+        "path": "pretrain_002581.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 711
+      },
+      {
+        "path": "pretrain_002590.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 720
+      },
+      {
+        "path": "pretrain_002599.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 729
+      },
+      {
+        "path": "pretrain_002608.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 738
+      },
+      {
+        "path": "pretrain_002617.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 747
+      },
+      {
+        "path": "pretrain_002626.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 756
+      },
+      {
+        "path": "pretrain_002635.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 765
+      },
+      {
+        "path": "pretrain_002644.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 774
+      },
+      {
+        "path": "pretrain_002653.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 783
+      },
+      {
+        "path": "pretrain_002662.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 792
+      },
+      {
+        "path": "pretrain_002671.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 801
+      },
+      {
+        "path": "pretrain_002680.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 810
+      },
+      {
+        "path": "pretrain_002689.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 819
+      },
+      {
+        "path": "pretrain_002698.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 828
+      },
+      {
+        "path": "pretrain_002707.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 837
+      },
+      {
+        "path": "pretrain_002716.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 846
+      },
+      {
+        "path": "pretrain_002725.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 855
+      },
+      {
+        "path": "pretrain_002734.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 864
+      },
+      {
+        "path": "pretrain_002743.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 873
+      },
+      {
+        "path": "pretrain_002752.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 882
+      },
+      {
+        "path": "pretrain_002761.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0078",
+        "recording_id": "tr03-0078",
+        "night_id": "tr03-0078",
+        "epoch_index": 891
+      },
+      {
+        "path": "pretrain_002843.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 0
+      },
+      {
+        "path": "pretrain_002852.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 9
+      },
+      {
+        "path": "pretrain_002861.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 18
+      },
+      {
+        "path": "pretrain_002870.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 27
+      },
+      {
+        "path": "pretrain_002879.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 36
+      },
+      {
+        "path": "pretrain_002888.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 45
+      },
+      {
+        "path": "pretrain_002897.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 54
+      },
+      {
+        "path": "pretrain_002906.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 63
+      },
+      {
+        "path": "pretrain_002915.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 72
+      },
+      {
+        "path": "pretrain_002924.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 81
+      },
+      {
+        "path": "pretrain_002933.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 90
+      },
+      {
+        "path": "pretrain_002942.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 99
+      },
+      {
+        "path": "pretrain_002951.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 108
+      },
+      {
+        "path": "pretrain_002960.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 117
+      },
+      {
+        "path": "pretrain_002969.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 126
+      },
+      {
+        "path": "pretrain_002978.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 135,
+        "missing_modalities": [
+          "bas"
+        ]
+      },
+      {
+        "path": "pretrain_002987.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 144
+      },
+      {
+        "path": "pretrain_002996.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 153
+      },
+      {
+        "path": "pretrain_003005.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 162
+      },
+      {
+        "path": "pretrain_003014.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 171
+      },
+      {
+        "path": "pretrain_003023.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 180
+      },
+      {
+        "path": "pretrain_003032.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 189
+      },
+      {
+        "path": "pretrain_003041.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 198
+      },
+      {
+        "path": "pretrain_003050.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 207
+      },
+      {
+        "path": "pretrain_003059.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 216
+      },
+      {
+        "path": "pretrain_003068.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 225
+      },
+      {
+        "path": "pretrain_003077.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 234
+      },
+      {
+        "path": "pretrain_003086.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 243
+      },
+      {
+        "path": "pretrain_003095.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 252
+      },
+      {
+        "path": "pretrain_003104.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 261
+      },
+      {
+        "path": "pretrain_003113.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 270
+      },
+      {
+        "path": "pretrain_003122.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 279
+      },
+      {
+        "path": "pretrain_003131.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 288
+      },
+      {
+        "path": "pretrain_003140.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 297
+      },
+      {
+        "path": "pretrain_003149.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 306
+      },
+      {
+        "path": "pretrain_003158.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 315
+      },
+      {
+        "path": "pretrain_003167.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 324
+      },
+      {
+        "path": "pretrain_003176.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 333
+      },
+      {
+        "path": "pretrain_003185.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 342
+      },
+      {
+        "path": "pretrain_003194.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 351,
+        "missing_modalities": [
+          "bas"
+        ]
+      },
+      {
+        "path": "pretrain_003203.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 360
+      },
+      {
+        "path": "pretrain_003212.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 369
+      },
+      {
+        "path": "pretrain_003221.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 378
+      },
+      {
+        "path": "pretrain_003230.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 387
+      },
+      {
+        "path": "pretrain_003239.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 396
+      },
+      {
+        "path": "pretrain_003248.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 405
+      },
+      {
+        "path": "pretrain_003257.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 414
+      },
+      {
+        "path": "pretrain_003266.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 423
+      },
+      {
+        "path": "pretrain_003275.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 432
+      },
+      {
+        "path": "pretrain_003284.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 441
+      },
+      {
+        "path": "pretrain_003293.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 450
+      },
+      {
+        "path": "pretrain_003302.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 459
+      },
+      {
+        "path": "pretrain_003311.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 468
+      },
+      {
+        "path": "pretrain_003320.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 477
+      },
+      {
+        "path": "pretrain_003329.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 486
+      },
+      {
+        "path": "pretrain_003338.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 495
+      },
+      {
+        "path": "pretrain_003347.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 504
+      },
+      {
+        "path": "pretrain_003356.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 513
+      },
+      {
+        "path": "pretrain_003365.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 522
+      },
+      {
+        "path": "pretrain_003374.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 531
+      },
+      {
+        "path": "pretrain_003383.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 540
+      },
+      {
+        "path": "pretrain_003392.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 549
+      },
+      {
+        "path": "pretrain_003401.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 558
+      },
+      {
+        "path": "pretrain_003410.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 567
+      },
+      {
+        "path": "pretrain_003419.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 576
+      },
+      {
+        "path": "pretrain_003428.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 585
+      },
+      {
+        "path": "pretrain_003437.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 594
+      },
+      {
+        "path": "pretrain_003446.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 603
+      },
+      {
+        "path": "pretrain_003455.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 612
+      },
+      {
+        "path": "pretrain_003464.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 621
+      },
+      {
+        "path": "pretrain_003473.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 630
+      },
+      {
+        "path": "pretrain_003482.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 639
+      },
+      {
+        "path": "pretrain_003491.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 648
+      },
+      {
+        "path": "pretrain_003500.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 657
+      },
+      {
+        "path": "pretrain_003509.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 666
+      },
+      {
+        "path": "pretrain_003518.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 675
+      },
+      {
+        "path": "pretrain_003527.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 684
+      },
+      {
+        "path": "pretrain_003536.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 693
+      },
+      {
+        "path": "pretrain_003545.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 702
+      },
+      {
+        "path": "pretrain_003554.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 711
+      },
+      {
+        "path": "pretrain_003563.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 720
+      },
+      {
+        "path": "pretrain_003572.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 729
+      },
+      {
+        "path": "pretrain_003581.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 738
+      },
+      {
+        "path": "pretrain_003590.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 747
+      },
+      {
+        "path": "pretrain_003599.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 756
+      },
+      {
+        "path": "pretrain_003608.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 765
+      },
+      {
+        "path": "pretrain_003617.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 774
+      },
+      {
+        "path": "pretrain_003626.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 783
+      },
+      {
+        "path": "pretrain_003635.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 792
+      },
+      {
+        "path": "pretrain_003644.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 801,
+        "missing_modalities": [
+          "bas"
+        ]
+      },
+      {
+        "path": "pretrain_003653.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 810
+      },
+      {
+        "path": "pretrain_003662.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 819
+      },
+      {
+        "path": "pretrain_003671.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 828
+      },
+      {
+        "path": "pretrain_003680.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 837
+      },
+      {
+        "path": "pretrain_003689.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 846
+      },
+      {
+        "path": "pretrain_003698.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 855
+      },
+      {
+        "path": "pretrain_003707.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 864
+      },
+      {
+        "path": "pretrain_003716.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 873
+      },
+      {
+        "path": "pretrain_003725.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 882
+      },
+      {
+        "path": "pretrain_003734.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0083",
+        "recording_id": "tr03-0083",
+        "night_id": "tr03-0083",
+        "epoch_index": 891
+      },
+      {
+        "path": "pretrain_003748.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 0
+      },
+      {
+        "path": "pretrain_003758.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 10
+      },
+      {
+        "path": "pretrain_003768.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 20
+      },
+      {
+        "path": "pretrain_003778.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 30
+      },
+      {
+        "path": "pretrain_003788.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 40
+      },
+      {
+        "path": "pretrain_003798.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 50
+      },
+      {
+        "path": "pretrain_003808.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 60
+      },
+      {
+        "path": "pretrain_003818.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 70
+      },
+      {
+        "path": "pretrain_003828.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 80
+      },
+      {
+        "path": "pretrain_003838.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 90
+      },
+      {
+        "path": "pretrain_003848.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 100
+      },
+      {
+        "path": "pretrain_003858.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 110
+      },
+      {
+        "path": "pretrain_003868.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 120
+      },
+      {
+        "path": "pretrain_003878.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 130
+      },
+      {
+        "path": "pretrain_003888.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 140
+      },
+      {
+        "path": "pretrain_003898.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 150
+      },
+      {
+        "path": "pretrain_003908.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 160
+      },
+      {
+        "path": "pretrain_003918.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 170
+      },
+      {
+        "path": "pretrain_003928.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 180
+      },
+      {
+        "path": "pretrain_003938.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 190
+      },
+      {
+        "path": "pretrain_003948.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 200
+      },
+      {
+        "path": "pretrain_003958.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 210
+      },
+      {
+        "path": "pretrain_003968.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 220
+      },
+      {
+        "path": "pretrain_003978.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 230
+      },
+      {
+        "path": "pretrain_003988.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 240
+      },
+      {
+        "path": "pretrain_003998.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 250
+      },
+      {
+        "path": "pretrain_004008.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 260
+      },
+      {
+        "path": "pretrain_004018.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 270
+      },
+      {
+        "path": "pretrain_004028.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 280
+      },
+      {
+        "path": "pretrain_004038.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 290
+      },
+      {
+        "path": "pretrain_004048.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 300,
+        "missing_modalities": [
+          "bas"
+        ]
+      },
+      {
+        "path": "pretrain_004058.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 310,
+        "missing_modalities": [
+          "bas"
+        ]
+      },
+      {
+        "path": "pretrain_004068.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 320,
+        "missing_modalities": [
+          "bas"
+        ]
+      },
+      {
+        "path": "pretrain_004078.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 330
+      },
+      {
+        "path": "pretrain_004088.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 340
+      },
+      {
+        "path": "pretrain_004098.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 350
+      },
+      {
+        "path": "pretrain_004108.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 360
+      },
+      {
+        "path": "pretrain_004118.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 370
+      },
+      {
+        "path": "pretrain_004128.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 380
+      },
+      {
+        "path": "pretrain_004138.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 390
+      },
+      {
+        "path": "pretrain_004148.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 400
+      },
+      {
+        "path": "pretrain_004158.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 410
+      },
+      {
+        "path": "pretrain_004168.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 420
+      },
+      {
+        "path": "pretrain_004178.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 430
+      },
+      {
+        "path": "pretrain_004188.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 440
+      },
+      {
+        "path": "pretrain_004198.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 450
+      },
+      {
+        "path": "pretrain_004208.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 460
+      },
+      {
+        "path": "pretrain_004218.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 470
+      },
+      {
+        "path": "pretrain_004228.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 480
+      },
+      {
+        "path": "pretrain_004238.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 490
+      },
+      {
+        "path": "pretrain_004248.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 500
+      },
+      {
+        "path": "pretrain_004258.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 510
+      },
+      {
+        "path": "pretrain_004268.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 520
+      },
+      {
+        "path": "pretrain_004278.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 530
+      },
+      {
+        "path": "pretrain_004288.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 540
+      },
+      {
+        "path": "pretrain_004298.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 550
+      },
+      {
+        "path": "pretrain_004308.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 560
+      },
+      {
+        "path": "pretrain_004318.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 570
+      },
+      {
+        "path": "pretrain_004328.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 580
+      },
+      {
+        "path": "pretrain_004338.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 590
+      },
+      {
+        "path": "pretrain_004348.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 600
+      },
+      {
+        "path": "pretrain_004358.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 610
+      },
+      {
+        "path": "pretrain_004368.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 620
+      },
+      {
+        "path": "pretrain_004378.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 630
+      },
+      {
+        "path": "pretrain_004388.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 640
+      },
+      {
+        "path": "pretrain_004398.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 650
+      },
+      {
+        "path": "pretrain_004408.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 660
+      },
+      {
+        "path": "pretrain_004418.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 670
+      },
+      {
+        "path": "pretrain_004428.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 680
+      },
+      {
+        "path": "pretrain_004438.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 690
+      },
+      {
+        "path": "pretrain_004448.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 700
+      },
+      {
+        "path": "pretrain_004458.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 710
+      },
+      {
+        "path": "pretrain_004468.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 720
+      },
+      {
+        "path": "pretrain_004478.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 730
+      },
+      {
+        "path": "pretrain_004488.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 740
+      },
+      {
+        "path": "pretrain_004498.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 750
+      },
+      {
+        "path": "pretrain_004508.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 760
+      },
+      {
+        "path": "pretrain_004518.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 770
+      },
+      {
+        "path": "pretrain_004528.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 780
+      },
+      {
+        "path": "pretrain_004538.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 790
+      },
+      {
+        "path": "pretrain_004548.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 800
+      },
+      {
+        "path": "pretrain_004558.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 810
+      },
+      {
+        "path": "pretrain_004568.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 820
+      },
+      {
+        "path": "pretrain_004578.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 830
+      },
+      {
+        "path": "pretrain_004588.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 840
+      },
+      {
+        "path": "pretrain_004598.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 850
+      },
+      {
+        "path": "pretrain_004608.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 860
+      },
+      {
+        "path": "pretrain_004618.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 870
+      },
+      {
+        "path": "pretrain_004628.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 880,
+        "missing_modalities": [
+          "bas"
+        ]
+      },
+      {
+        "path": "pretrain_004638.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 890
+      },
+      {
+        "path": "pretrain_004648.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 900
+      },
+      {
+        "path": "pretrain_004658.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 910
+      },
+      {
+        "path": "pretrain_004668.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 920
+      },
+      {
+        "path": "pretrain_004678.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 930
+      },
+      {
+        "path": "pretrain_004688.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 940
+      },
+      {
+        "path": "pretrain_004698.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 950
+      },
+      {
+        "path": "pretrain_004708.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 960
+      },
+      {
+        "path": "pretrain_004718.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 970
+      },
+      {
+        "path": "pretrain_004728.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 980
+      },
+      {
+        "path": "pretrain_004738.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0086",
+        "recording_id": "tr03-0086",
+        "night_id": "tr03-0086",
+        "epoch_index": 990
+      }
+    ],
+    "valid": [
+      {
+        "path": "valid_000000.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 0
+      },
+      {
+        "path": "valid_000015.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 15
+      },
+      {
+        "path": "valid_000030.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 30
+      },
+      {
+        "path": "valid_000045.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 45
+      },
+      {
+        "path": "valid_000060.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 60
+      },
+      {
+        "path": "valid_000075.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 75
+      },
+      {
+        "path": "valid_000090.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 90
+      },
+      {
+        "path": "valid_000105.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 105
+      },
+      {
+        "path": "valid_000120.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 120
+      },
+      {
+        "path": "valid_000135.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 135
+      },
+      {
+        "path": "valid_000150.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 150
+      },
+      {
+        "path": "valid_000165.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 165
+      },
+      {
+        "path": "valid_000180.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 180
+      },
+      {
+        "path": "valid_000195.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 195
+      },
+      {
+        "path": "valid_000210.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 210
+      },
+      {
+        "path": "valid_000225.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 225
+      },
+      {
+        "path": "valid_000240.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 240
+      },
+      {
+        "path": "valid_000255.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 255
+      },
+      {
+        "path": "valid_000270.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 270
+      },
+      {
+        "path": "valid_000285.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 285
+      },
+      {
+        "path": "valid_000300.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 300
+      },
+      {
+        "path": "valid_000315.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 315
+      },
+      {
+        "path": "valid_000330.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 330
+      },
+      {
+        "path": "valid_000345.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 345
+      },
+      {
+        "path": "valid_000360.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 360
+      },
+      {
+        "path": "valid_000375.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 375
+      },
+      {
+        "path": "valid_000390.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 390
+      },
+      {
+        "path": "valid_000405.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 405
+      },
+      {
+        "path": "valid_000420.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 420
+      },
+      {
+        "path": "valid_000435.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 435
+      },
+      {
+        "path": "valid_000450.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 450
+      },
+      {
+        "path": "valid_000465.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 465
+      },
+      {
+        "path": "valid_000480.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 480
+      },
+      {
+        "path": "valid_000495.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 495
+      },
+      {
+        "path": "valid_000510.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 510
+      },
+      {
+        "path": "valid_000525.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 525
+      },
+      {
+        "path": "valid_000540.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 540
+      },
+      {
+        "path": "valid_000555.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 555
+      },
+      {
+        "path": "valid_000570.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 570
+      },
+      {
+        "path": "valid_000585.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 585
+      },
+      {
+        "path": "valid_000600.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 600
+      },
+      {
+        "path": "valid_000615.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 615
+      },
+      {
+        "path": "valid_000630.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 630
+      },
+      {
+        "path": "valid_000645.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 645
+      },
+      {
+        "path": "valid_000660.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 660
+      },
+      {
+        "path": "valid_000675.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 675
+      },
+      {
+        "path": "valid_000690.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 690
+      },
+      {
+        "path": "valid_000705.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 705
+      },
+      {
+        "path": "valid_000720.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 720
+      },
+      {
+        "path": "valid_000735.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0029",
+        "recording_id": "tr03-0029",
+        "night_id": "tr03-0029",
+        "epoch_index": 735
+      }
+    ],
+    "train": [
+      {
+        "path": "train_000000.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 0
+      },
+      {
+        "path": "train_000014.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 14
+      },
+      {
+        "path": "train_000028.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 28
+      },
+      {
+        "path": "train_000042.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 42
+      },
+      {
+        "path": "train_000056.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 56
+      },
+      {
+        "path": "train_000070.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 70
+      },
+      {
+        "path": "train_000084.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 84
+      },
+      {
+        "path": "train_000098.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 98
+      },
+      {
+        "path": "train_000112.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 112
+      },
+      {
+        "path": "train_000126.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 126
+      },
+      {
+        "path": "train_000140.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 140
+      },
+      {
+        "path": "train_000154.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 154
+      },
+      {
+        "path": "train_000168.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 168
+      },
+      {
+        "path": "train_000182.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 182
+      },
+      {
+        "path": "train_000196.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 196
+      },
+      {
+        "path": "train_000210.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 210
+      },
+      {
+        "path": "train_000224.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 224
+      },
+      {
+        "path": "train_000238.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 238
+      },
+      {
+        "path": "train_000252.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 252
+      },
+      {
+        "path": "train_000266.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 266
+      },
+      {
+        "path": "train_000280.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 280
+      },
+      {
+        "path": "train_000294.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 294
+      },
+      {
+        "path": "train_000308.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 308
+      },
+      {
+        "path": "train_000322.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 322
+      },
+      {
+        "path": "train_000336.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 336
+      },
+      {
+        "path": "train_000350.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 350
+      },
+      {
+        "path": "train_000364.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 364
+      },
+      {
+        "path": "train_000378.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 378
+      },
+      {
+        "path": "train_000392.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 392
+      },
+      {
+        "path": "train_000406.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 406
+      },
+      {
+        "path": "train_000420.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 420
+      },
+      {
+        "path": "train_000434.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 434
+      },
+      {
+        "path": "train_000448.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 448
+      },
+      {
+        "path": "train_000462.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 462
+      },
+      {
+        "path": "train_000476.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 476
+      },
+      {
+        "path": "train_000490.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 490
+      },
+      {
+        "path": "train_000504.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 504
+      },
+      {
+        "path": "train_000518.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 518
+      },
+      {
+        "path": "train_000532.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 532
+      },
+      {
+        "path": "train_000546.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 546
+      },
+      {
+        "path": "train_000560.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 560
+      },
+      {
+        "path": "train_000574.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 574
+      },
+      {
+        "path": "train_000588.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 588
+      },
+      {
+        "path": "train_000602.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 602
+      },
+      {
+        "path": "train_000616.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 616
+      },
+      {
+        "path": "train_000630.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 630
+      },
+      {
+        "path": "train_000644.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 644
+      },
+      {
+        "path": "train_000658.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 658
+      },
+      {
+        "path": "train_000672.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 672
+      },
+      {
+        "path": "train_000686.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 686
+      },
+      {
+        "path": "train_000700.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 700
+      },
+      {
+        "path": "train_000714.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 714
+      },
+      {
+        "path": "train_000728.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 728
+      },
+      {
+        "path": "train_000742.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 742
+      },
+      {
+        "path": "train_000756.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 756
+      },
+      {
+        "path": "train_000770.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 770
+      },
+      {
+        "path": "train_000784.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 784
+      },
+      {
+        "path": "train_000798.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 798
+      },
+      {
+        "path": "train_000812.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 812
+      },
+      {
+        "path": "train_000826.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0079",
+        "recording_id": "tr03-0079",
+        "night_id": "tr03-0079",
+        "epoch_index": 826
+      }
+    ],
+    "test": [
+      {
+        "path": "test_000000.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 0
+      },
+      {
+        "path": "test_000014.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 14
+      },
+      {
+        "path": "test_000028.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 28
+      },
+      {
+        "path": "test_000042.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 42
+      },
+      {
+        "path": "test_000056.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 56
+      },
+      {
+        "path": "test_000070.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 70
+      },
+      {
+        "path": "test_000084.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 84
+      },
+      {
+        "path": "test_000098.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 98
+      },
+      {
+        "path": "test_000112.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 112
+      },
+      {
+        "path": "test_000126.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 126
+      },
+      {
+        "path": "test_000140.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 140
+      },
+      {
+        "path": "test_000154.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 154
+      },
+      {
+        "path": "test_000168.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 168
+      },
+      {
+        "path": "test_000182.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 182
+      },
+      {
+        "path": "test_000196.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 196
+      },
+      {
+        "path": "test_000210.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 210
+      },
+      {
+        "path": "test_000224.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 224
+      },
+      {
+        "path": "test_000238.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 238
+      },
+      {
+        "path": "test_000252.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 252
+      },
+      {
+        "path": "test_000266.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 266
+      },
+      {
+        "path": "test_000280.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 280
+      },
+      {
+        "path": "test_000294.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 294
+      },
+      {
+        "path": "test_000308.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 308
+      },
+      {
+        "path": "test_000322.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 322
+      },
+      {
+        "path": "test_000336.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 336
+      },
+      {
+        "path": "test_000350.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 350
+      },
+      {
+        "path": "test_000364.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 364
+      },
+      {
+        "path": "test_000378.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 378
+      },
+      {
+        "path": "test_000392.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 392
+      },
+      {
+        "path": "test_000406.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 406
+      },
+      {
+        "path": "test_000420.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 420
+      },
+      {
+        "path": "test_000434.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 434
+      },
+      {
+        "path": "test_000448.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 448
+      },
+      {
+        "path": "test_000462.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 462
+      },
+      {
+        "path": "test_000476.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 476
+      },
+      {
+        "path": "test_000490.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 490
+      },
+      {
+        "path": "test_000504.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 504
+      },
+      {
+        "path": "test_000518.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 518
+      },
+      {
+        "path": "test_000532.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 532
+      },
+      {
+        "path": "test_000546.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 546
+      },
+      {
+        "path": "test_000560.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 560
+      },
+      {
+        "path": "test_000574.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 574
+      },
+      {
+        "path": "test_000588.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 588
+      },
+      {
+        "path": "test_000602.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 602
+      },
+      {
+        "path": "test_000616.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 616
+      },
+      {
+        "path": "test_000630.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 630
+      },
+      {
+        "path": "test_000644.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 644
+      },
+      {
+        "path": "test_000658.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 658
+      },
+      {
+        "path": "test_000672.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 672
+      },
+      {
+        "path": "test_000686.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 686
+      },
+      {
+        "path": "test_000700.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 700
+      },
+      {
+        "path": "test_000714.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 714
+      },
+      {
+        "path": "test_000728.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 728
+      },
+      {
+        "path": "test_000742.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 742
+      },
+      {
+        "path": "test_000756.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 756
+      },
+      {
+        "path": "test_000770.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 770
+      },
+      {
+        "path": "test_000784.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 784
+      },
+      {
+        "path": "test_000798.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 798
+      },
+      {
+        "path": "test_000812.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 812
+      },
+      {
+        "path": "test_000826.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "tr03-0005",
+        "recording_id": "tr03-0005",
+        "night_id": "tr03-0005",
+        "epoch_index": 826
+      }
+    ]
+  }
+}

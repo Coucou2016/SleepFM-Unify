@@ -1,0 +1,22 @@
+_base: configs/default.yaml
+output_dir: outputs/unify
+# Soft attention over present leads (padded slots stay ~0). Optional path;
+# LOO baseline keeps channel_aware_pool: false for paper-aligned comparison.
+channel_aware_pool: true
+
+unify:
+  enabled: true
+  shared_dim: 256
+  private_dim: 256
+  modality_dropout: 0.3
+  modality_dropout_mode: sample
+  downstream_space: concat
+  loss_weights:
+    loo: 1.0
+    pairwise: 0.5
+    orth: 0.1
+    temporal: 0.0
+    miss: 0.5
+    private: 0.1
+    # Optional VICReg off-diagonal covariance weight on raw private (λ_cov).
+    private_cov: 0.01

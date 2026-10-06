@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use SleepFM-Unify, please cite this software and the upstream SleepFM papers."
+type: software
+title: "SleepFM-Unify"
+version: "0.1.0"
+date-released: "2026-09-14"
+url: "https://github.com/Coucou2016/SleepFM-Unify"
+repository-code: "https://github.com/Coucou2016/SleepFM-Unify"
+license: MIT
+authors:
+  - name: "SleepFM-Unify contributors"
+abstract: >-
+  Robust multimodal pretraining for heterogeneous and missing PSG on SleepFM
+  encoders. Shared–private heads are an implementation tool; the claim is
+  incomplete-montage robustness with honesty gates—not novel shared-private
+  factorization.
+keywords:
+  - sleep
+  - polysomnography
+  - foundation model
+  - multimodal
+  - missing modalities
+  - SleepFM
+references:
+  - type: article
+    title: "SleepFM: Multi-modal Representation Learning for Sleep Across Brain Activity, ECG and Respiratory Signals"
+    authors:
+      - family-names: Thapa
+        given-names: Rahul
+      - family-names: He
+        given-names: Bryan
+      - family-names: Kjaer
+        given-names: Magnus Ruud
+      - family-names: Moore
+        given-names: Hyatt
+      - family-names: Ganjoo
+        given-names: Gauri
+      - family-names: Mignot
+        given-names: Emmanuel
+      - family-names: Zou
+        given-names: James
+    year: 2024
+    journal: "Proceedings of the 41st International Conference on Machine Learning"
+    volume: "235"
+    pages: "48019-48037"
+    url: "https://proceedings.mlr.press/v235/thapa24a.html"

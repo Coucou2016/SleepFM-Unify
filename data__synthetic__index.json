@@ -1,0 +1,714 @@
+{
+  "meta": {
+    "channels": {
+      "bas": 10,
+      "ecg": 2,
+      "respiratory": 7
+    },
+    "clip_length": 320,
+    "channel_order": [
+      "bas",
+      "ecg",
+      "respiratory"
+    ],
+    "channel_slices": {
+      "bas": [
+        0,
+        10
+      ],
+      "ecg": [
+        10,
+        12
+      ],
+      "respiratory": [
+        12,
+        19
+      ]
+    },
+    "synthetic": true,
+    "num_participants": 24,
+    "participant_level_splits": true
+  },
+  "splits": {
+    "pretrain": [
+      {
+        "path": "pretrain_000000.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0016"
+      },
+      {
+        "path": "pretrain_000001.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0016"
+      },
+      {
+        "path": "pretrain_000002.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0016"
+      },
+      {
+        "path": "pretrain_000003.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0016"
+      },
+      {
+        "path": "pretrain_000004.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0015"
+      },
+      {
+        "path": "pretrain_000005.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0015"
+      },
+      {
+        "path": "pretrain_000006.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "P0015"
+      },
+      {
+        "path": "pretrain_000007.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0015"
+      },
+      {
+        "path": "pretrain_000008.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0018"
+      },
+      {
+        "path": "pretrain_000009.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0018"
+      },
+      {
+        "path": "pretrain_000010.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0018"
+      },
+      {
+        "path": "pretrain_000011.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0018"
+      },
+      {
+        "path": "pretrain_000012.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0019"
+      },
+      {
+        "path": "pretrain_000013.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0019"
+      },
+      {
+        "path": "pretrain_000014.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0019"
+      },
+      {
+        "path": "pretrain_000015.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "P0019"
+      },
+      {
+        "path": "pretrain_000016.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0009"
+      },
+      {
+        "path": "pretrain_000017.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 1,
+        "participant_id": "P0009"
+      },
+      {
+        "path": "pretrain_000018.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0009"
+      },
+      {
+        "path": "pretrain_000019.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0009"
+      },
+      {
+        "path": "pretrain_000020.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 1,
+        "participant_id": "P0007"
+      },
+      {
+        "path": "pretrain_000021.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0007"
+      },
+      {
+        "path": "pretrain_000022.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "P0007"
+      },
+      {
+        "path": "pretrain_000023.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0007"
+      },
+      {
+        "path": "pretrain_000024.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 1,
+        "participant_id": "P0017"
+      },
+      {
+        "path": "pretrain_000025.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 1,
+        "participant_id": "P0017"
+      },
+      {
+        "path": "pretrain_000026.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0017"
+      },
+      {
+        "path": "pretrain_000027.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "P0017"
+      },
+      {
+        "path": "pretrain_000028.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0023"
+      },
+      {
+        "path": "pretrain_000029.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 1,
+        "participant_id": "P0023"
+      },
+      {
+        "path": "pretrain_000030.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 1,
+        "participant_id": "P0023"
+      },
+      {
+        "path": "pretrain_000031.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0023"
+      },
+      {
+        "path": "pretrain_000032.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0006"
+      },
+      {
+        "path": "pretrain_000033.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 1,
+        "participant_id": "P0006"
+      },
+      {
+        "path": "pretrain_000034.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "P0006"
+      },
+      {
+        "path": "pretrain_000035.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 1,
+        "participant_id": "P0006"
+      },
+      {
+        "path": "pretrain_000036.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0010"
+      },
+      {
+        "path": "pretrain_000037.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0010"
+      },
+      {
+        "path": "pretrain_000038.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0010"
+      },
+      {
+        "path": "pretrain_000039.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 1,
+        "participant_id": "P0010"
+      }
+    ],
+    "valid": [
+      {
+        "path": "valid_000040.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0003"
+      },
+      {
+        "path": "valid_000041.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 1,
+        "participant_id": "P0003"
+      },
+      {
+        "path": "valid_000042.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "P0003"
+      },
+      {
+        "path": "valid_000043.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 1,
+        "participant_id": "P0003"
+      },
+      {
+        "path": "valid_000044.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0000"
+      },
+      {
+        "path": "valid_000045.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0000"
+      },
+      {
+        "path": "valid_000046.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0000"
+      },
+      {
+        "path": "valid_000047.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 1,
+        "participant_id": "P0000"
+      }
+    ],
+    "train": [
+      {
+        "path": "train_000048.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0020"
+      },
+      {
+        "path": "train_000049.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "P0020"
+      },
+      {
+        "path": "train_000050.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0020"
+      },
+      {
+        "path": "train_000051.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0020"
+      },
+      {
+        "path": "train_000052.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0012"
+      },
+      {
+        "path": "train_000053.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0012"
+      },
+      {
+        "path": "train_000054.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "P0012"
+      },
+      {
+        "path": "train_000055.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "P0012"
+      },
+      {
+        "path": "train_000056.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0005"
+      },
+      {
+        "path": "train_000057.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0005"
+      },
+      {
+        "path": "train_000058.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "P0005"
+      },
+      {
+        "path": "train_000059.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0005"
+      },
+      {
+        "path": "train_000060.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "P0011"
+      },
+      {
+        "path": "train_000061.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0011"
+      },
+      {
+        "path": "train_000062.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0011"
+      },
+      {
+        "path": "train_000063.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0011"
+      },
+      {
+        "path": "train_000064.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0014"
+      },
+      {
+        "path": "train_000065.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0014"
+      },
+      {
+        "path": "train_000066.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0014"
+      },
+      {
+        "path": "train_000067.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "P0014"
+      },
+      {
+        "path": "train_000068.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0022"
+      },
+      {
+        "path": "train_000069.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 1,
+        "participant_id": "P0022"
+      },
+      {
+        "path": "train_000070.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0022"
+      },
+      {
+        "path": "train_000071.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0022"
+      },
+      {
+        "path": "train_000072.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 1,
+        "participant_id": "P0002"
+      },
+      {
+        "path": "train_000073.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0002"
+      },
+      {
+        "path": "train_000074.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0002"
+      },
+      {
+        "path": "train_000075.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0002"
+      }
+    ],
+    "test": [
+      {
+        "path": "test_000076.npy",
+        "stage": "Stage 1",
+        "stage_id": 1,
+        "apnea": 0,
+        "participant_id": "P0004"
+      },
+      {
+        "path": "test_000077.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0004"
+      },
+      {
+        "path": "test_000078.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0004"
+      },
+      {
+        "path": "test_000079.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0004"
+      },
+      {
+        "path": "test_000080.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 1,
+        "participant_id": "P0021"
+      },
+      {
+        "path": "test_000081.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0021"
+      },
+      {
+        "path": "test_000082.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0021"
+      },
+      {
+        "path": "test_000083.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0021"
+      },
+      {
+        "path": "test_000084.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0001"
+      },
+      {
+        "path": "test_000085.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0001"
+      },
+      {
+        "path": "test_000086.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0001"
+      },
+      {
+        "path": "test_000087.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0001"
+      },
+      {
+        "path": "test_000088.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0013"
+      },
+      {
+        "path": "test_000089.npy",
+        "stage": "REM",
+        "stage_id": 4,
+        "apnea": 0,
+        "participant_id": "P0013"
+      },
+      {
+        "path": "test_000090.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 1,
+        "participant_id": "P0013"
+      },
+      {
+        "path": "test_000091.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0013"
+      },
+      {
+        "path": "test_000092.npy",
+        "stage": "Stage 3",
+        "stage_id": 3,
+        "apnea": 0,
+        "participant_id": "P0008"
+      },
+      {
+        "path": "test_000093.npy",
+        "stage": "Stage 2",
+        "stage_id": 2,
+        "apnea": 0,
+        "participant_id": "P0008"
+      },
+      {
+        "path": "test_000094.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0008"
+      },
+      {
+        "path": "test_000095.npy",
+        "stage": "Wake",
+        "stage_id": 0,
+        "apnea": 0,
+        "participant_id": "P0008"
+      }
+    ]
+  }
+}

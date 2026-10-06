@@ -1,0 +1,8 @@
+Epoch 1/5 loss=1.5523
+Epoch 2/5 loss=1.4117
+Epoch 3/5 loss=1.3461
+Epoch 4/5 loss=1.2587
+Epoch 5/5 loss=1.2741
+Saved outputs\baseline_seq_cinc\seq_staging_baseline.pt
+Test staging metrics (SeqStagingBaseline): {"macro_auroc": 0.5178357221815887, "macro_auprc": 0.2984864774455826}
+Note: SeqStagingBaseline is an in-repo sequence CNN+temporal head, not U-Sleep. Optional u-sleep install is unsupported here.

@@ -1,0 +1,21 @@
+[1/9] validate_data + paper isolation (strict RuntimeError on leak)
+[1b/9] label coverage gate
+[2/9] skip LOO pretrain (checkpoint=outputs/pretrain_cinc_full24_cpu/best.pt)
+[3/9] skip unify pretrain (checkpoint=outputs/unify_cinc_full24_cpu/best.pt)
+[3b/9] skip temporal pretrain (pass --train-temporal or --temporal-checkpoint for a real night head)
+[4/9] channel meta check
+Loaded checkpoint channels=10/2/7 (paper clinic)
+[5/9] downstream staging + apnea (gated)
+Loaded checkpoint channels=10/2/7 (paper clinic)
+Loaded checkpoint channels=10/2/7 (paper clinic)
+[6/9] retrieval
+Loaded checkpoint channels=10/2/7 (paper clinic)
+[7/9] modality ablation
+Loaded checkpoint channels=10/2/7 (paper clinic)
+[8/9] few-shot (mean±95% CI; paper repeats≥10 unless --demo)
+Loaded checkpoint channels=10/2/7 (paper clinic)
+[8b/9] shared/private/concat space probe
+Loaded checkpoint channels=10/2/7 (paper clinic)
+[9/9] night eval
+Loaded checkpoint channels=10/2/7 (paper clinic)
+PAPER SUITE DONE → outputs\paper_suite_cinc_full24\20260914_213259\summary.json (426.7s)

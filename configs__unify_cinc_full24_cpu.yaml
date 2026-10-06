@@ -1,0 +1,9 @@
+# Unify on full CinC 24-subject open subset (CPU-feasible epochs/batch).
+_base: configs/unify.yaml
+data_dir: data/cinc2018_full24
+output_dir: outputs/unify_cinc_full24_cpu
+batch_size: 8
+epochs: 5
+num_workers: 0
+early_stopping_patience: 3
+channel_aware_pool: true

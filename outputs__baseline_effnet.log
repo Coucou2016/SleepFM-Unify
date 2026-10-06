@@ -1,0 +1,8 @@
+Epoch 1/5 loss=1.6010
+Epoch 2/5 loss=1.5888
+Epoch 3/5 loss=1.5897
+Epoch 4/5 loss=1.5780
+Epoch 5/5 loss=1.5576
+Saved outputs\baseline_effnet_cinc\supervised_effnet.pt
+Test staging metrics (effnet): {"macro_auroc": 0.3925158810538121, "macro_auprc": 0.18718732603280275}
+Note: SeqStagingBaseline is an in-repo sequence CNN+temporal head, not U-Sleep. Optional u-sleep install is unsupported here.
