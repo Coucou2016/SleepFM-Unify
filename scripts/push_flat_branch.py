@@ -92,6 +92,17 @@ def main() -> int:
         default=None,
         help="reuse an already-uploaded tree (skips blob upload; use after a transient failure)",
     )
+    ap.add_argument(
+        "--add",
+        nargs="*",
+        default=None,
+        help="upload only these flat files on top of --base-tree (incremental update)",
+    )
+    ap.add_argument(
+        "--base-tree",
+        default=None,
+        help="existing tree sha to extend when using --add",
+    )
     args = ap.parse_args()
 
     flat = Path(args.flat_dir)
@@ -112,6 +123,26 @@ def main() -> int:
         print(f"reusing existing tree {args.tree_sha}")
         tree = {"sha": args.tree_sha}
         tree_items = files
+    elif args.add:
+        tree_items = []
+        total = 0
+        for name in args.add:
+            p = flat / name
+            if not p.is_file():
+                raise SystemExit(f"--add file not found in flat dir: {name}")
+            data = p.read_bytes()
+            total += len(data)
+            sha = create_blob(data)
+            tree_items.append(
+                {"path": name, "mode": "100644", "type": "blob", "sha": sha}
+            )
+            print(f"  + {name} ({len(data)} bytes)")
+        payload = {"tree": tree_items}
+        if args.base_tree:
+            payload["base_tree"] = args.base_tree
+            print(f"extending tree {args.base_tree}")
+        tree = gh_api("POST", f"repos/{REPO}/git/trees", payload)
+        print(f"tree {tree['sha']}")
     else:
         tree_items = []
         total = 0

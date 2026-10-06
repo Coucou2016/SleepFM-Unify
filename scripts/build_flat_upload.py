@@ -185,7 +185,12 @@ sub-directories at all**.
 Generated: {generated}
 Source commit (of the original nested tree): `{commit or "unknown"}`
 Mirror branch: `{branch}`
-Files in this mirror: **{len(manifest)}** (~{total_mb:.1f} MB of text/JSON/PDF)
+Files at the root of this branch: **{len(manifest) + 2}** = {len(manifest)}
+mirrored files + this guide + `_flat_manifest.json` (~{total_mb:.1f} MB of
+text/JSON/PDF)
+
+> Reading tip: if you are an automated reviewer, fetch the branch listing once,
+> then fetch each file by its flat name. Nothing requires recursive descent.
 
 ---
 
@@ -330,7 +335,17 @@ def main() -> int:
         return 0 if not (missing or changed) else 1
 
     if out_dir.exists():
-        shutil.rmtree(out_dir)
+        # Remove contents file-by-file instead of rmtree: on Windows the directory
+        # itself may be the cwd of another shell, which makes rmtree fail midway
+        # and leave a half-deleted mirror behind.
+        for child in sorted(out_dir.rglob("*"), reverse=True):
+            try:
+                if child.is_dir():
+                    child.rmdir()
+                else:
+                    child.unlink()
+            except OSError:
+                pass
     out_dir.mkdir(parents=True, exist_ok=True)
 
     names: set[str] = set()

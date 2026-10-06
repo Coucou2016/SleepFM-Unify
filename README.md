@@ -4,8 +4,18 @@ Robust multimodal pretraining for **heterogeneous / missing PSG** on SleepFM enc
 (shared–private factorization is a *tool*, not the novelty claim).
 
 **Public repo:** [https://github.com/Coucou2016/SleepFM-Unify](https://github.com/Coucou2016/SleepFM-Unify)  
+**Reading / cross-review version (ALL files flat at the repo root, no folders):** [https://github.com/Coucou2016/SleepFM-Unify/tree/flat](https://github.com/Coucou2016/SleepFM-Unify/tree/flat) — start with `START_HERE_FLAT_LAYOUT.md`  
 **Method docs:** [`docs/UNIFY.md`](docs/UNIFY.md) · **Paper draft:** [`docs/paper/paper.md`](docs/paper/paper.md) · **Data access:** [`docs/DATA_ACCESS.md`](docs/DATA_ACCESS.md) · **Experiment gates:** [`docs/EXPERIMENT_CHECKLIST.md`](docs/EXPERIMENT_CHECKLIST.md)  
 **License:** MIT ([`LICENSE`](LICENSE)) · **Third-party:** [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) · **Citation:** [`CITATION.cff`](CITATION.cff)
+
+> **Two layouts, same content.** The `flat` branch is the default branch and
+> deliberately contains **no directories**: every code file, doc, figure, paper,
+> report and measured-result JSON sits at the root with a `a__b__c.py` style name
+> so external readers (chatgpt.com, other agents, browsers) can enumerate and
+> cross-check the whole project without path guessing. `main` keeps the normal
+> nested layout and is the branch to use for running code
+> (`pip install -e .`, `pytest`). Regenerate/republish either with
+> `scripts/build_flat_upload.py` and `scripts/push_flat_branch.py`.
 
 Upstream SleepFM (Thapa et al., ICML 2024): [PMLR](https://proceedings.mlr.press/v235/thapa24a.html) · [arXiv:2405.17766](https://arxiv.org/abs/2405.17766) · [official code](https://github.com/rthapa84/sleepfm-codebase).
 
